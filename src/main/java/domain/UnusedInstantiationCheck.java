@@ -60,7 +60,6 @@ public class UnusedInstantiationCheck implements SingleClassCheck {
 			if (!found) {
 				printString += "		Unknown line number: Unused field named " + var.name + "\n";
 			}
-			
 		}
 		
 		return printString;
