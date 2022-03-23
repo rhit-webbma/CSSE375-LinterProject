@@ -16,7 +16,7 @@ public class CompositionCheck implements MultiClassCheck {
 		return printString;
 	}
 
-	private String checkClassComposition(MyClassNode classNode) {
+	String checkClassComposition(MyClassNode classNode) {
 		String[] className = classNode.name.split("/");
 		String[] superName = classNode.superName.split("/");
 		if (!superName[0].equals("java"))
