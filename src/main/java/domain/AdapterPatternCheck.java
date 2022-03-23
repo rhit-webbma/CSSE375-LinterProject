@@ -20,7 +20,7 @@ public class AdapterPatternCheck implements MultiClassCheck {
 		return out;
 	}
 
-	private String checkAdapter(MyClassNode classNode) {
+	String checkAdapter(MyClassNode classNode) {
 		String name = getClassName(classNode);
 		boolean claimsAdapter = name.toLowerCase().contains("adapter");
 		ArrayList<String> interfaceNames = getInterfaces(classNode);
@@ -42,12 +42,12 @@ public class AdapterPatternCheck implements MultiClassCheck {
 			return "";
 	}
 
-	private String getClassName(MyClassNode classNode) {
+	String getClassName(MyClassNode classNode) {
 		String[] nameSplit = classNode.name.split("/");
 		return nameSplit[nameSplit.length - 1];
 	}
 
-	private String nameInterfaces(ArrayList<String> interfaces) {
+	String nameInterfaces(ArrayList<String> interfaces) {
 		int size = interfaces.size();
 		String interfaceNames = (size == 1) ? "Interface " : "Interfaces ";
 		for (int i = 0; i < size; i++) {
@@ -60,7 +60,7 @@ public class AdapterPatternCheck implements MultiClassCheck {
 		return interfaceNames;
 	}
 
-	private String nameTypes(ArrayList<String> types) {
+	String nameTypes(ArrayList<String> types) {
 		int size = types.size();
 		String typeNames = "Class ";
 		for (int i = 0; i < size; i++) {
@@ -73,7 +73,7 @@ public class AdapterPatternCheck implements MultiClassCheck {
 		return typeNames;
 	}
 
-	private ArrayList<String> getInterfaces(MyClassNode classNode) {
+	ArrayList<String> getInterfaces(MyClassNode classNode) {
 		ArrayList<String> out = new ArrayList<String>();
 		for (String intf : classNode.interfaces) {
 			String[] name = intf.split("/");
@@ -82,7 +82,7 @@ public class AdapterPatternCheck implements MultiClassCheck {
 		return out;
 	}
 
-	private ArrayList<String> getFieldTypes(MyClassNode classNode) {
+	ArrayList<String> getFieldTypes(MyClassNode classNode) {
 		ArrayList<String> out = new ArrayList<String>();
 		for (MyFieldNode field : classNode.fields) {
 			String[] name = field.desc.split("/|;");
@@ -92,7 +92,7 @@ public class AdapterPatternCheck implements MultiClassCheck {
 		return out;
 	}
 
-	private boolean checkMethods(MyClassNode classNode, ArrayList<String> fieldTypes) {
+	boolean checkMethods(MyClassNode classNode, ArrayList<String> fieldTypes) {
 		for (MyMethodNode method : classNode.methods) {
 			if (!checkMethod(method, fieldTypes))
 				return false;
@@ -100,7 +100,7 @@ public class AdapterPatternCheck implements MultiClassCheck {
 		return true;
 	}
 
-	private boolean checkMethod(MyMethodNode method, ArrayList<String> fieldTypes) {
+	boolean checkMethod(MyMethodNode method, ArrayList<String> fieldTypes) {
 		if (method.name.equals("<init>"))
 			return true;
 		int methodInsns = 0;
