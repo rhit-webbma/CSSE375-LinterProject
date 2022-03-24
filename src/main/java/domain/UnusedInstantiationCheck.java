@@ -11,9 +11,9 @@ import data_source.MyVarInsnNode;
 
 public class UnusedInstantiationCheck implements SingleClassCheck {
 	
-	private MyMethodNode method;
-	private ArrayList<MyFieldInsnNode> fieldStoring = new ArrayList<>();
-	private ArrayList<MyFieldInsnNode> fieldLoading = new ArrayList<>();
+	MyMethodNode method;
+	ArrayList<MyFieldInsnNode> fieldStoring = new ArrayList<>();
+	ArrayList<MyFieldInsnNode> fieldLoading = new ArrayList<>();
 	
 	@Override
 	public String runCheck(MyClassNode classNode) {
@@ -32,7 +32,7 @@ public class UnusedInstantiationCheck implements SingleClassCheck {
 		return printString;
 	}
 	
-	private String findUnusedFields(MyClassNode classNode) {
+	String findUnusedFields(MyClassNode classNode) {
 		String printString = "";
 		ArrayList<String> loadedNames = new ArrayList<>();
 		for (MyFieldInsnNode var : fieldLoading) {
@@ -65,7 +65,7 @@ public class UnusedInstantiationCheck implements SingleClassCheck {
 		return printString;
 	}
 	
-	private void determineFieldStatus(MyFieldInsnNode fInsn) {
+	void determineFieldStatus(MyFieldInsnNode fInsn) {
 		if (fInsn.isLoading()) {
 			fieldLoading.add(fInsn);
 		} else {						
@@ -73,7 +73,7 @@ public class UnusedInstantiationCheck implements SingleClassCheck {
 		}
 	}
 	
-	private String findVariablesMethods(MyMethodNode method) {
+	String findVariablesMethods(MyMethodNode method) {
 		this.method = method;
 		LinkedList<MyAbstractInsnNode> instructions = method.instructions;
 		ArrayList<MyVarInsnNode> loading = new ArrayList<>();
@@ -94,7 +94,7 @@ public class UnusedInstantiationCheck implements SingleClassCheck {
 		return findUnusedVariables(loading, storing);
 	}
 	
-	private String findUnusedVariables(ArrayList<MyVarInsnNode> loaded, ArrayList<MyVarInsnNode> stored) {
+	String findUnusedVariables(ArrayList<MyVarInsnNode> loaded, ArrayList<MyVarInsnNode> stored) {
 		String printString = "";
 		ArrayList<Integer> loadedIndexes = new ArrayList<>();
 		for (MyVarInsnNode var : loaded) {
@@ -120,7 +120,7 @@ public class UnusedInstantiationCheck implements SingleClassCheck {
 		return printString;
 	}
 	
-	private int findLineNumber(int index) {
+	int findLineNumber(int index) {
 		MyAbstractInsnNode node = this.method.instructions.get(index);
 		if (node.getType() == MyAbstractInsnNode.LINE) {
 			MyLineNumberNode lNode = (MyLineNumberNode) node;
