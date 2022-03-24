@@ -48,7 +48,7 @@ public class FacadePatternCheck implements MultiClassCheck {
 		return printString;
 	}
 
-	private String checkForFacade(MyClassNode node, ArrayList<String> fieldUserClassNames) {
+	String checkForFacade(MyClassNode node, ArrayList<String> fieldUserClassNames) {
 		String printString = "";
 		ArrayList<String> classNames = new ArrayList<>();
 		classNames.addAll(fieldUserClassNames);

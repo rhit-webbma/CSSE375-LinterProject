@@ -4,6 +4,7 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.LinkedList;
 
 import org.easymock.EasyMock;
@@ -391,15 +392,7 @@ public class UnusedInstantiationTest {
 		methods.add(method);
 		classNode.methods = methods;
 
-		insns.add(lInsn1);
-		insns.add(lInsn2);
-		insns.add(lNode1);
-		insns.add(sNode1);
-		insns.add(sNode2);
-		insns.add(sNode3);
-		insns.add(lNode2);
-		insns.add(fInsn1);
-		insns.add(fInsn2);
+		insns.addAll(Arrays.asList(lInsn1, lInsn2, lNode1, sNode1, sNode2, sNode3, lNode2, fInsn1, fInsn2));
 		
 		lInsn1.var = 2;
 		lInsn2.var = 3;
