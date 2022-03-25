@@ -106,7 +106,7 @@ public class NamesCheck implements SingleClassCheck {
 		
 		// Uppercase check
 		if (Character.isUpperCase(field.name.charAt(0))) { 
-			if (field.isStatic() && field.isFinal()) {
+			if (!(field.isStatic() && field.isFinal())) {
 				toPrint += "			Field " + field.name + " has an uppercase first letter, "
 						+ "and is not static and final \n";
 			}
