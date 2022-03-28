@@ -8,7 +8,7 @@ import data_source.MyFieldNode;
 import data_source.MyMethodInsnNode;
 import data_source.MyMethodNode;
 
-public class AdapterPatternCheck implements MultiClassCheck {
+public class AdapterPatternCheck implements ClassCheck {
 
 	@Override
 	public String runCheck(ArrayList<MyClassNode> classes) {
@@ -21,10 +21,13 @@ public class AdapterPatternCheck implements MultiClassCheck {
 	}
 
 	String checkAdapter(MyClassNode classNode) {
-		String className = classNode.getName();
-		boolean claimsAdapter = className.toLowerCase().contains("adapter");
+		String name = classNode.getCleanName();
+		boolean claimsAdapter = name.toLowerCase().contains("adapter");
 		ArrayList<String> interfaceNames = classNode.getInterfaces();
 		ArrayList<String> fieldTypes = classNode.getNonBuiltInFieldTypes();
+		String className = classNode.getName();
+		boolean claimsAdapter = className.toLowerCase().contains("adapter");
+
 		if (interfaceNames.isEmpty() || fieldTypes.isEmpty()) {
 			return (claimsAdapter) ? String.format(
 					"	Class %s has \"adapter\" in name, but does not implement an interface and have a field of a user defined class to adapt. \n",
@@ -83,7 +86,7 @@ public class AdapterPatternCheck implements MultiClassCheck {
 		boolean callsFieldType = false;
 		for (MyMethodInsnNode mi : method.getMethodInstructions()) {
 			methodInsns++;
-			callsFieldType = callsFieldType || fieldTypes.contains(mi.getOwnerName());
+			callsFieldType = callsFieldType || fieldTypes.contains(mi.getCleanOwner());
 		}
 		return (methodInsns == 0 || callsFieldType);
 	}

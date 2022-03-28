@@ -23,8 +23,11 @@ class MethodLengthTest {
 	public void testMethodEmpty()
 	{
 		MyClassNode currentClass = EasyMock.createMock(MyClassNode.class);
+		ArrayList<MyClassNode> classes = new ArrayList<>();
+		classes.add(currentClass);
 		
-		currentClass.name = "TestClass";
+		EasyMock.expect(currentClass.getCleanName()).andReturn("TestClass");
+		EasyMock.expect(currentClass.getCleanName()).andReturn("TestClass");
 		
 		MyMethodNode testMethod = EasyMock.createMock(MyMethodNode.class);
 		
@@ -53,7 +56,7 @@ class MethodLengthTest {
 		//Given that this method is under length, method length should return nothing
 		String expected = "";
 		
-		assertEquals(expected, checker.runCheck(currentClass));
+		assertEquals(expected, checker.runCheck(classes));
 		
 		EasyMock.verify(currentClass, testMethod);
 		
@@ -63,8 +66,11 @@ class MethodLengthTest {
 	public void testMethodUnderLength()
 	{
 		MyClassNode currentClass = EasyMock.createMock(MyClassNode.class);
+		ArrayList<MyClassNode> classes = new ArrayList<>();
+		classes.add(currentClass);
 		
-		currentClass.name = "TestClass";
+		EasyMock.expect(currentClass.getCleanName()).andReturn("TestClass");
+		EasyMock.expect(currentClass.getCleanName()).andReturn("TestClass");
 		
 		MyMethodNode testMethod = EasyMock.createMock(MyMethodNode.class);
 		
@@ -93,7 +99,7 @@ class MethodLengthTest {
 		//Given that this method is under length, method length should return nothing
 		String expected = "";
 		
-		assertEquals(expected, checker.runCheck(currentClass));
+		assertEquals(expected, checker.runCheck(classes));
 		
 		EasyMock.verify(currentClass, testMethod);
 		
@@ -103,8 +109,11 @@ class MethodLengthTest {
 	public void testMethodOver35()
 	{
 		MyClassNode currentClass = EasyMock.createMock(MyClassNode.class);
+		ArrayList<MyClassNode> classes = new ArrayList<>();
+		classes.add(currentClass);
 		
-		currentClass.name = "TestClass";
+		EasyMock.expect(currentClass.getCleanName()).andReturn("TestClass");
+		EasyMock.expect(currentClass.getCleanName()).andReturn("TestClass");
 		
 		MyMethodNode testMethod = EasyMock.createMock(MyMethodNode.class);
 		
@@ -130,10 +139,10 @@ class MethodLengthTest {
 		
 		EasyMock.replay(currentClass, testMethod);
 		
-		String expected = "	Method: " + "TestMethod" + "\n";
-		expected += "		Method too long: (40 lines) Shorten it to 35 lines or less. \n";
+		String expected = "Method Length Check:\n	Class: TestClass\n" + "		Method: " + "TestMethod" + "\n";
+		expected += "			Method too long: (40 lines) Shorten it to 35 lines or less. \n";
 		
-		assertEquals(expected, checker.runCheck(currentClass));;
+		assertEquals(expected, checker.runCheck(classes));;
 		
 	}
 

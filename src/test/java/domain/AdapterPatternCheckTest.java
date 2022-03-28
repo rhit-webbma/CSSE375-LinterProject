@@ -96,10 +96,12 @@ class AdapterPatternCheckTest {
 		method.name = "lol";
 		method.instructions = new LinkedList<MyAbstractInsnNode>();
 		MyMethodInsnNode insn = EasyMock.createMock(MyMethodInsnNode.class);
-		insn.owner = "java/util/ArrayList";
+		EasyMock.expect(insn.getCleanOwner()).andReturn("ArrayList");
 		method.instructions.add((MyAbstractInsnNode)insn);
 		AdapterPatternCheck check = new AdapterPatternCheck();
+		EasyMock.replay(insn);
 		assertTrue(check.checkMethod(method, types));
+		EasyMock.verify(insn);
 	}
 	
 	@Test
@@ -110,7 +112,7 @@ class AdapterPatternCheckTest {
 		method.name = "lol";
 		method.instructions = new LinkedList<MyAbstractInsnNode>();
 		MyMethodInsnNode insn = EasyMock.createMock(MyMethodInsnNode.class);
-		insn.owner = "java/util/ArrayList";
+		EasyMock.expect(insn.getCleanOwner()).andReturn("ArrayList");
 		method.instructions.add((MyAbstractInsnNode)insn);
 		AdapterPatternCheck check = new AdapterPatternCheck();
 		assertFalse(check.checkMethod(method, types));

@@ -31,11 +31,15 @@ class FacadePatternTest {
 		MyMethodInsnNode mInsn1 = EasyMock.createMock(MyMethodInsnNode.class);
 		MyMethodInsnNode mInsn2 = EasyMock.createMock(MyMethodInsnNode.class);
 		MyMethodInsnNode mInsn3 = EasyMock.createMock(MyMethodInsnNode.class);
-		
-		classNode.name = "Java/Theater";
-		mInsn1.owner = "Java/PopcornMaker";
-		mInsn2.owner = "Java/ArrayList";
-		mInsn3.owner = "Java/Projector";
+
+		EasyMock.expect(classNode.getFullName()).andReturn("Java/Theater");
+		EasyMock.expect(classNode.getCleanName()).andReturn("Theater");
+		EasyMock.expect(mInsn1.getFullOwner()).andReturn("Java/PopcornMaker");
+		EasyMock.expect(mInsn2.getFullOwner()).andReturn("Java/ArrayList");
+		EasyMock.expect(mInsn3.getFullOwner()).andReturn("Java/Projector");
+		EasyMock.expect(mInsn1.getFullOwner()).andReturn("Java/PopcornMaker");
+		EasyMock.expect(mInsn2.getFullOwner()).andReturn("Java/ArrayList");
+		EasyMock.expect(mInsn3.getFullOwner()).andReturn("Java/Projector");
 		
 		ArrayList<String> fieldUserClassNames = new ArrayList<>(Arrays.asList("Java/PopcornMaker", "Java/Projector"));
 		method1.instructions = new LinkedList<>(Arrays.asList(mInsn1, mInsn2, mInsn3));
@@ -63,10 +67,14 @@ class FacadePatternTest {
 		MyMethodInsnNode mInsn2 = EasyMock.createMock(MyMethodInsnNode.class);
 		MyMethodInsnNode mInsn3 = EasyMock.createMock(MyMethodInsnNode.class);
 		
-		classNode.name = "Java/Theater";
-		mInsn1.owner = "Java/PopcornMaker";
-		mInsn2.owner = "Java/ArrayList";
-		mInsn3.owner = "Java/Projector";
+		EasyMock.expect(classNode.getFullName()).andReturn("Java/Theater");
+		EasyMock.expect(classNode.getCleanName()).andReturn("Theater");
+		EasyMock.expect(mInsn1.getFullOwner()).andReturn("Java/PopcornMaker");
+		EasyMock.expect(mInsn1.getFullOwner()).andReturn("Java/PopcornMaker");
+		EasyMock.expect(mInsn2.getFullOwner()).andReturn("Java/ArrayList");
+		EasyMock.expect(mInsn2.getFullOwner()).andReturn("Java/ArrayList");
+		EasyMock.expect(mInsn3.getFullOwner()).andReturn("Java/Projector");
+		EasyMock.expect(mInsn3.getFullOwner()).andReturn("Java/Projector");
 		
 		ArrayList<String> fieldUserClassNames = new ArrayList<>(Arrays.asList("Java/PopcornMaker", "Java/Projector", "Java/Lights"));
 		method1.instructions = new LinkedList<>(Arrays.asList(mInsn1, mInsn2, mInsn3));
@@ -99,15 +107,27 @@ class FacadePatternTest {
 		MyFieldNode field2 = EasyMock.createMock(MyFieldNode.class);
 		MyFieldNode field3 = EasyMock.createMock(MyFieldNode.class);
 		
-		classNode1.name = "Java/Theater";
-		classNode2.name = "Java/PopcornMaker";
-		classNode3.name = "Java/Projector";
-		mInsn1.owner = "Java/PopcornMaker";
-		mInsn2.owner = "Java/ArrayList";
-		mInsn3.owner = "Java/Projector";
-		field1.desc = "LJava/PopcornMaker;";
-		field2.desc = "LJava/ArrayList;";
-		field3.desc = "LJava/Projector;";
+		
+		EasyMock.expect(classNode1.getFullName()).andReturn("Java/Theater");
+		EasyMock.expect(classNode1.getCleanName()).andReturn("Theater");
+		EasyMock.expect(classNode2.getFullName()).andReturn("Java/PopcornMaker");
+		EasyMock.expect(classNode2.getCleanName()).andReturn("PopcornMaker");
+		EasyMock.expect(classNode3.getFullName()).andReturn("Java/Projector");
+		EasyMock.expect(classNode3.getCleanName()).andReturn("Projector");
+		EasyMock.expect(classNode1.getFullName()).andReturn("Java/Theater");
+		EasyMock.expect(classNode2.getFullName()).andReturn("Java/PopcornMaker");
+		EasyMock.expect(classNode3.getFullName()).andReturn("Java/Projector");
+		
+		EasyMock.expect(mInsn1.getFullOwner()).andReturn("Java/PopcornMaker");
+		EasyMock.expect(mInsn2.getFullOwner()).andReturn("Java/ArrayList");
+		EasyMock.expect(mInsn3.getFullOwner()).andReturn("Java/Projector");
+		EasyMock.expect(mInsn1.getFullOwner()).andReturn("Java/PopcornMaker");
+		EasyMock.expect(mInsn2.getFullOwner()).andReturn("Java/ArrayList");
+		EasyMock.expect(mInsn3.getFullOwner()).andReturn("Java/Projector");
+		EasyMock.expect(field1.getFullDesc()).andReturn("LJava/PopcornMaker;");
+		EasyMock.expect(field2.getFullDesc()).andReturn("LJava/ArrayList;");
+		EasyMock.expect(field3.getFullDesc()).andReturn("LJava/Projector;");
+	
 		
 		method1.instructions = new LinkedList<>(Arrays.asList(mInsn1, mInsn2, mInsn3));
 		
@@ -125,7 +145,7 @@ class FacadePatternTest {
 		
 		ArrayList<MyClassNode> classes = new ArrayList<>(Arrays.asList(classNode1, classNode2, classNode3));
 		
-		EasyMock.replay(classNode1, classNode2, classNode3, method1, mInsn1, mInsn2, mInsn3);
+		EasyMock.replay(classNode1, classNode2, classNode3, method1, mInsn1, mInsn2, mInsn3, field1, field2, field3);
 		assertEquals("\nFacade Pattern Check:\n" + "	Java/Theater looks to be a facade for the following classes:\n" 
 				+ "		Java/PopcornMaker\n" + "		Java/Projector\n", check.runCheck(classes));
 	}
@@ -145,16 +165,28 @@ class FacadePatternTest {
 		MyFieldNode field2 = EasyMock.createMock(MyFieldNode.class);
 		MyFieldNode field3 = EasyMock.createMock(MyFieldNode.class);
 		
-		classNode1.name = "Java/Theater";
-		classNode2.name = "Java/PopcornMaker";
-		classNode3.name = "Java/Projector";
-		classNode4.name = "Java/Lights";
-		mInsn1.owner = "Java/PopcornMaker";
-		mInsn2.owner = "Java/ArrayList";
-		mInsn3.owner = "Java/Projector";
-		field1.desc = "LJava/PopcornMaker;";
-		field2.desc = "LJava/Lights;";
-		field3.desc = "LJava/Projector;";
+		EasyMock.expect(classNode1.getFullName()).andReturn("Java/Theater");
+		EasyMock.expect(classNode1.getCleanName()).andReturn("Theater");
+		EasyMock.expect(classNode2.getFullName()).andReturn("Java/PopcornMaker");
+		EasyMock.expect(classNode2.getCleanName()).andReturn("PopcornMaker");
+		EasyMock.expect(classNode3.getFullName()).andReturn("Java/Projector");
+		EasyMock.expect(classNode3.getCleanName()).andReturn("Projector");
+		EasyMock.expect(classNode4.getFullName()).andReturn("Java/Lights");
+		EasyMock.expect(classNode4.getCleanName()).andReturn("Lights");
+		EasyMock.expect(classNode1.getFullName()).andReturn("Java/TheaterFacade");
+		EasyMock.expect(classNode2.getFullName()).andReturn("Java/PopcornMaker");
+		EasyMock.expect(classNode3.getFullName()).andReturn("Java/Projector");
+		EasyMock.expect(classNode4.getFullName()).andReturn("Java/Lights");
+		
+		EasyMock.expect(mInsn1.getFullOwner()).andReturn("Java/PopcornMaker");
+		EasyMock.expect(mInsn2.getFullOwner()).andReturn("Java/ArrayList");
+		EasyMock.expect(mInsn3.getFullOwner()).andReturn("Java/Projector");
+		EasyMock.expect(mInsn1.getFullOwner()).andReturn("Java/PopcornMaker");
+		EasyMock.expect(mInsn2.getFullOwner()).andReturn("Java/ArrayList");
+		EasyMock.expect(mInsn3.getFullOwner()).andReturn("Java/Projector");
+		EasyMock.expect(field1.getFullDesc()).andReturn("LJava/PopcornMaker;");
+		EasyMock.expect(field2.getFullDesc()).andReturn("LJava/Lights;");
+		EasyMock.expect(field3.getFullDesc()).andReturn("LJava/Projector;");
 		
 		method1.instructions = new LinkedList<>(Arrays.asList(mInsn1, mInsn2, mInsn3));
 		
@@ -173,8 +205,8 @@ class FacadePatternTest {
 		
 		ArrayList<MyClassNode> classes = new ArrayList<>(Arrays.asList(classNode1, classNode2, classNode3, classNode4));
 		
-		EasyMock.replay(classNode1, classNode2, classNode3, classNode4, method1, mInsn1, mInsn2, mInsn3);
-		assertEquals("\nFacade Pattern Check:\n" + "	Java/Theater might be an attempt at facade pattern. It is missing calls to methods in these classes:\n" 
+		EasyMock.replay(classNode1, classNode2, classNode3, classNode4, method1, mInsn1, mInsn2, mInsn3, field1, field2, field3);
+		assertEquals("\nFacade Pattern Check:\n" + "	Java/TheaterFacade might be an attempt at facade pattern. It is missing calls to methods in these classes:\n" 
 				+ "		Java/Lights\n", check.runCheck(classes));
 	}
 	
@@ -186,10 +218,19 @@ class FacadePatternTest {
 		MyClassNode classNode3 = EasyMock.createMock(MyClassNode.class);
 		MyClassNode classNode4 = EasyMock.createMock(MyClassNode.class);
 		
-		classNode1.name = "Java/TheaterFacade";
-		classNode2.name = "Java/PopcornMaker";
-		classNode3.name = "Java/Projector";
-		classNode4.name = "Java/Lights";
+		
+		EasyMock.expect(classNode1.getFullName()).andReturn("Java/TheaterFacade");
+		EasyMock.expect(classNode1.getCleanName()).andReturn("TheaterFacade");
+		EasyMock.expect(classNode2.getFullName()).andReturn("Java/PopcornMaker");
+		EasyMock.expect(classNode2.getCleanName()).andReturn("PopcornMaker");
+		EasyMock.expect(classNode3.getFullName()).andReturn("Java/Projector");
+		EasyMock.expect(classNode3.getCleanName()).andReturn("Projector");
+		EasyMock.expect(classNode4.getFullName()).andReturn("Java/Lights");
+		EasyMock.expect(classNode4.getCleanName()).andReturn("Lights");
+		EasyMock.expect(classNode1.getFullName()).andReturn("Java/TheaterFacade");
+		EasyMock.expect(classNode2.getFullName()).andReturn("Java/PopcornMaker");
+		EasyMock.expect(classNode3.getFullName()).andReturn("Java/Projector");
+		EasyMock.expect(classNode4.getFullName()).andReturn("Java/Lights");
 		
 		classNode1.fields = new ArrayList<>();
 		classNode2.fields = new ArrayList<>();

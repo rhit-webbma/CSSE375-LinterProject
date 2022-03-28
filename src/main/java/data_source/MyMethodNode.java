@@ -7,10 +7,10 @@ import java.util.List;
 public class MyMethodNode {
 
 	public String name;
-	public String desc;
+	private String desc;
 	public LinkedList<MyAbstractInsnNode> instructions;
 	public List<MyLocalVariableNode> localVariables;
-	public List<String> argTypeNames;
+	private List<String> argTypeNames;
 	
 	private static final String CONSTRUCTOR_NAME = "<init>";
 	
@@ -21,6 +21,18 @@ public class MyMethodNode {
 		this.instructions = instructions;
 		this.localVariables = localVariables;
 		this.argTypeNames = argTypeNames;
+	}
+  
+	public String getFullDesc() {
+		return desc;
+	}
+	
+	public String getCleanDesc() {
+    return sanitizeString(desc);
+	}
+	
+	public String getFullArgTypes() {
+		return desc;
 	}
 	
 	public boolean isConstructor() {
@@ -64,7 +76,7 @@ public class MyMethodNode {
 		return nameSplit[nameSplit.length-1];
 	}
 	
-	public ArrayList<String> getArgTypes() {
+	public ArrayList<String> getCleanArgTypes() {
 		ArrayList<String> output = new ArrayList<>();
 		for (String type : argTypeNames) {
 			output.add(sanitizeString(type));
@@ -84,6 +96,4 @@ public class MyMethodNode {
 		}
 		return methodLength;
 	}
-	
-	
 }

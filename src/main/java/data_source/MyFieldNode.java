@@ -3,7 +3,7 @@ package data_source;
 public class MyFieldNode {
 
 	public String name;
-	public String desc;
+	private String desc;
 	private boolean isStatic;
 	private boolean isFinal;
 	
@@ -22,12 +22,16 @@ public class MyFieldNode {
 		return isFinal;
 	}
 	
+	public String getFullDesc() {
+		return desc;
+	}
+
 	public boolean isBuiltIn() {
 		String[] nameSplit = desc.split("/");
 		return nameSplit[0].contains("java");
 	}
 	
-	public String getTypeName() {
+	public String getCleanDesc() {
 		String[] nameSplit = desc.split("/");
 		return nameSplit[nameSplit.length-1];
 	}

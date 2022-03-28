@@ -11,16 +11,16 @@ import data_source.MyMethodInsnNode;
 import data_source.MyMethodNode;
 
 
-public class HollywoodCheck implements MultiClassCheck {
+public class HollywoodCheck implements ClassCheck {
 
 	@Override
 	public String runCheck(ArrayList<MyClassNode> classes) {
 		String toPrint = "\nHollywood Principle Violations: \n";
 		for (MyClassNode curClass : classes) {
-			if (curClass.superName != null) {
+			if (curClass.getFullSuperName() != null) {
 				MyClassNode superClass = null;
 				for (MyClassNode curClass2 : classes) {
-					if (curClass2.name.equals(curClass.superName)) {
+					if (curClass2.getCleanName().equals(curClass.getCleanSuperName())) {
 						superClass = curClass2;
 					}
 				}
@@ -38,7 +38,7 @@ public class HollywoodCheck implements MultiClassCheck {
 						superFieldNames.remove(curName);
 					}
 	
-					toPrint += checkHollywoodViolations(curClass, superFieldNames, superMethodNames, superClass.getName());
+					toPrint += checkHollywoodViolations(curClass, superFieldNames, superMethodNames, superClass.getCleanName());
 				}
 			}
 		}
@@ -61,13 +61,13 @@ public class HollywoodCheck implements MultiClassCheck {
 				if (insn instanceof MyMethodInsnNode) {
 					MyMethodInsnNode methodInsn = (MyMethodInsnNode) insn;
 					if (superMethodNames.contains(methodInsn.name)) {
-						toPrint += "	Class " + curClass.getName() + " calls method " + methodInsn.name + " from " + 
+						toPrint += "	Class " + curClass.getCleanName() + " calls method " + methodInsn.name + " from " + 
 								superName + " in method " + method.name + "\n";
 					}
 				} else if (insn instanceof MyFieldInsnNode) {
 					MyFieldInsnNode fieldInsn = (MyFieldInsnNode) insn;
 					if (superFieldNamesTemp.contains(fieldInsn.name)) {
-						toPrint += "	Class " + curClass.getName() + " uses field " + fieldInsn.name + " from " + 
+						toPrint += "	Class " + curClass.getCleanName() + " uses field " + fieldInsn.name + " from " + 
 								superName + " in method " + method.name + "\n";
 					}
 				}

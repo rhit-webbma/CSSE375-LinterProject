@@ -5,8 +5,8 @@ import java.util.List;
 
 public class MyClassNode {
 
-	public String name;
-	public String superName;
+	private String name;
+	private String superName;
 	public List<String> interfaces;
 	public List<MyFieldNode> fields;
 	public List<MyMethodNode> methods;
@@ -25,17 +25,24 @@ public class MyClassNode {
 	public boolean isInterface() {
 		return isInterface;
 	}
+	public String getFullName() {
+		return name;
+	}
 	
+	public String getFullSuperName() {
+		return superName;
+	}
+  
 	private String sanitizeString(String s) {
 		String[] nameSplit = s.split("/");
 		return nameSplit[nameSplit.length-1];
 	}
 	
-	public String getName() {
+	public String getCleanName() {
 		return sanitizeString(name);
 	}
 	
-	public String getSuperName() {
+	public String getCleanSuperName() {
 		return sanitizeString(superName);
 	}
 	
@@ -82,5 +89,4 @@ public class MyClassNode {
 		}
 		return null;
 	}
-	
 }

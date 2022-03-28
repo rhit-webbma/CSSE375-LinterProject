@@ -24,7 +24,7 @@ public class UnusedInstantiationTest {
 
 	@Test
 	public void testGetName() {
-		SingleClassCheck check = new UnusedInstantiationCheck();
+		ClassCheck check = new UnusedInstantiationCheck();
 		assertEquals("Unused Instantiation", check.getName());
 	}
 	
@@ -149,7 +149,7 @@ public class UnusedInstantiationTest {
 		
 		EasyMock.replay(lNode1, lNode2, lNode3, sNode1, sNode2, sNode3, method, lNode, vLNode);
 		
-		assertEquals("		Line 12: Unused variable named counter in method countThings\n", check.findUnusedVariables(loaded, stored));
+		assertEquals("			Line 12: Unused variable named counter in method countThings\n", check.findUnusedVariables(loaded, stored));
 		
 	}
 	
@@ -198,7 +198,7 @@ public class UnusedInstantiationTest {
 		
 		EasyMock.replay(lNode1, lNode2, lNode3, sNode1, sNode2, sNode3, method, lNode);
 		
-		assertEquals("		Line 12: Unused variable in method countThings\n", check.findUnusedVariables(loaded, stored));
+		assertEquals("			Line 12: Unused variable in method countThings\n", check.findUnusedVariables(loaded, stored));
 		
 	}
 	
@@ -262,7 +262,7 @@ public class UnusedInstantiationTest {
 		
 		EasyMock.replay(lNode1, lNode2, sNode1, sNode2, sNode3, method, lNode, vLNode);
 		
-		assertEquals("		Line 12: Unused variable named counter in method countThings\n", check.findVariablesMethods(method));
+		assertEquals("			Line 12: Unused variable named counter in method countThings\n", check.findVariablesMethods(method));
 	}
 	
 	@Test
@@ -325,7 +325,7 @@ public class UnusedInstantiationTest {
 		method1.instructions = new LinkedList<>();
 		
 		EasyMock.replay(fInsn1, fInsn2, classNode, method1);
-		assertEquals("		Unknown line number: Unused field named download\n", check.findUnusedFields(classNode));
+		assertEquals("			Unknown line number: Unused field named download\n", check.findUnusedFields(classNode));
 	}
 	
 	@Test
@@ -365,13 +365,15 @@ public class UnusedInstantiationTest {
 		EasyMock.expect(lNode.getType()).andReturn(MyAbstractInsnNode.LINE);
 		
 		EasyMock.replay(fInsn1, fInsn2, classNode, method1, lNode);
-		assertEquals("		Line 12: Unused field named download\n", check.findUnusedFields(classNode));
+		assertEquals("			Line 12: Unused field named download\n", check.findUnusedFields(classNode));
 	}
 	
 	@Test
 	public void testRunCheck() {
 		UnusedInstantiationCheck check = new UnusedInstantiationCheck();
 		MyClassNode classNode = EasyMock.createMock(MyClassNode.class);
+		ArrayList<MyClassNode> classes = new ArrayList<>();
+		classes.add(classNode);
 		LinkedList<MyAbstractInsnNode> insns = new LinkedList<>();
 		
 		MyVarInsnNode lInsn1 = EasyMock.createMock(MyVarInsnNode.class);
@@ -404,6 +406,8 @@ public class UnusedInstantiationTest {
 		fInsn1.name = "counter";
 		fInsn2.name = "download";
 		
+		EasyMock.expect(classNode.getCleanName()).andReturn(null);
+		EasyMock.expect(classNode.getCleanName()).andReturn(null);
 		EasyMock.expect(lInsn1.getType()).andReturn(MyAbstractInsnNode.VAR_INSN);
 		EasyMock.expect(lInsn1.isLoading()).andReturn(true);
 		EasyMock.expect(lInsn2.getType()).andReturn(MyAbstractInsnNode.VAR_INSN);
@@ -434,7 +438,7 @@ public class UnusedInstantiationTest {
 		EasyMock.expect(fInsn1.getType()).andReturn(MyAbstractInsnNode.FIELD_INSN);
 		EasyMock.expect(fInsn2.getType()).andReturn(MyAbstractInsnNode.FIELD_INSN);
 		EasyMock.expect(lNode2.getType()).andReturn(MyAbstractInsnNode.LINE);
-		
+
 		ArrayList<MyLocalVariableNode> vars = new ArrayList<>();
 		MyLocalVariableNode vLNode = EasyMock.createMock(MyLocalVariableNode.class);
 		vars.add(vLNode);
@@ -445,10 +449,10 @@ public class UnusedInstantiationTest {
 		
 		check.method = method;
 		
-		EasyMock.replay(lInsn1, lInsn2, sNode1, sNode2, sNode3, method, lNode1, lNode2, fInsn1, fInsn2, vLNode);
+		EasyMock.replay(lInsn1, lInsn2, sNode1, sNode2, sNode3, method, lNode1, lNode2, fInsn1, fInsn2, vLNode, classNode);
 		
-		assertEquals("	Unused Variables: \n" + "		Line 12: Unused field named download\n" 
-				+ "		Line 15: Unused variable named counter in method countThings\n" , check.runCheck(classNode));
+		assertEquals("Unused Instantiation Check:\n	Class: null\n		Unused Variables: \n" + "			Line 12: Unused field named download\n" 
+				+ "			Line 15: Unused variable named counter in method countThings\n" , check.runCheck(classes));
 
 		assertTrue(check.fieldLoading.contains(fInsn1));
 		assertTrue(check.fieldStoring.contains(fInsn2));

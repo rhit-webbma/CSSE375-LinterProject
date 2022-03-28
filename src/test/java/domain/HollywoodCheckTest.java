@@ -38,7 +38,7 @@ public class HollywoodCheckTest {
 		MyMethodNode m1 = EasyMock.createMock(MyMethodNode.class);
 		ArrayList<MyMethodNode> methods = new ArrayList<MyMethodNode>();
 		methods.add(m1);
-		curClass.name = "SubClass";
+		EasyMock.expect(curClass.getCleanName()).andReturn("SubClass");
 		curClass.methods = methods;
 		
 		LinkedList<MyAbstractInsnNode> insns = new LinkedList<MyAbstractInsnNode>();
@@ -66,7 +66,7 @@ public class HollywoodCheckTest {
 		MyMethodNode m1 = EasyMock.createMock(MyMethodNode.class);
 		ArrayList<MyMethodNode> methods = new ArrayList<MyMethodNode>();
 		methods.add(m1);
-		curClass.name = "SubClass";
+		EasyMock.expect(curClass.getCleanName()).andReturn("SubClass");
 		curClass.methods = methods;
 		
 		LinkedList<MyAbstractInsnNode> insns = new LinkedList<MyAbstractInsnNode>();
@@ -99,7 +99,7 @@ public class HollywoodCheckTest {
 		MyMethodNode m1 = EasyMock.createMock(MyMethodNode.class);
 		ArrayList<MyMethodNode> methods = new ArrayList<MyMethodNode>();
 		methods.add(m1);
-		curClass.name = "SubClass";
+		EasyMock.expect(curClass.getCleanName()).andReturn("SubClass");
 		curClass.methods = methods;
 		
 		LinkedList<MyAbstractInsnNode> insns = new LinkedList<MyAbstractInsnNode>();

@@ -10,7 +10,7 @@ import data_source.MyFieldNode;
 import data_source.MyMethodInsnNode;
 import data_source.MyMethodNode;
 
-public class StrategyPatternCheck implements MultiClassCheck {
+public class StrategyPatternCheck implements ClassCheck {
 
 	/*
 	 * Things I need to check to detect a strategy pattern: There is a class that
@@ -48,7 +48,8 @@ public class StrategyPatternCheck implements MultiClassCheck {
 				for (int i = 0; i < constructedFieldTypes.size(); i++) {
 					MyClassNode fieldClass = null;
 					for (MyClassNode otherClass : classes) {
-						if (constructedFieldTypes.get(i).equals(otherClass.getName())) {
+
+						if (constructedFieldTypes.get(i).equals(otherClass.getCleanName())) {
 							fieldClass = otherClass;
 						}
 					}
@@ -72,7 +73,7 @@ public class StrategyPatternCheck implements MultiClassCheck {
 								if (!strategyDone) {
 									if ((icf.equals(methodInsn.getOwnerName()))
 											&& (methodInsn.isInvokeVirtual())) {
-										toPrint += "	Implemented in " + curClass.getName()
+										toPrint += "	Implemented in " + curClass.getCleanName()
 												+ " class using interface " + icf
 												+ ", and invoked for the first time in method " + method.name + "\n";
 										strategyDone = true;
@@ -82,18 +83,17 @@ public class StrategyPatternCheck implements MultiClassCheck {
 						}
 					}
 					if (!strategyDone) {
-						toPrint += "	Strategy pattern is nearly implemented in " + curClass.getName()
-								+ " using interface " + icf
-								+ ". To finish implementing strategy pattern, the function/functions "
-								+ "called from the interface must be used\n";
+						toPrint += "	Strategy pattern is nearly implemented in " + curClass.getCleanName()
+									+ " using interface " + icf + ". To finish implementing strategy pattern, the function/functions "
+											+ "called from the interface must be used\n";
+
 					}
 				}
 			}
 		}
-		if (toPrint.equals("\nStrategy Pattern Implementations: \n"))
 
-		{
-			return "";
+		if (toPrint.equals("\nStrategy Pattern Implementations: \n")) {
+			 return "";
 		}
 		return toPrint;
 	}
