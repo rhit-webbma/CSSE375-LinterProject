@@ -1,5 +1,7 @@
 package data_source;
 
+import org.objectweb.asm.Opcodes;
+
 public class MyFieldInsnNode extends MyAbstractInsnNode{
 
 	public String name;
@@ -7,11 +9,11 @@ public class MyFieldInsnNode extends MyAbstractInsnNode{
 	private boolean isLoading;
 	private boolean isStoring;
 	
-	public MyFieldInsnNode(String name, String owner, boolean isLoading, boolean isStoring) {
+	public MyFieldInsnNode(String name, String owner, int opcode) {
 		this.name = name;
 		this.owner = owner;
-		this.isLoading = isLoading;
-		this.isStoring = isStoring;
+		
+		setStatus(opcode);
 	}
 	
 	@Override
@@ -25,6 +27,25 @@ public class MyFieldInsnNode extends MyAbstractInsnNode{
 	
 	public boolean isStoring() {
 		return isStoring;
+	}
+	
+	private void setStatus(int opcode) {
+		boolean isLoading = false;
+		boolean isStoring = false;
+
+		switch (opcode) {
+		case Opcodes.GETSTATIC:
+		case Opcodes.GETFIELD:
+			isLoading = true;
+			break;
+		case Opcodes.PUTSTATIC:
+		case Opcodes.PUTFIELD:
+			isStoring = true;
+			break;
+		}
+		
+		this.isLoading = isLoading;
+		this.isStoring = isStoring;
 	}
 
 }
