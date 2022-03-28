@@ -15,6 +15,11 @@ public class MyMethodInsnNode extends MyAbstractInsnNode{
 	public boolean isInvokeVirtual() {
 		return invokeVirtual;
 	}
+	
+	public String getOwnerName() {
+		String[] nameSplit = owner.split("/");
+		return nameSplit[nameSplit.length-1];
+	}
 
 	@Override
 	public int getType() {

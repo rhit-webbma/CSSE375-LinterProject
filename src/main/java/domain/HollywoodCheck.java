@@ -26,14 +26,14 @@ public class HollywoodCheck implements ClassCheck {
 				}
 				
 				if (superClass != null) {
-					ArrayList<String> curMethodNames = this.getMethodNames(curClass);
-					ArrayList<String> superMethodNames = this.getMethodNames(superClass);
+					ArrayList<String> curMethodNames = curClass.getMethodNames();
+					ArrayList<String> superMethodNames = superClass.getMethodNames();
 					for (String curName : curMethodNames) {
 						superMethodNames.remove(curName);
 					}
 					
-					ArrayList<String> curFieldNames = this.getFieldNames(curClass);
-					ArrayList<String> superFieldNames = this.getFieldNames(superClass);
+					ArrayList<String> curFieldNames = curClass.getFieldNames();
+					ArrayList<String> superFieldNames = superClass.getFieldNames();
 					for (String curName : curFieldNames) {
 						superFieldNames.remove(curName);
 					}
@@ -53,7 +53,7 @@ public class HollywoodCheck implements ClassCheck {
 		String toPrint = "";
 		for (MyMethodNode method : curClass.methods) {
 			ArrayList<String> superFieldNamesTemp = superFieldNames;
-			ArrayList<String> localVarNames = this.getVarNames(method);
+			ArrayList<String> localVarNames = method.getVarNames();
 			for (String localName : localVarNames) {
 				superFieldNamesTemp.remove(localName);
 			}
@@ -74,32 +74,6 @@ public class HollywoodCheck implements ClassCheck {
 			}
 		}
 		return toPrint;
-	}
-
-	private ArrayList<String> getVarNames(MyMethodNode curMethod) {
-		ArrayList<String> names = new ArrayList<>();
-		if (curMethod.localVariables != null) {
-			for (MyLocalVariableNode var : curMethod.localVariables) {
-				names.add(var.name);
-			}
-		}
-		return names;
-	}
-
-	private ArrayList<String> getFieldNames(MyClassNode curClass) {
-		ArrayList<String> names = new ArrayList<>();
-		for (MyFieldNode field : curClass.fields) {
-			names.add(field.name);
-		}
-		return names;
-	}
-
-	private ArrayList<String> getMethodNames(MyClassNode curClass) {
-		ArrayList<String> names = new ArrayList<>();
-		for (MyMethodNode method : curClass.methods) {
-			names.add(method.name);
-		}
-		return names;
 	}
 	
 	@Override

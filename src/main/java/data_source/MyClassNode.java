@@ -1,5 +1,6 @@
 package data_source;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class MyClassNode {
@@ -24,40 +25,68 @@ public class MyClassNode {
 	public boolean isInterface() {
 		return isInterface;
 	}
-	
 	public String getFullName() {
 		return name;
-	}
-	
-	public String getCleanName() {
-		String toPrint = "";
-		for (int i = 0; i < name.length(); i++) {
-			if (name.charAt(i) == '/') {
-				toPrint = "";
-			} else if (name.charAt(i) == ';') {
-				
-			} else {
-				toPrint += name.charAt(i);
-			}
-		}
-		return toPrint;
 	}
 	
 	public String getFullSuperName() {
 		return superName;
 	}
+  
+	private String sanitizeString(String s) {
+		String[] nameSplit = s.split("/");
+		return nameSplit[nameSplit.length-1];
+	}
+	
+	public String getCleanName() {
+		return sanitizeString(name);
+	}
 	
 	public String getCleanSuperName() {
-		String toPrint = "";
-		for (int i = 0; i < superName.length(); i++) {
-			if (superName.charAt(i) == '/') {
-				toPrint = "";
-			} else if (superName.charAt(i) == ';') {
-				
-			} else {
-				toPrint += superName.charAt(i);
-			}
+		return sanitizeString(superName);
+	}
+	
+	public boolean isSuperBuiltIn() {
+		String[] nameSplit = superName.split("/");
+		return nameSplit[1].contains("java");
+	}
+	
+	public ArrayList<String> getInterfaces() {
+		ArrayList<String> output = new ArrayList<>();
+		for (String name : interfaces) {
+			output.add(sanitizeString(name));
 		}
-		return toPrint;
+		return output;
+	}
+	
+	public ArrayList<String> getNonBuiltInFieldTypes() {
+		ArrayList<String> output = new ArrayList<>();
+		for (MyFieldNode field : fields) {
+			if (!field.isBuiltIn()) output.add(field.getTypeName());
+		}
+		return output;
+	}
+	
+	public ArrayList<String> getMethodNames() {
+		ArrayList<String> output = new ArrayList<>();
+		for (MyMethodNode method : methods) {
+			output.add(method.name);
+		}
+		return output;
+	}
+	
+	public ArrayList<String> getFieldNames() {
+		ArrayList<String> output = new ArrayList<>();
+		for (MyFieldNode field : fields) {
+			output.add(field.name);
+		}
+		return output;
+	}
+	
+	public MyMethodNode getConstructor() {
+		for (MyMethodNode method : methods) {
+			if (method.isConstructor()) return method;
+		}
+		return null;
 	}
 }

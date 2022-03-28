@@ -61,20 +61,6 @@ public class NamesCheck implements ClassCheck {
 		return toPrint;
 	}
 	
-	private String sanatizeString(String toSanatize) {
-		String toPrint = "";
-		for (int i = 0; i < toSanatize.length(); i++) {
-			if (toSanatize.charAt(i) == '/') {
-				toPrint = "";
-			} else if (toSanatize.charAt(i) == ';') {
-				
-			} else {
-				toPrint += toSanatize.charAt(i);
-			}
-		}
-		return toPrint;
-	}
-	
 	protected String checkMethod(MyMethodNode checkMethod) {
 		String toPrint = "";
 		

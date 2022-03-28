@@ -23,21 +23,24 @@ public class AdapterPatternCheck implements ClassCheck {
 	String checkAdapter(MyClassNode classNode) {
 		String name = classNode.getCleanName();
 		boolean claimsAdapter = name.toLowerCase().contains("adapter");
-		ArrayList<String> interfaceNames = getInterfaces(classNode);
-		ArrayList<String> fieldTypes = getFieldTypes(classNode);
+		ArrayList<String> interfaceNames = classNode.getInterfaces();
+		ArrayList<String> fieldTypes = classNode.getNonBuiltInFieldTypes();
+		String className = classNode.getName();
+		boolean claimsAdapter = className.toLowerCase().contains("adapter");
+
 		if (interfaceNames.isEmpty() || fieldTypes.isEmpty()) {
 			return (claimsAdapter) ? String.format(
 					"	Class %s has \"adapter\" in name, but does not implement an interface and have a field of a user defined class to adapt. \n",
-					name) : "";
+					className) : "";
 		}
 		boolean adaptsMethods = checkMethods(classNode, fieldTypes);
 		if (adaptsMethods) {
-			return String.format("	Class %s uses Adapter Pattern to adapt %s to %s \n", name, nameTypes(fieldTypes),
+			return String.format("	Class %s uses Adapter Pattern to adapt %s to %s \n", className, nameTypes(fieldTypes),
 					nameInterfaces(interfaceNames));
 		} else if (claimsAdapter) {
 			return String.format(
 					"	Class %s has \"adapter\" in name, but has methods that are not empty or calling methods of %s \n",
-					name, nameTypes(fieldTypes));
+					className, nameTypes(fieldTypes));
 		} else
 			return "";
 	}
@@ -68,25 +71,6 @@ public class AdapterPatternCheck implements ClassCheck {
 		return typeNames;
 	}
 
-	ArrayList<String> getInterfaces(MyClassNode classNode) {
-		ArrayList<String> out = new ArrayList<String>();
-		for (String intf : classNode.interfaces) {
-			String[] name = intf.split("/");
-			out.add(name[name.length - 1]);
-		}
-		return out;
-	}
-
-	ArrayList<String> getFieldTypes(MyClassNode classNode) {
-		ArrayList<String> out = new ArrayList<String>();
-		for (MyFieldNode field : classNode.fields) {
-			String[] name = field.getFullDesc().split("/|;");
-			if (!name[0].contains("java"))
-				out.add(name[name.length - 1]);
-		}
-		return out;
-	}
-
 	boolean checkMethods(MyClassNode classNode, ArrayList<String> fieldTypes) {
 		for (MyMethodNode method : classNode.methods) {
 			if (!checkMethod(method, fieldTypes))
@@ -96,17 +80,13 @@ public class AdapterPatternCheck implements ClassCheck {
 	}
 
 	boolean checkMethod(MyMethodNode method, ArrayList<String> fieldTypes) {
-		if (method.name.equals("<init>"))
+		if (method.isConstructor())
 			return true;
 		int methodInsns = 0;
 		boolean callsFieldType = false;
-		for (MyAbstractInsnNode insn : method.instructions) {
-			if (insn instanceof MyMethodInsnNode) {
-				MyMethodInsnNode mi = (MyMethodInsnNode) insn;
-				methodInsns++;
-				String ownerName = mi.getCleanOwner();
-				callsFieldType = callsFieldType || fieldTypes.contains(ownerName);
-			}
+		for (MyMethodInsnNode mi : method.getMethodInstructions()) {
+			methodInsns++;
+			callsFieldType = callsFieldType || fieldTypes.contains(mi.getCleanOwner());
 		}
 		return (methodInsns == 0 || callsFieldType);
 	}

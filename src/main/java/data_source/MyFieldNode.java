@@ -25,19 +25,15 @@ public class MyFieldNode {
 	public String getFullDesc() {
 		return desc;
 	}
+
+	public boolean isBuiltIn() {
+		String[] nameSplit = desc.split("/");
+		return nameSplit[0].contains("java");
+	}
 	
 	public String getCleanDesc() {
-		String toPrint = "";
-		for (int i = 0; i < desc.length(); i++) {
-			if (desc.charAt(i) == '/') {
-				toPrint = "";
-			} else if (desc.charAt(i) == ';') {
-				
-			} else {
-				toPrint += desc.charAt(i);
-			}
-		}
-		return toPrint;
+		String[] nameSplit = desc.split("/");
+		return nameSplit[nameSplit.length-1];
 	}
 	
 }

@@ -1,11 +1,6 @@
 package domain;
 
-import java.util.ArrayList;
-import java.util.LinkedList;
-
-import data_source.MyAbstractInsnNode;
 import data_source.MyClassNode;
-import data_source.MyLineNumberNode;
 import data_source.MyMethodNode;
 
 public class MethodLengthCheck implements ClassCheck {
@@ -43,28 +38,11 @@ public class MethodLengthCheck implements ClassCheck {
 	}
 
 	private String checkLength(MyMethodNode method) {
-		int length = this.getMethodLength(method);
+		int length = method.getLength();
 		return (length > maxLength)
 				? String.format("			Method too long: (%d lines) Shorten it to %d lines or less. \n", length,
 						maxLength)
 				: "";
-	}
-
-	private int getMethodLength(MyMethodNode method) {
-		LinkedList<MyAbstractInsnNode> instructions = method.instructions;
-		ArrayList<Integer> lines = new ArrayList<Integer>();
-		int methodLength = 0;
-		for (MyAbstractInsnNode insn : instructions) {
-			if (insn instanceof MyLineNumberNode) {
-				MyLineNumberNode ln = (MyLineNumberNode) insn;
-				int line = ln.line;
-				if (!lines.contains(line)) {
-					lines.add(line);
-					methodLength++;
-				}
-			}
-		}
-		return methodLength;
 	}
 	
 	@Override

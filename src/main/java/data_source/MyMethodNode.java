@@ -12,6 +12,8 @@ public class MyMethodNode {
 	public List<MyLocalVariableNode> localVariables;
 	private List<String> argTypeNames;
 	
+	private static final String CONSTRUCTOR_NAME = "<init>";
+	
 	public MyMethodNode(String name, String desc, LinkedList<MyAbstractInsnNode> instructions,
 			List<MyLocalVariableNode> localVariables, List<String> argTypeNames) {
 		this.name = name;
@@ -20,45 +22,78 @@ public class MyMethodNode {
 		this.localVariables = localVariables;
 		this.argTypeNames = argTypeNames;
 	}
-	
+  
 	public String getFullDesc() {
 		return desc;
 	}
 	
 	public String getCleanDesc() {
-		String toPrint = "";
-		for (int i = 0; i < desc.length(); i++) {
-			if (desc.charAt(i) == '/') {
-				toPrint = "";
-			} else if (desc.charAt(i) == ';') {
-				
-			} else {
-				toPrint += desc.charAt(i);
-			}
-		}
-		return toPrint;
+    return sanitizeString(desc);
 	}
 	
 	public String getFullArgTypes() {
 		return desc;
 	}
 	
-	public List<String> getCleanArgTypes() {
-		ArrayList<String> argTypes = new ArrayList<>();
-		String toPrint = "";
-		for (String argType : argTypeNames) {
-			toPrint = "";
-			for (int i = 0; i < argType.length(); i++) {
-				if (argType.charAt(i) == '/') {
-					toPrint = "";
-				} else if (argType.charAt(i) == ';') {
-					
-				} else {
-					toPrint += argType.charAt(i);
-				}
-			}
-			argTypes.add(toPrint);
+	public boolean isConstructor() {
+		return name.equals(CONSTRUCTOR_NAME);
+	}
+	
+	public ArrayList<MyMethodInsnNode> getMethodInstructions() {
+		ArrayList<MyMethodInsnNode> output = new ArrayList<>();
+		for (MyAbstractInsnNode insn : instructions) {
+			if (insn instanceof MyMethodInsnNode) output.add((MyMethodInsnNode)insn);
 		}
-		return argTypes;
+		return output;
+	}
+	
+	public ArrayList<MyLineNumberNode> getLineNumberNodes() {
+		ArrayList<MyLineNumberNode> output = new ArrayList<>();
+		for (MyAbstractInsnNode insn : instructions) {
+			if (insn instanceof MyLineNumberNode) output.add((MyLineNumberNode)insn);
+		}
+		return output;
+	}
+	
+	public ArrayList<MyFieldInsnNode> getFieldInstructionNodes() {
+		ArrayList<MyFieldInsnNode> output = new ArrayList<>();
+		for (MyAbstractInsnNode insn : instructions) {
+			if (insn instanceof MyFieldInsnNode) output.add((MyFieldInsnNode)insn);
+		}
+		return output;
+	}
+	
+	public ArrayList<String> getVarNames() {
+		ArrayList<String> output = new ArrayList<>();
+		for (MyLocalVariableNode var : localVariables) {
+			output.add(var.name);
+		}
+		return output;
+	}
+	
+	private String sanitizeString(String s) {
+		String[] nameSplit = s.split("/");
+		return nameSplit[nameSplit.length-1];
+	}
+	
+	public ArrayList<String> getCleanArgTypes() {
+		ArrayList<String> output = new ArrayList<>();
+		for (String type : argTypeNames) {
+			output.add(sanitizeString(type));
+		}
+		return output;
+	}
+	
+	public int getLength() {
+		ArrayList<Integer> lines = new ArrayList<Integer>();
+		int methodLength = 0;
+		for (MyLineNumberNode ln : getLineNumberNodes()) {
+			int line = ln.line;
+			if (!lines.contains(line)) {
+				lines.add(line);
+				methodLength++;
+			}
+		}
+		return methodLength;
 	}
 }
