@@ -20,9 +20,9 @@ public class UnusedInstantiationCheck implements ClassCheck {
 		String printString = "";
 		for (MyClassNode classNode : classes) {
 			String classString = "";
-			classString += "	Class: " + classNode.name + "\n";
+			classString += "	Class: " + classNode.getCleanName() + "\n";
 			classString += this.unusedInstantiationCheck(classNode);
-			if (!classString.equals("	Class: " + classNode.name + "\n")) {
+			if (!classString.equals("	Class: " + classNode.getCleanName() + "\n")) {
 				 printString += classString;
 			}
 		}

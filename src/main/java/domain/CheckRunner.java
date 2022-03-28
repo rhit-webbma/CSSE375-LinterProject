@@ -22,7 +22,7 @@ public class CheckRunner {
 	public String classNames() {
 		String printString = "";
 		for (int i = 0; i < classes.size(); i++) {
-			printString += "	" + classes.get(i).name + "\n";
+			printString += "	" + classes.get(i).getCleanName() + "\n";
 		}
 		return printString;
 	}

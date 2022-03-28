@@ -14,7 +14,7 @@ public class RedundantInterfaceCheck implements ClassCheck {
 		HashMap<String, Integer> interfaces = new HashMap<>();
 		for (MyClassNode node : classes) {
 			if (node.isInterface()) {
-				interfaces.put(node.name, 0);
+				interfaces.put(node.getCleanName(), 0);
 			}
 		}
 		for (MyClassNode node : classes) {

@@ -70,14 +70,7 @@ class AdapterPatternCheckTest {
 		AdapterPatternCheck check = new AdapterPatternCheck();
 		assertEquals("Class class1, class2, or class3", check.nameTypes(classNames));
 	}
-	
-	@Test
-	void testGetClassName() {
-		MyClassNode node = EasyMock.createMock(MyClassNode.class);
-		node.name = "java/lang/String";
-		AdapterPatternCheck check = new AdapterPatternCheck();
-		assertEquals("String", check.getClassName(node));
-	}
+
 	
 	@Test
 	void testGetInterfaces() {
@@ -96,11 +89,15 @@ class AdapterPatternCheckTest {
 	@Test
 	void testGetFieldTypes() {
 		List<MyFieldNode> fields = new ArrayList<>();
-		for (int i=0; i<3; i++) {
-			MyFieldNode field = EasyMock.createMock(MyFieldNode.class);
-			field.desc = String.format("dataSource/lang/util/field%d", i+1);
-			fields.add(field);
-		}
+		MyFieldNode field1 = EasyMock.createMock(MyFieldNode.class);
+		EasyMock.expect(field1.getFullDesc()).andReturn("dataSource/lang/util/field1");
+		fields.add(field1);
+		MyFieldNode field2 = EasyMock.createMock(MyFieldNode.class);
+		EasyMock.expect(field2.getFullDesc()).andReturn("dataSource/lang/util/field2");
+		fields.add(field2);
+		MyFieldNode field3 = EasyMock.createMock(MyFieldNode.class);
+		EasyMock.expect(field3.getFullDesc()).andReturn("dataSource/lang/util/field3");
+		fields.add(field3);
 		MyClassNode node = EasyMock.createMock(MyClassNode.class);
 		node.fields = fields;
 		ArrayList<String> expected = new ArrayList<>();
@@ -108,24 +105,32 @@ class AdapterPatternCheckTest {
 		expected.add("field2");
 		expected.add("field3");
 		AdapterPatternCheck check = new AdapterPatternCheck();
+		EasyMock.replay(field1, field2, field3);
 		assertEquals(expected, check.getFieldTypes(node));
+		EasyMock.verify(field1, field2, field3);
 	}
 	
 	@Test
 	void testGetFieldTypesNoJava() {
 		List<MyFieldNode> fields = new ArrayList<>();
-		for (int i=0; i<3; i++) {
-			MyFieldNode field = EasyMock.createMock(MyFieldNode.class);
-			field.desc = (i == 1) ? "java/lang/util/field2" : String.format("dataSource/lang/util/field%d", i+1);
-			fields.add(field);
-		}
+		MyFieldNode field1 = EasyMock.createMock(MyFieldNode.class);
+		EasyMock.expect(field1.getFullDesc()).andReturn("dataSource/lang/util/field1");
+		fields.add(field1);
+		MyFieldNode field2 = EasyMock.createMock(MyFieldNode.class);
+		EasyMock.expect(field2.getFullDesc()).andReturn("java/lang/util/field2");
+		fields.add(field2);
+		MyFieldNode field3 = EasyMock.createMock(MyFieldNode.class);
+		EasyMock.expect(field3.getFullDesc()).andReturn("dataSource/lang/util/field3");
+		fields.add(field3);
 		MyClassNode node = EasyMock.createMock(MyClassNode.class);
 		node.fields = fields;
 		ArrayList<String> expected = new ArrayList<>();
 		expected.add("field1");
 		expected.add("field3");
 		AdapterPatternCheck check = new AdapterPatternCheck();
+		EasyMock.replay(field1, field2, field3);
 		assertEquals(expected, check.getFieldTypes(node));
+		EasyMock.verify(field1, field2, field3);
 	}
 	
 	@Test
@@ -153,10 +158,12 @@ class AdapterPatternCheckTest {
 		method.name = "lol";
 		method.instructions = new LinkedList<MyAbstractInsnNode>();
 		MyMethodInsnNode insn = EasyMock.createMock(MyMethodInsnNode.class);
-		insn.owner = "java/util/ArrayList";
+		EasyMock.expect(insn.getCleanOwner()).andReturn("ArrayList");
 		method.instructions.add((MyAbstractInsnNode)insn);
 		AdapterPatternCheck check = new AdapterPatternCheck();
+		EasyMock.replay(insn);
 		assertTrue(check.checkMethod(method, types));
+		EasyMock.verify(insn);
 	}
 	
 	@Test
@@ -167,7 +174,7 @@ class AdapterPatternCheckTest {
 		method.name = "lol";
 		method.instructions = new LinkedList<MyAbstractInsnNode>();
 		MyMethodInsnNode insn = EasyMock.createMock(MyMethodInsnNode.class);
-		insn.owner = "java/util/ArrayList";
+		EasyMock.expect(insn.getCleanOwner()).andReturn("ArrayList");
 		method.instructions.add((MyAbstractInsnNode)insn);
 		AdapterPatternCheck check = new AdapterPatternCheck();
 		assertFalse(check.checkMethod(method, types));

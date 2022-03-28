@@ -406,6 +406,8 @@ public class UnusedInstantiationTest {
 		fInsn1.name = "counter";
 		fInsn2.name = "download";
 		
+		EasyMock.expect(classNode.getCleanName()).andReturn(null);
+		EasyMock.expect(classNode.getCleanName()).andReturn(null);
 		EasyMock.expect(lInsn1.getType()).andReturn(MyAbstractInsnNode.VAR_INSN);
 		EasyMock.expect(lInsn1.isLoading()).andReturn(true);
 		EasyMock.expect(lInsn2.getType()).andReturn(MyAbstractInsnNode.VAR_INSN);
@@ -436,7 +438,7 @@ public class UnusedInstantiationTest {
 		EasyMock.expect(fInsn1.getType()).andReturn(MyAbstractInsnNode.FIELD_INSN);
 		EasyMock.expect(fInsn2.getType()).andReturn(MyAbstractInsnNode.FIELD_INSN);
 		EasyMock.expect(lNode2.getType()).andReturn(MyAbstractInsnNode.LINE);
-		
+
 		ArrayList<MyLocalVariableNode> vars = new ArrayList<>();
 		MyLocalVariableNode vLNode = EasyMock.createMock(MyLocalVariableNode.class);
 		vars.add(vLNode);
@@ -447,7 +449,7 @@ public class UnusedInstantiationTest {
 		
 		check.method = method;
 		
-		EasyMock.replay(lInsn1, lInsn2, sNode1, sNode2, sNode3, method, lNode1, lNode2, fInsn1, fInsn2, vLNode);
+		EasyMock.replay(lInsn1, lInsn2, sNode1, sNode2, sNode3, method, lNode1, lNode2, fInsn1, fInsn2, vLNode, classNode);
 		
 		assertEquals("Unused Instantiation Check:\n	Class: null\n		Unused Variables: \n" + "			Line 12: Unused field named download\n" 
 				+ "			Line 15: Unused variable named counter in method countThings\n" , check.runCheck(classes));

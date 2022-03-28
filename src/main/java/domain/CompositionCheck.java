@@ -17,8 +17,8 @@ public class CompositionCheck implements ClassCheck {
 	}
 
 	String checkClassComposition(MyClassNode classNode) {
-		String[] className = classNode.name.split("/");
-		String[] superName = classNode.superName.split("/");
+		String[] className = classNode.getFullName().split("/");
+		String[] superName = classNode.getFullSuperName().split("/");
 		if (!superName[0].equals("java"))
 			return String.format(
 					"	Class %s inherits from user created class %s. Could composition be used instead? \n",

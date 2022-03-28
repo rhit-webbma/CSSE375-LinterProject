@@ -28,7 +28,7 @@ public class RedundantInterfaceCheckTest {
 		class3.interfaces = interfaces;
 		
 		EasyMock.expect(class1.isInterface()).andReturn(true);
-		class1.name = "unimplemented";
+		EasyMock.expect(class1.getCleanName()).andReturn("unimplemented");
 		EasyMock.expect(class2.isInterface()).andReturn(false);
 		EasyMock.expect(class3.isInterface()).andReturn(false);
 		
@@ -56,7 +56,7 @@ public class RedundantInterfaceCheckTest {
 		class3.interfaces = interfaces2;
 		
 		EasyMock.expect(class1.isInterface()).andReturn(true);
-		class1.name = "single";
+		EasyMock.expect(class1.getCleanName()).andReturn("single");
 		EasyMock.expect(class2.isInterface()).andReturn(false);
 		EasyMock.expect(class3.isInterface()).andReturn(false);
 		
@@ -84,7 +84,7 @@ public class RedundantInterfaceCheckTest {
 		class3.interfaces = interfaces2;
 		
 		EasyMock.expect(class1.isInterface()).andReturn(true);
-		class1.name = "multiple";
+		EasyMock.expect(class1.getCleanName()).andReturn("multiple");
 		EasyMock.expect(class2.isInterface()).andReturn(false);
 		EasyMock.expect(class3.isInterface()).andReturn(false);
 		

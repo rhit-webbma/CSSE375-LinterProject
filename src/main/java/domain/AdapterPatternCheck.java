@@ -21,7 +21,7 @@ public class AdapterPatternCheck implements ClassCheck {
 	}
 
 	String checkAdapter(MyClassNode classNode) {
-		String name = getClassName(classNode);
+		String name = classNode.getCleanName();
 		boolean claimsAdapter = name.toLowerCase().contains("adapter");
 		ArrayList<String> interfaceNames = getInterfaces(classNode);
 		ArrayList<String> fieldTypes = getFieldTypes(classNode);
@@ -40,11 +40,6 @@ public class AdapterPatternCheck implements ClassCheck {
 					name, nameTypes(fieldTypes));
 		} else
 			return "";
-	}
-
-	String getClassName(MyClassNode classNode) {
-		String[] nameSplit = classNode.name.split("/");
-		return nameSplit[nameSplit.length - 1];
 	}
 
 	String nameInterfaces(ArrayList<String> interfaces) {
@@ -85,7 +80,7 @@ public class AdapterPatternCheck implements ClassCheck {
 	ArrayList<String> getFieldTypes(MyClassNode classNode) {
 		ArrayList<String> out = new ArrayList<String>();
 		for (MyFieldNode field : classNode.fields) {
-			String[] name = field.desc.split("/|;");
+			String[] name = field.getFullDesc().split("/|;");
 			if (!name[0].contains("java"))
 				out.add(name[name.length - 1]);
 		}
@@ -109,8 +104,8 @@ public class AdapterPatternCheck implements ClassCheck {
 			if (insn instanceof MyMethodInsnNode) {
 				MyMethodInsnNode mi = (MyMethodInsnNode) insn;
 				methodInsns++;
-				String[] ownerName = mi.owner.split("/");
-				callsFieldType = callsFieldType || fieldTypes.contains(ownerName[ownerName.length - 1]);
+				String ownerName = mi.getCleanOwner();
+				callsFieldType = callsFieldType || fieldTypes.contains(ownerName);
 			}
 		}
 		return (methodInsns == 0 || callsFieldType);

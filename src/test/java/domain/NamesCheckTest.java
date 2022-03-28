@@ -40,7 +40,7 @@ public class NamesCheckTest {
 		node.name = "Badfield";
 		EasyMock.expect(node.isStatic()).andReturn(true);
 		EasyMock.expect(node.isFinal()).andReturn(false);
-		node.desc = "I";
+		EasyMock.expect(node.getCleanDesc()).andReturn("I");
 		
 		EasyMock.replay(node);
 		assertEquals("				Field Badfield has an uppercase first letter, and is not static and final \n", checker.checkField(node));
@@ -53,7 +53,7 @@ public class NamesCheckTest {
 		node.name = "GOODFIELD";
 		EasyMock.expect(node.isStatic()).andReturn(true);
 		EasyMock.expect(node.isFinal()).andReturn(true);
-		node.desc = "I";
+		EasyMock.expect(node.getCleanDesc()).andReturn("I");
 		
 		EasyMock.replay(node);
 		assertEquals("", checker.checkField(node));
@@ -64,7 +64,8 @@ public class NamesCheckTest {
 	public void testFieldTypeName() {
 		MyFieldNode node = EasyMock.createMock(MyFieldNode.class);
 		node.name = "badfield";
-		node.desc = "Ljava/lang/Badfield;";
+
+		EasyMock.expect(node.getCleanDesc()).andReturn("Badfield");
 		
 		EasyMock.replay(node);
 		assertEquals("				Field badfield has the same name as its type \n", checker.checkField(node));
@@ -75,7 +76,7 @@ public class NamesCheckTest {
 	public void testFieldNameLength() {
 		MyFieldNode node = EasyMock.createMock(MyFieldNode.class);
 		node.name = "j";
-		node.desc = "I";
+		EasyMock.expect(node.getCleanDesc()).andReturn("I");
 		
 		EasyMock.replay(node);
 		assertEquals("				Field j has too short of a name (1 character) \n", checker.checkField(node));
@@ -86,7 +87,7 @@ public class NamesCheckTest {
 	public void testValidField() {
 		MyFieldNode node = EasyMock.createMock(MyFieldNode.class);
 		node.name = "goodField";
-		node.desc = "I";
+		EasyMock.expect(node.getCleanDesc()).andReturn("I");
 		
 		EasyMock.replay(node);
 		assertEquals("", checker.checkField(node));
@@ -101,11 +102,11 @@ public class NamesCheckTest {
 		node.localVariables = list;
 		node.name = "goodMethod";
 		lv1.name = "Bad";
-		lv1.desc = "I";
+		EasyMock.expect(lv1.getCleanDesc()).andReturn("I");
 
-		EasyMock.replay(node);
+		EasyMock.replay(node, lv1);
 		assertEquals("				Variable Bad has an uppercase first letter in method goodMethod\n", checker.checkMethod(node));
-		EasyMock.verify(node);
+		EasyMock.verify(node, lv1);
 	}
 	
 	@Test
@@ -116,11 +117,11 @@ public class NamesCheckTest {
 		node.localVariables = list;
 		node.name = "goodMethod";
 		lv1.name = "bad";
-		lv1.desc = "Ljava/lang/Bad";
+		EasyMock.expect(lv1.getCleanDesc()).andReturn("Bad");
 
-		EasyMock.replay(node);
+		EasyMock.replay(node, lv1);
 		assertEquals("				Variable bad has the same name as its type in method goodMethod\n", checker.checkMethod(node));
-		EasyMock.verify(node);
+		EasyMock.verify(node, lv1);
 	}
 	
 	@Test
@@ -131,11 +132,11 @@ public class NamesCheckTest {
 		node.localVariables = list;
 		node.name = "BadMethod";
 		lv1.name = "good";
-		lv1.desc = "I";
+		EasyMock.expect(lv1.getCleanDesc()).andReturn("I");
 
-		EasyMock.replay(node);
+		EasyMock.replay(node, lv1);
 		assertEquals("				Method BadMethod has an uppercase first letter \n", checker.checkMethod(node));
-		EasyMock.verify(node);
+		EasyMock.verify(node, lv1);
 	}
 	
 	@Test
@@ -146,11 +147,11 @@ public class NamesCheckTest {
 		node.localVariables = list;
 		node.name = "b";
 		lv1.name = "good";
-		lv1.desc = "I";
+		EasyMock.expect(lv1.getCleanDesc()).andReturn("I");
 
-		EasyMock.replay(node);
+		EasyMock.replay(node, lv1);
 		assertEquals("				Method b has too short of a name (1 character) \n", checker.checkMethod(node));
-		EasyMock.verify(node);
+		EasyMock.verify(node, lv1);
 	}
 	
 	@Test
@@ -161,10 +162,10 @@ public class NamesCheckTest {
 		node.localVariables = list;
 		node.name = "goodMethod";
 		lv1.name = "good";
-		lv1.desc = "I";
+		EasyMock.expect(lv1.getCleanDesc()).andReturn("I");
 
-		EasyMock.replay(node);
+		EasyMock.replay(node, lv1);
 		assertEquals("", checker.checkMethod(node));
-		EasyMock.verify(node);
+		EasyMock.verify(node, lv1);
 	}
 }

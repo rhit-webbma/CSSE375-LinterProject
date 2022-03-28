@@ -31,25 +31,28 @@ class StrategyPatternTest {
 		
 		
 		MyClassNode interfaceClass = EasyMock.createMock(MyClassNode.class);
-		interfaceClass.name = "pattern";
+		EasyMock.expect(interfaceClass.getCleanName()).andReturn("pattern");
 		interfaceClass.methods = methods;
 		EasyMock.expect(interfaceClass.isInterface()).andReturn(true);
 		
 		MyFieldNode interField = EasyMock.createMock(MyFieldNode.class);
 		ArrayList<MyFieldNode> fields = new ArrayList<>();
 		interField.name = "interfaceImp";
-		interField.desc = "pattern";
+		EasyMock.expect(interField.getCleanDesc()).andReturn("pattern");
+		EasyMock.expect(interField.getCleanDesc()).andReturn("pattern");
 		fields.add(interField);
 		
 		MyClassNode contextClass = EasyMock.createMock(MyClassNode.class);
-		contextClass.name = "context";
+		EasyMock.expect(contextClass.getCleanName()).andReturn("context");
+		EasyMock.expect(contextClass.getCleanName()).andReturn("context");
+
 		contextClass.fields = fields;
 		
 		MyMethodNode constructor = EasyMock.createMock(MyMethodNode.class);
 		ArrayList<String> constructorArgs = new ArrayList<>();
 		constructorArgs.add("pattern");
 		constructor.name = "<init>";
-		constructor.argTypeNames = constructorArgs;
+		EasyMock.expect(constructor.getCleanArgTypes()).andReturn(constructorArgs);
 		
 		MyFieldInsnNode interfaceField = EasyMock.createMock(MyFieldInsnNode.class);
 		interfaceField.name = "interfaceImp";
@@ -102,12 +105,10 @@ class StrategyPatternTest {
 		methods.add(patternMethod);
 		
 		MyClassNode interfaceClass = EasyMock.createMock(MyClassNode.class);
-		interfaceClass.name = "pattern";
 		interfaceClass.methods = methods;
 		
 		MyFieldNode interField = EasyMock.createMock(MyFieldNode.class);
 		interField.name = "interfaceImp";
-		interField.desc = "pattern";
 		
 		ArrayList<MyFieldNode> fields = new ArrayList<>();
 		fields.add(interField);
@@ -115,7 +116,6 @@ class StrategyPatternTest {
 		ArrayList<MyMethodNode> constructorList = new ArrayList<>();
 		
 		MyClassNode contextClass = EasyMock.createMock(MyClassNode.class);
-		contextClass.name = "context";
 		contextClass.fields = fields;
 		contextClass.methods = constructorList;
 		
@@ -160,24 +160,26 @@ class StrategyPatternTest {
 		methods.add(patternMethod);
 		
 		MyClassNode interfaceClass = EasyMock.createMock(MyClassNode.class);
-		interfaceClass.name = "pattern";
+		EasyMock.expect(interfaceClass.getCleanName()).andReturn("pattern");
 		interfaceClass.methods = methods;
 		
 		EasyMock.expect(interfaceClass.isInterface()).andReturn(true);
 		
 		MyFieldNode interField = EasyMock.createMock(MyFieldNode.class);
 		interField.name = "interfaceImp";
-		interField.desc = "pattern";
+		EasyMock.expect(interField.getCleanDesc()).andReturn("pattern");
+		EasyMock.expect(interField.getCleanDesc()).andReturn("pattern");
 		
 		ArrayList<MyFieldNode> fields = new ArrayList<>();
 		fields.add(interField);
 		
 		MyClassNode contextClass = EasyMock.createMock(MyClassNode.class);
-		contextClass.name = "context";
+		EasyMock.expect(contextClass.getCleanName()).andReturn("context");
+		EasyMock.expect(contextClass.getCleanName()).andReturn("context");
 		contextClass.fields = fields;
 		
 		MyMethodInsnNode interfaceCall = EasyMock.createMock(MyMethodInsnNode.class);
-		interfaceCall.owner = "pattern";
+		EasyMock.expect(interfaceCall.getCleanOwner()).andReturn("pattern");
 		EasyMock.expect(interfaceCall.isInvokeVirtual()).andReturn(true);
 		LinkedList<MyAbstractInsnNode> pattern1InstList = new LinkedList<>();
 		pattern1InstList.add(interfaceCall);
@@ -195,7 +197,7 @@ class StrategyPatternTest {
 		constructor.name = "<init>";
 		ArrayList<String> constructorArgs = new ArrayList<>();
 		constructorArgs.add("pattern");
-		constructor.argTypeNames = constructorArgs;
+		EasyMock.expect(constructor.getCleanArgTypes()).andReturn(constructorArgs);
 		
 		ArrayList<MyMethodNode> constructorList = new ArrayList<>();
 		constructorList.add(constructor);
@@ -247,33 +249,41 @@ class StrategyPatternTest {
 	void strategyPatternPass2Strategy() {
 		
 		MyClassNode interfaceClass = EasyMock.createMock(MyClassNode.class);
-		interfaceClass.name = "pattern";
+		EasyMock.expect(interfaceClass.getCleanName()).andReturn("pattern");
+		EasyMock.expect(interfaceClass.getCleanName()).andReturn("pattern");
 		
 		MyClassNode interface2Class = EasyMock.createMock(MyClassNode.class);
-		interface2Class.name = "pattern2";
+		EasyMock.expect(interface2Class.getCleanName()).andReturn("pattern2");
+		EasyMock.expect(interface2Class.getCleanName()).andReturn("pattern2");
 		
 		EasyMock.expect(interfaceClass.isInterface()).andReturn(true);
 		EasyMock.expect(interface2Class.isInterface()).andReturn(true);
 		
 		MyClassNode contextClass = EasyMock.createMock(MyClassNode.class);
-		contextClass.name = "context";
+		EasyMock.expect(contextClass.getCleanName()).andReturn("context");
+		EasyMock.expect(contextClass.getCleanName()).andReturn("context");
+		EasyMock.expect(contextClass.getCleanName()).andReturn("context");
+		EasyMock.expect(contextClass.getCleanName()).andReturn("context");
 		
 		MyFieldNode interField = EasyMock.createMock(MyFieldNode.class);
 		interField.name = "interfaceImp";
-		interField.desc = "pattern";
+		EasyMock.expect(interField.getCleanDesc()).andReturn("pattern");
+		EasyMock.expect(interField.getCleanDesc()).andReturn("pattern");
 		
 		MyFieldNode inter2Field = EasyMock.createMock(MyFieldNode.class);
 		inter2Field.name = "interface2Imp";
-		inter2Field.desc = "pattern2";
+		EasyMock.expect(inter2Field.getCleanDesc()).andReturn("pattern2");
+		EasyMock.expect(inter2Field.getCleanDesc()).andReturn("pattern2");
 		
 		ArrayList<MyMethodNode> patternMethods = new ArrayList<>();
 		LinkedList<MyAbstractInsnNode> patternInsnList = new LinkedList<>();
 		
 		MyMethodInsnNode interfaceCall = EasyMock.createMock(MyMethodInsnNode.class);
-		interfaceCall.owner = "pattern";
+		EasyMock.expect(interfaceCall.getCleanOwner()).andReturn("pattern");
+		EasyMock.expect(interfaceCall.getCleanOwner()).andReturn("pattern");
 		
 		MyMethodInsnNode interface2Call = EasyMock.createMock(MyMethodInsnNode.class);
-		interface2Call.owner = "pattern2";
+		EasyMock.expect(interface2Call.getCleanOwner()).andReturn("pattern2");
 		
 		EasyMock.expect(interfaceCall.isInvokeVirtual()).andReturn(true);
 		EasyMock.expect(interface2Call.isInvokeVirtual()).andReturn(true);
@@ -302,7 +312,7 @@ class StrategyPatternTest {
 		ArrayList<String> constructorArgs = new ArrayList<>();
 		constructorArgs.add("pattern");
 		constructorArgs.add("pattern2");
-		constructor.argTypeNames = constructorArgs;
+		EasyMock.expect(constructor.getCleanArgTypes()).andReturn(constructorArgs);
 		
 		MyFieldInsnNode interfaceField = EasyMock.createMock(MyFieldInsnNode.class);
 		interfaceField.name = "interfaceImp";

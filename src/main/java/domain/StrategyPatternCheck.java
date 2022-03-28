@@ -27,10 +27,8 @@ public class StrategyPatternCheck implements ClassCheck {
 			if (constructor != null) {
 				// Setup
 				List<MyFieldNode> fields = curClass.fields;
-				List<String> argTypes = new ArrayList<>();
-				for (String argType : constructor.argTypeNames) {
-					argTypes.add(this.sanatizeString(argType));
-				}
+				List<String> argTypes = constructor.getCleanArgTypes();
+				
 				
 				// Find fields that are getting set in the constructor, build up arraylists of the fields themselves and their type names
 				ArrayList<String> constructedFieldTypes = new ArrayList<>();
@@ -39,8 +37,8 @@ public class StrategyPatternCheck implements ClassCheck {
 						MyFieldInsnNode fieldInsn = (MyFieldInsnNode) insn;
 						for (MyFieldNode field : fields) {
 							if (field.name.equals(fieldInsn.name)) {
-								if (argTypes.contains(this.sanatizeString(field.desc))) {
-									constructedFieldTypes.add(this.sanatizeString(field.desc));
+								if (argTypes.contains(field.getCleanDesc())) {
+									constructedFieldTypes.add(field.getCleanDesc());
 								}
 							}
 						}
@@ -52,7 +50,7 @@ public class StrategyPatternCheck implements ClassCheck {
 				for (int i = 0; i < constructedFieldTypes.size(); i++) {
 					MyClassNode fieldClass = null;
 					for (MyClassNode otherClass : classes) {
-						if (constructedFieldTypes.get(i).equals(this.sanatizeString(otherClass.name))) {
+						if (constructedFieldTypes.get(i).equals(otherClass.getCleanName())) {
 							fieldClass = otherClass;
 						}
 					}
@@ -75,9 +73,9 @@ public class StrategyPatternCheck implements ClassCheck {
 							for (MyAbstractInsnNode insn : method.instructions) {
 								if ((insn instanceof MyMethodInsnNode) && (!strategyDone)) {
 									MyMethodInsnNode methodInsn = (MyMethodInsnNode) insn;
-									if ((icf.equals(this.sanatizeString(methodInsn.owner)))
+									if ((icf.equals(methodInsn.getCleanOwner()))
 											&& (methodInsn.isInvokeVirtual())) {
-										toPrint += "	Implemented in " + this.sanatizeString(curClass.name)
+										toPrint += "	Implemented in " + curClass.getCleanName()
 													+ " class using interface " + icf + ", and invoked for the first time in method "
 													+ method.name + "\n";
 										strategyDone = true;
@@ -87,7 +85,7 @@ public class StrategyPatternCheck implements ClassCheck {
 						}
 					}
 					if (!strategyDone) {
-						toPrint += "	Strategy pattern is nearly implemented in " + this.sanatizeString(curClass.name)
+						toPrint += "	Strategy pattern is nearly implemented in " + curClass.getCleanName()
 									+ " using interface " + icf + ". To finish implementing strategy pattern, the function/functions "
 											+ "called from the interface must be used\n";
 					}
@@ -107,20 +105,6 @@ public class StrategyPatternCheck implements ClassCheck {
 			}
 		}
 		return null;
-	}
-	
-	private String sanatizeString(String toSanatize) {
-		String toPrint = "";
-		for (int i = 0; i < toSanatize.length(); i++) {
-			if (toSanatize.charAt(i) == '/') {
-				toPrint = "";
-			} else if (toSanatize.charAt(i) == ';') {
-				
-			} else {
-				toPrint += toSanatize.charAt(i);
-			}
-		}
-		return toPrint;
 	}
 	
 	@Override

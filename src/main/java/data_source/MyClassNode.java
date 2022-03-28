@@ -4,8 +4,8 @@ import java.util.List;
 
 public class MyClassNode {
 
-	public String name;
-	public String superName;
+	private String name;
+	private String superName;
 	public List<String> interfaces;
 	public List<MyFieldNode> fields;
 	public List<MyMethodNode> methods;
@@ -25,4 +25,39 @@ public class MyClassNode {
 		return isInterface;
 	}
 	
+	public String getFullName() {
+		return name;
+	}
+	
+	public String getCleanName() {
+		String toPrint = "";
+		for (int i = 0; i < name.length(); i++) {
+			if (name.charAt(i) == '/') {
+				toPrint = "";
+			} else if (name.charAt(i) == ';') {
+				
+			} else {
+				toPrint += name.charAt(i);
+			}
+		}
+		return toPrint;
+	}
+	
+	public String getFullSuperName() {
+		return superName;
+	}
+	
+	public String getCleanSuperName() {
+		String toPrint = "";
+		for (int i = 0; i < superName.length(); i++) {
+			if (superName.charAt(i) == '/') {
+				toPrint = "";
+			} else if (superName.charAt(i) == ';') {
+				
+			} else {
+				toPrint += superName.charAt(i);
+			}
+		}
+		return toPrint;
+	}
 }

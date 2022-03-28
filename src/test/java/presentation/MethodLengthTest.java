@@ -26,7 +26,8 @@ class MethodLengthTest {
 		ArrayList<MyClassNode> classes = new ArrayList<>();
 		classes.add(currentClass);
 		
-		currentClass.name = "TestClass";
+		EasyMock.expect(currentClass.getCleanName()).andReturn("TestClass");
+		EasyMock.expect(currentClass.getCleanName()).andReturn("TestClass");
 		
 		MyMethodNode testMethod = EasyMock.createMock(MyMethodNode.class);
 		
@@ -68,7 +69,8 @@ class MethodLengthTest {
 		ArrayList<MyClassNode> classes = new ArrayList<>();
 		classes.add(currentClass);
 		
-		currentClass.name = "TestClass";
+		EasyMock.expect(currentClass.getCleanName()).andReturn("TestClass");
+		EasyMock.expect(currentClass.getCleanName()).andReturn("TestClass");
 		
 		MyMethodNode testMethod = EasyMock.createMock(MyMethodNode.class);
 		
@@ -110,7 +112,8 @@ class MethodLengthTest {
 		ArrayList<MyClassNode> classes = new ArrayList<>();
 		classes.add(currentClass);
 		
-		currentClass.name = "TestClass";
+		EasyMock.expect(currentClass.getCleanName()).andReturn("TestClass");
+		EasyMock.expect(currentClass.getCleanName()).andReturn("TestClass");
 		
 		MyMethodNode testMethod = EasyMock.createMock(MyMethodNode.class);
 		

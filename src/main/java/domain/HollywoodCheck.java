@@ -17,10 +17,10 @@ public class HollywoodCheck implements ClassCheck {
 	public String runCheck(ArrayList<MyClassNode> classes) {
 		String toPrint = "\nHollywood Principle Violations: \n";
 		for (MyClassNode curClass : classes) {
-			if (curClass.superName != null) {
+			if (curClass.getFullSuperName() != null) {
 				MyClassNode superClass = null;
 				for (MyClassNode curClass2 : classes) {
-					if (curClass2.name.equals(curClass.superName)) {
+					if (curClass2.getCleanName().equals(curClass.getCleanSuperName())) {
 						superClass = curClass2;
 					}
 				}
@@ -38,7 +38,7 @@ public class HollywoodCheck implements ClassCheck {
 						superFieldNames.remove(curName);
 					}
 	
-					toPrint += checkHollywoodViolations(curClass, superFieldNames, superMethodNames, superClass.name);
+					toPrint += checkHollywoodViolations(curClass, superFieldNames, superMethodNames, superClass.getCleanName());
 				}
 			}
 		}
@@ -61,14 +61,14 @@ public class HollywoodCheck implements ClassCheck {
 				if (insn instanceof MyMethodInsnNode) {
 					MyMethodInsnNode methodInsn = (MyMethodInsnNode) insn;
 					if (superMethodNames.contains(methodInsn.name)) {
-						toPrint += "	Class " + this.sanatizeString(curClass.name) + " calls method " + methodInsn.name + " from " + 
-								this.sanatizeString(superName) + " in method " + method.name + "\n";
+						toPrint += "	Class " + curClass.getCleanName() + " calls method " + methodInsn.name + " from " + 
+								superName + " in method " + method.name + "\n";
 					}
 				} else if (insn instanceof MyFieldInsnNode) {
 					MyFieldInsnNode fieldInsn = (MyFieldInsnNode) insn;
 					if (superFieldNamesTemp.contains(fieldInsn.name)) {
-						toPrint += "	Class " + this.sanatizeString(curClass.name) + " uses field " + fieldInsn.name + " from " + 
-								this.sanatizeString(superName) + " in method " + method.name + "\n";
+						toPrint += "	Class " + curClass.getCleanName() + " uses field " + fieldInsn.name + " from " + 
+								superName + " in method " + method.name + "\n";
 					}
 				}
 			}
@@ -100,20 +100,6 @@ public class HollywoodCheck implements ClassCheck {
 			names.add(method.name);
 		}
 		return names;
-	}
-
-	private String sanatizeString(String toSanatize) {
-		String toPrint = "";
-		for (int i = 0; i < toSanatize.length(); i++) {
-			if (toSanatize.charAt(i) == '/') {
-				toPrint = "";
-			} else if (toSanatize.charAt(i) == ';') {
-				
-			} else {
-				toPrint += toSanatize.charAt(i);
-			}
-		}
-		return toPrint;
 	}
 	
 	@Override

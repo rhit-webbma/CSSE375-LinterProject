@@ -12,19 +12,23 @@ class CompositionCheckTest {
 	@Test
 	void testCompositionGood() {
 		MyClassNode node = EasyMock.createMock(MyClassNode.class);
-		node.name = "java/util/ArrayList";
-		node.superName = "java/lang/Object";
+		EasyMock.expect(node.getFullName()).andReturn("java/util/ArrayList");
+		EasyMock.expect(node.getFullSuperName()).andReturn("java/lang/Object");
 		CompositionCheck check = new CompositionCheck();
+		EasyMock.replay(node);
 		assertEquals("", check.checkClassComposition(node));
+		EasyMock.verify(node);
 	}
 	
 	@Test
 	void testCompositionBad() {
 		MyClassNode node = EasyMock.createMock(MyClassNode.class);
-		node.name = "datasource/test/ClassName";
-		node.superName = "domain/test/SuperName";
+		EasyMock.expect(node.getFullName()).andReturn("datasource/test/ClassName");
+		EasyMock.expect(node.getFullSuperName()).andReturn("domain/test/SuperName");
 		CompositionCheck check = new CompositionCheck();
+		EasyMock.replay(node);
 		assertEquals("	Class ClassName inherits from user created class SuperName. Could composition be used instead? \n", check.checkClassComposition(node));
+		EasyMock.verify(node);
 	}
 
 }
