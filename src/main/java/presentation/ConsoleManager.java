@@ -47,21 +47,21 @@ public class ConsoleManager {
 				
 			case "all":
 				runner.resetChecks();
-				runner.addSingleCheck(new NamesCheck());
-				runner.addSingleCheck(new UnusedInstantiationCheck());
-				runner.addSingleCheck(new MethodLengthCheck());
-				runner.addMultiCheck(new HollywoodCheck());
-				runner.addMultiCheck(new CompositionCheck());
-				runner.addMultiCheck(new RedundantInterfaceCheck());
-				runner.addMultiCheck(new StrategyPatternCheck());
-				runner.addMultiCheck(new FacadePatternCheck());
-				runner.addMultiCheck(new AdapterPatternCheck());
+				runner.addCheck(new NamesCheck());
+				runner.addCheck(new UnusedInstantiationCheck());
+				runner.addCheck(new MethodLengthCheck());
+				runner.addCheck(new HollywoodCheck());
+				runner.addCheck(new CompositionCheck());
+				runner.addCheck(new RedundantInterfaceCheck());
+				runner.addCheck(new StrategyPatternCheck());
+				runner.addCheck(new FacadePatternCheck());
+				runner.addCheck(new AdapterPatternCheck());
 				added.add("all");
 				break;
 				
 			case "name":
 				if (!added.contains("name") && !added.contains("all")) {
-					runner.addSingleCheck(new NamesCheck());
+					runner.addCheck(new NamesCheck());
 					added.add("name");
 				} else {
 					System.out.println("This check has already been added.");
@@ -70,7 +70,7 @@ public class ConsoleManager {
 				
 			case "instantiation":
 				if (!added.contains("instantiation") && !added.contains("all")) {
-					runner.addSingleCheck(new UnusedInstantiationCheck());
+					runner.addCheck(new UnusedInstantiationCheck());
 					added.add("instantiation");
 				} else {
 					System.out.println("This check has already been added.");
@@ -79,7 +79,7 @@ public class ConsoleManager {
 				
 			case "length":
 				if (!added.contains("length") && !added.contains("all")) {
-					runner.addSingleCheck(new MethodLengthCheck());
+					runner.addCheck(new MethodLengthCheck());
 					added.add("length");
 				} else {
 					System.out.println("This check has already been added.");
@@ -88,7 +88,7 @@ public class ConsoleManager {
 				
 			case "hollywood":
 				if (!added.contains("hollywood") && !added.contains("all")) {
-					runner.addMultiCheck(new HollywoodCheck());
+					runner.addCheck(new HollywoodCheck());
 					added.add("hollywood");
 				} else {
 					System.out.println("This check has already been added.");
@@ -97,7 +97,7 @@ public class ConsoleManager {
 				
 			case "composition":
 				if (!added.contains("composition") && !added.contains("all")) {
-					runner.addMultiCheck(new CompositionCheck());
+					runner.addCheck(new CompositionCheck());
 					added.add("composition");
 				} else {
 					System.out.println("This check has already been added.");
@@ -106,7 +106,7 @@ public class ConsoleManager {
 				
 			case "interface":
 				if (!added.contains("interface") && !added.contains("all")) {
-					runner.addMultiCheck(new RedundantInterfaceCheck());
+					runner.addCheck(new RedundantInterfaceCheck());
 					added.add("interface");
 				} else {
 					System.out.println("This check has already been added.");
@@ -115,9 +115,9 @@ public class ConsoleManager {
 				
 			case "pattern":
 				if (!added.contains("pattern") && !added.contains("all")) {
-					runner.addMultiCheck(new StrategyPatternCheck());
-					runner.addMultiCheck(new FacadePatternCheck());
-					runner.addMultiCheck(new AdapterPatternCheck());
+					runner.addCheck(new StrategyPatternCheck());
+					runner.addCheck(new FacadePatternCheck());
+					runner.addCheck(new AdapterPatternCheck());
 					added.add("pattern");
 				} else {
 					System.out.println("This check has already been added.");

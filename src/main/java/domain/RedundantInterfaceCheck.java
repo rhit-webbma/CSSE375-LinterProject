@@ -6,7 +6,7 @@ import java.util.HashMap;
 import data_source.MyClassNode;
 
 
-public class RedundantInterfaceCheck implements MultiClassCheck {
+public class RedundantInterfaceCheck implements ClassCheck {
 	
 	@Override
 	public String runCheck(ArrayList<MyClassNode> classes) {

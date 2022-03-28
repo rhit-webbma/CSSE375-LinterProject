@@ -16,17 +16,17 @@ public class NamesCheckTest {
 	
 	@Test
 	public void testShortClassName() {
-		assertEquals("			Class Name is too short (1 character) \n", checker.checkClass("A"));
+		assertEquals("				Class Name is too short (1 character) \n", checker.checkClass("A"));
 	}
 	
 	@Test
 	public void testNonCapitalClass() {
-		assertEquals("			Class Name does not start with a capital letter \n", checker.checkClass("incorrect"));
+		assertEquals("				Class Name does not start with a capital letter \n", checker.checkClass("incorrect"));
 	}
 	
 	@Test
 	public void testClassNameSymbol() {
-		assertEquals("			Class Name contains the non-alphanumeric character: ^\n", checker.checkClass("Hello^"));
+		assertEquals("				Class Name contains the non-alphanumeric character: ^\n", checker.checkClass("Hello^"));
 	}
 	
 	@Test
@@ -43,7 +43,7 @@ public class NamesCheckTest {
 		node.desc = "I";
 		
 		EasyMock.replay(node);
-		assertEquals("			Field Badfield has an uppercase first letter, and is not static and final \n", checker.checkField(node));
+		assertEquals("				Field Badfield has an uppercase first letter, and is not static and final \n", checker.checkField(node));
 		EasyMock.verify(node);
 	}
 	
@@ -67,7 +67,7 @@ public class NamesCheckTest {
 		node.desc = "Ljava/lang/Badfield;";
 		
 		EasyMock.replay(node);
-		assertEquals("			Field badfield has the same name as its type \n", checker.checkField(node));
+		assertEquals("				Field badfield has the same name as its type \n", checker.checkField(node));
 		EasyMock.verify(node);
 	}
 	
@@ -78,7 +78,7 @@ public class NamesCheckTest {
 		node.desc = "I";
 		
 		EasyMock.replay(node);
-		assertEquals("			Field j has too short of a name (1 character) \n", checker.checkField(node));
+		assertEquals("				Field j has too short of a name (1 character) \n", checker.checkField(node));
 		EasyMock.verify(node);
 	}
 	
@@ -104,7 +104,7 @@ public class NamesCheckTest {
 		lv1.desc = "I";
 
 		EasyMock.replay(node);
-		assertEquals("			Variable Bad has an uppercase first letter in method goodMethod\n", checker.checkMethod(node));
+		assertEquals("				Variable Bad has an uppercase first letter in method goodMethod\n", checker.checkMethod(node));
 		EasyMock.verify(node);
 	}
 	
@@ -119,7 +119,7 @@ public class NamesCheckTest {
 		lv1.desc = "Ljava/lang/Bad";
 
 		EasyMock.replay(node);
-		assertEquals("			Variable bad has the same name as its type in method goodMethod\n", checker.checkMethod(node));
+		assertEquals("				Variable bad has the same name as its type in method goodMethod\n", checker.checkMethod(node));
 		EasyMock.verify(node);
 	}
 	
@@ -134,7 +134,7 @@ public class NamesCheckTest {
 		lv1.desc = "I";
 
 		EasyMock.replay(node);
-		assertEquals("			Method BadMethod has an uppercase first letter \n", checker.checkMethod(node));
+		assertEquals("				Method BadMethod has an uppercase first letter \n", checker.checkMethod(node));
 		EasyMock.verify(node);
 	}
 	
@@ -149,7 +149,7 @@ public class NamesCheckTest {
 		lv1.desc = "I";
 
 		EasyMock.replay(node);
-		assertEquals("			Method b has too short of a name (1 character) \n", checker.checkMethod(node));
+		assertEquals("				Method b has too short of a name (1 character) \n", checker.checkMethod(node));
 		EasyMock.verify(node);
 	}
 	

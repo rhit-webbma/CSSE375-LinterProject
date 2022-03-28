@@ -8,7 +8,7 @@ import data_source.MyFieldNode;
 import data_source.MyMethodInsnNode;
 import data_source.MyMethodNode;
 
-public class AdapterPatternCheck implements MultiClassCheck {
+public class AdapterPatternCheck implements ClassCheck {
 
 	@Override
 	public String runCheck(ArrayList<MyClassNode> classes) {

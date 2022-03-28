@@ -11,7 +11,7 @@ import data_source.MyMethodInsnNode;
 import data_source.MyMethodNode;
 
 
-public class HollywoodCheck implements MultiClassCheck {
+public class HollywoodCheck implements ClassCheck {
 
 	@Override
 	public String runCheck(ArrayList<MyClassNode> classes) {

@@ -10,7 +10,7 @@ import data_source.MyFieldNode;
 import data_source.MyMethodInsnNode;
 import data_source.MyMethodNode;
 
-public class StrategyPatternCheck implements MultiClassCheck {
+public class StrategyPatternCheck implements ClassCheck {
 
 	/* Things I need to check to detect a strategy pattern:
 	 * There is a class that has another class dependency injected into it

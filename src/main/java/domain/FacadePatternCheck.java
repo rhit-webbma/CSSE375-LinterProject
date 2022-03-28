@@ -7,7 +7,7 @@ import data_source.MyClassNode;
 import data_source.MyMethodInsnNode;
 import data_source.MyMethodNode;
 
-public class FacadePatternCheck implements MultiClassCheck {
+public class FacadePatternCheck implements ClassCheck {
 
 	@Override
 	public String runCheck(ArrayList<MyClassNode> classes) {

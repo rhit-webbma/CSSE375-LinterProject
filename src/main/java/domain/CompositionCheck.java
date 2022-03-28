@@ -4,7 +4,7 @@ import java.util.ArrayList;
 
 import data_source.MyClassNode;
 
-public class CompositionCheck implements MultiClassCheck {
+public class CompositionCheck implements ClassCheck {
 
 	@Override
 	public String runCheck(ArrayList<MyClassNode> classes) {
