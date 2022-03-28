@@ -22,4 +22,14 @@ public class MyFieldNode {
 		return isFinal;
 	}
 	
+	public boolean isBuiltIn() {
+		String[] nameSplit = desc.split("/");
+		return nameSplit[0].contains("java");
+	}
+	
+	public String getTypeName() {
+		String[] nameSplit = desc.split("/");
+		return nameSplit[nameSplit.length-1];
+	}
+	
 }

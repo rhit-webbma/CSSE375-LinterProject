@@ -12,7 +12,7 @@ public class NamesCheck implements SingleClassCheck {
 	@Override
 	public String runCheck(MyClassNode checkClass) {
 		String toPrint = "	Name Style Violations: \n";
-		String className = this.sanatizeString(checkClass.name);
+		String className = checkClass.getName();
 		List<MyMethodNode> methods = checkClass.methods;
 		List<MyFieldNode> fields = (List<MyFieldNode>) checkClass.fields;
 		String classPrint = "		Class Name checks: \n"; 
@@ -39,20 +39,6 @@ public class NamesCheck implements SingleClassCheck {
 		
 		if (toPrint.equals("	Name Style Violations: \n")) {
 			 return "";
-		}
-		return toPrint;
-	}
-	
-	private String sanatizeString(String toSanatize) {
-		String toPrint = "";
-		for (int i = 0; i < toSanatize.length(); i++) {
-			if (toSanatize.charAt(i) == '/') {
-				toPrint = "";
-			} else if (toSanatize.charAt(i) == ';') {
-				
-			} else {
-				toPrint += toSanatize.charAt(i);
-			}
 		}
 		return toPrint;
 	}
@@ -92,7 +78,7 @@ public class NamesCheck implements SingleClassCheck {
 		}
 		
 		// Type name correspond check
-		String fieldDesc = this.sanatizeString(checkVar.desc);
+		String fieldDesc = checkVar.getTypeName();
 		if (fieldDesc.toLowerCase().equals(checkVar.name.toLowerCase())) {
 			toPrint += "			Variable " + checkVar.name + " has the same name as its type "
 					+ "in method " + methodName + "\n";
@@ -113,7 +99,7 @@ public class NamesCheck implements SingleClassCheck {
 		}
 		
 		// Type name correspond check
-		String fieldDesc = this.sanatizeString(field.desc);
+		String fieldDesc = field.getTypeName();
 		if (fieldDesc.toLowerCase().equals(field.name.toLowerCase())) {
 			toPrint += "			Field " + field.name + " has the same name as its type \n";
 		}

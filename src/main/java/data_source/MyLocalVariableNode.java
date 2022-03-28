@@ -9,4 +9,9 @@ public class MyLocalVariableNode {
 		this.name = name;
 		this.desc = desc;
 	}
+	
+	public String getTypeName() {
+		String[] nameSplit = desc.split("/");
+		return nameSplit[nameSplit.length-1];
+	}
 }

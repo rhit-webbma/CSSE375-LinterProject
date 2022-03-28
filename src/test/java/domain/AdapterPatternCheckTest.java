@@ -72,63 +72,6 @@ class AdapterPatternCheckTest {
 	}
 	
 	@Test
-	void testGetClassName() {
-		MyClassNode node = EasyMock.createMock(MyClassNode.class);
-		node.name = "java/lang/String";
-		AdapterPatternCheck check = new AdapterPatternCheck();
-		assertEquals("String", check.getClassName(node));
-	}
-	
-	@Test
-	void testGetInterfaces() {
-		MyClassNode node = EasyMock.createMock(MyClassNode.class);
-		List<String> interfaceNames = new ArrayList<>();
-		interfaceNames.add("java/lang/Comparable");
-		interfaceNames.add("src/domain/SingleClassCheck");
-		node.interfaces = interfaceNames;
-		AdapterPatternCheck check = new AdapterPatternCheck();
-		ArrayList<String> expected = new ArrayList<>();
-		expected.add("Comparable");
-		expected.add("SingleClassCheck");
-		assertEquals(expected, check.getInterfaces(node));
-	}
-	
-	@Test
-	void testGetFieldTypes() {
-		List<MyFieldNode> fields = new ArrayList<>();
-		for (int i=0; i<3; i++) {
-			MyFieldNode field = EasyMock.createMock(MyFieldNode.class);
-			field.desc = String.format("dataSource/lang/util/field%d", i+1);
-			fields.add(field);
-		}
-		MyClassNode node = EasyMock.createMock(MyClassNode.class);
-		node.fields = fields;
-		ArrayList<String> expected = new ArrayList<>();
-		expected.add("field1");
-		expected.add("field2");
-		expected.add("field3");
-		AdapterPatternCheck check = new AdapterPatternCheck();
-		assertEquals(expected, check.getFieldTypes(node));
-	}
-	
-	@Test
-	void testGetFieldTypesNoJava() {
-		List<MyFieldNode> fields = new ArrayList<>();
-		for (int i=0; i<3; i++) {
-			MyFieldNode field = EasyMock.createMock(MyFieldNode.class);
-			field.desc = (i == 1) ? "java/lang/util/field2" : String.format("dataSource/lang/util/field%d", i+1);
-			fields.add(field);
-		}
-		MyClassNode node = EasyMock.createMock(MyClassNode.class);
-		node.fields = fields;
-		ArrayList<String> expected = new ArrayList<>();
-		expected.add("field1");
-		expected.add("field3");
-		AdapterPatternCheck check = new AdapterPatternCheck();
-		assertEquals(expected, check.getFieldTypes(node));
-	}
-	
-	@Test
 	void testCheckMethodInit() {
 		MyMethodNode method = EasyMock.createMock(MyMethodNode.class);
 		method.name = "<init>";
