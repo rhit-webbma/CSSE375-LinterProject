@@ -59,6 +59,19 @@ public class MyMethodNode {
 		return output;
 	}
 	
+	private String sanitizeString(String s) {
+		String[] nameSplit = s.split("/");
+		return nameSplit[nameSplit.length-1];
+	}
+	
+	public ArrayList<String> getArgTypes() {
+		ArrayList<String> output = new ArrayList<>();
+		for (String type : argTypeNames) {
+			output.add(sanitizeString(type));
+		}
+		return output;
+	}
+	
 	public int getLength() {
 		ArrayList<Integer> lines = new ArrayList<Integer>();
 		int methodLength = 0;
