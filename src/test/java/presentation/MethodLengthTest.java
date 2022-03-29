@@ -51,6 +51,8 @@ class MethodLengthTest {
 		
 		currentClass.methods = methods;
 		
+		EasyMock.expect(testMethod.getLength()).andReturn(0);
+		
 		EasyMock.replay(currentClass, testMethod);
 		
 		//Given that this method is under length, method length should return nothing
@@ -78,14 +80,6 @@ class MethodLengthTest {
 		
 		testMethod.name = "TestMethod";
 		
-		for(int i = 0; i < 10; i++)
-		{
-			MyLineNumberNode insn = EasyMock.createMock(MyLineNumberNode.class);
-			insn.line = i;
-			MyAbstractInsnNode n1 = insn;
-			instructionsList.add(n1);
-		}
-		
 		testMethod.instructions = instructionsList;
 		
 		ArrayList<MyMethodNode> methods = new ArrayList<MyMethodNode>();
@@ -93,6 +87,8 @@ class MethodLengthTest {
 		methods.add(testMethod);
 		
 		currentClass.methods = methods;
+		
+		EasyMock.expect(testMethod.getLength()).andReturn(13);
 		
 		EasyMock.replay(currentClass, testMethod);
 		
@@ -121,13 +117,6 @@ class MethodLengthTest {
 		
 		testMethod.name = "TestMethod";
 		
-		for(int i = 0; i < 40; i++)
-		{
-			MyLineNumberNode insn = EasyMock.createMock(MyLineNumberNode.class);
-			insn.line = i;
-			MyAbstractInsnNode n1 = insn;
-			instructionsList.add(n1);
-		}
 		
 		testMethod.instructions = instructionsList;
 		
@@ -136,6 +125,8 @@ class MethodLengthTest {
 		methods.add(testMethod);
 		
 		currentClass.methods = methods;
+
+		EasyMock.expect(testMethod.getLength()).andReturn(40);
 		
 		EasyMock.replay(currentClass, testMethod);
 		

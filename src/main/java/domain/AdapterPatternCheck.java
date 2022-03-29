@@ -25,8 +25,7 @@ public class AdapterPatternCheck implements ClassCheck {
 		boolean claimsAdapter = name.toLowerCase().contains("adapter");
 		ArrayList<String> interfaceNames = classNode.getInterfaces();
 		ArrayList<String> fieldTypes = classNode.getNonBuiltInFieldTypes();
-		String className = classNode.getName();
-		boolean claimsAdapter = className.toLowerCase().contains("adapter");
+		String className = classNode.getCleanName();
 
 		if (interfaceNames.isEmpty() || fieldTypes.isEmpty()) {
 			return (claimsAdapter) ? String.format(

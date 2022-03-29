@@ -1,5 +1,7 @@
 package domain;
 
+import java.util.ArrayList;
+
 import data_source.MyClassNode;
 import data_source.MyMethodNode;
 
