@@ -28,7 +28,7 @@ public class StrategyPatternCheck implements ClassCheck {
 			if (constructor != null) {
 				// Setup
 				List<MyFieldNode> fields = curClass.fields;
-				List<String> argTypes = constructor.getArgTypes();
+				List<String> argTypes = constructor.getCleanArgTypes();
 
 				// Find fields that are getting set in the constructor, build up arraylists of
 				// the fields themselves and their type names
@@ -36,8 +36,8 @@ public class StrategyPatternCheck implements ClassCheck {
 				for (MyFieldInsnNode fieldInsn : constructor.getFieldInstructionNodes()) {
 					for (MyFieldNode field : fields) {
 						if (field.name.equals(fieldInsn.name)) {
-							if (argTypes.contains(field.getTypeName())) {
-								constructedFieldTypes.add(field.getTypeName());
+							if (argTypes.contains(field.getCleanDesc())) {
+								constructedFieldTypes.add(field.getCleanDesc());
 							}
 						}
 					}

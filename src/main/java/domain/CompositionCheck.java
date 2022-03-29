@@ -17,10 +17,10 @@ public class CompositionCheck implements ClassCheck {
 	}
 
 	String checkClassComposition(MyClassNode classNode) {
-		if (classNode.isSuperBuiltIn())
+		if (!(classNode.isSuperBuiltIn()))
 			return String.format(
 					"	Class %s inherits from user created class %s. Could composition be used instead? \n",
-					classNode.getName(), classNode.getSuperName());
+					classNode.getCleanName(), classNode.getCleanSuperName());
 		return "";
 	}
 	
