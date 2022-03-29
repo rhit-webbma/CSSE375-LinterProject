@@ -62,7 +62,7 @@ public class MyClassNode {
 	public ArrayList<String> getNonBuiltInFieldTypes() {
 		ArrayList<String> output = new ArrayList<>();
 		for (MyFieldNode field : fields) {
-			if (!field.isBuiltIn()) output.add(field.getTypeName());
+			if (!field.isBuiltIn()) output.add(field.getCleanDesc());
 		}
 		return output;
 	}
