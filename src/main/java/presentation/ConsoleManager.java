@@ -3,6 +3,7 @@ package presentation;
 import java.util.ArrayList;
 import java.util.Scanner;
 
+import data_source.Directory;
 import data_source.Grabber;
 import data_source.PopulateJavaFile;
 import domain.AdapterPatternCheck;
@@ -21,19 +22,21 @@ public class ConsoleManager {
 	
 	static Grabber githubGrabber;
 	static PopulateJavaFile populator;
+	static Directory directory;
 	
 	public static void main(String[] args) {
-		userInterfaceLoop("Github");
+		userInterfaceLoop("Package");
 	}
 	
 	private static void userInterfaceLoop(String inputType) {
 		
 		CheckRunner runner = null;
+		Scanner in = new Scanner(System.in);
 		
 		switch(inputType)
 		{
 		case "Github":
-			Scanner in = new Scanner(System.in);
+			
 			System.out.println("Please Input a Github Link: ");
 			githubGrabber = new Grabber(in.nextLine());
 			
@@ -53,6 +56,10 @@ public class ConsoleManager {
 			githubClasses.add(fileURL);
 			
 			runner = new CheckRunner(githubClasses);
+		case "Package":
+			System.out.println("Please Input a Package Name: ");
+			directory = new Directory(in.nextLine());
+			runner = new CheckRunner(directory.getDirectoryString());
 		}
 		
 		
