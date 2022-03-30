@@ -3,6 +3,8 @@ package presentation;
 import java.util.ArrayList;
 import java.util.Scanner;
 
+import data_source.Grabber;
+import data_source.PopulateJavaFile;
 import domain.AdapterPatternCheck;
 import domain.CheckRunner;
 import domain.CompositionCheck;
@@ -16,12 +18,46 @@ import domain.UnusedInstantiationCheck;
 
 public class ConsoleManager {
 
+	
+	static Grabber githubGrabber;
+	static PopulateJavaFile populator;
+	
 	public static void main(String[] args) {
-		userInterfaceLoop(args);
+		userInterfaceLoop("Github");
 	}
 	
-	private static void userInterfaceLoop(String[] args) {
-		CheckRunner runner = new CheckRunner(args);
+	private static void userInterfaceLoop(String inputType) {
+		
+		CheckRunner runner = null;
+		
+		switch(inputType)
+		{
+		case "Github":
+			Scanner in = new Scanner(System.in);
+			System.out.println("Please Input a Github Link: ");
+			githubGrabber = new Grabber(in.nextLine());
+			
+			populator = new PopulateJavaFile(githubGrabber.getDownloadURL(),
+					githubGrabber.getFileName());
+			
+			try {
+				Thread.sleep(3000);
+			} catch (InterruptedException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			}
+			
+			String fileURL = "data_source." + githubGrabber.getFileName().replace(".java", "");
+			
+			ArrayList<String> githubClasses = new ArrayList<String>();
+			githubClasses.add(fileURL);
+			
+			runner = new CheckRunner(githubClasses);
+		}
+		
+		
+		
+//		CheckRunner runner = new CheckRunner(args);
 		System.out.println("Classes inputted: \n" + runner.classNames());
 		
 		Scanner consoleReader = new Scanner(System.in);

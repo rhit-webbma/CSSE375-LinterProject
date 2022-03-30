@@ -14,8 +14,8 @@ public class CheckRunner {
 	private ArrayList<SingleClassCheck> singleChecks;
 	private FileWriter fileWriter;
 	
-	public CheckRunner(String[] args) {
-		this.classes = ASMReader.generateClassNodes(args);
+	public CheckRunner(ArrayList<String> testableClasses) {
+		this.classes = ASMReader.generateClassNodes(testableClasses);
 		this.multiChecks = new ArrayList<>();
 		this.singleChecks = new ArrayList<>();
 		this.fileWriter = new FileWriter("LintOutput.txt");
