@@ -1,5 +1,6 @@
 package domain;
 
+
 import static org.junit.Assert.assertEquals;
 
 import java.util.ArrayList;
@@ -7,7 +8,7 @@ import java.util.LinkedList;
 import java.util.List;
 
 import org.easymock.EasyMock;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.objectweb.asm.tree.AbstractInsnNode;
 import org.objectweb.asm.tree.ClassNode;
 import org.objectweb.asm.tree.FieldInsnNode;
@@ -38,7 +39,7 @@ public class HollywoodCheckTest {
 		MyMethodNode m1 = EasyMock.createMock(MyMethodNode.class);
 		ArrayList<MyMethodNode> methods = new ArrayList<MyMethodNode>();
 		methods.add(m1);
-		curClass.name = "SubClass";
+		EasyMock.expect(curClass.getCleanName()).andReturn("SubClass");
 		curClass.methods = methods;
 		
 		LinkedList<MyAbstractInsnNode> insns = new LinkedList<MyAbstractInsnNode>();
@@ -47,9 +48,9 @@ public class HollywoodCheckTest {
 		MyAbstractInsnNode n1 = n1a;
 		insns.add(n1);
 		
-		m1.localVariables = null;
 		m1.instructions = insns;
 		m1.name = "badMethod";
+		EasyMock.expect(m1.getVarNames()).andReturn(new ArrayList<String>());
 		
 		EasyMock.replay(curClass, m1, n1a);
 		assertEquals("	Class SubClass uses field repeated from SuperClass in method badMethod\n",
@@ -66,7 +67,7 @@ public class HollywoodCheckTest {
 		MyMethodNode m1 = EasyMock.createMock(MyMethodNode.class);
 		ArrayList<MyMethodNode> methods = new ArrayList<MyMethodNode>();
 		methods.add(m1);
-		curClass.name = "SubClass";
+		EasyMock.expect(curClass.getCleanName()).andReturn("SubClass");
 		curClass.methods = methods;
 		
 		LinkedList<MyAbstractInsnNode> insns = new LinkedList<MyAbstractInsnNode>();
@@ -76,12 +77,11 @@ public class HollywoodCheckTest {
 		insns.add(n1);
 		
 		MyLocalVariableNode lv1 = EasyMock.createMock(MyLocalVariableNode.class);
-		List<MyLocalVariableNode> locals = new ArrayList<>();
-		locals.add(lv1);
-		lv1.name = "repeated";
-		m1.localVariables = locals;
+		ArrayList<String> locals = new ArrayList<>();
+		locals.add("repeated");
 		m1.instructions = insns;
 		m1.name = "badMethod";
+		EasyMock.expect(m1.getVarNames()).andReturn(locals);
 		
 		
 		EasyMock.replay(curClass, m1, n1a, lv1);
@@ -99,7 +99,7 @@ public class HollywoodCheckTest {
 		MyMethodNode m1 = EasyMock.createMock(MyMethodNode.class);
 		ArrayList<MyMethodNode> methods = new ArrayList<MyMethodNode>();
 		methods.add(m1);
-		curClass.name = "SubClass";
+		EasyMock.expect(curClass.getCleanName()).andReturn("SubClass");
 		curClass.methods = methods;
 		
 		LinkedList<MyAbstractInsnNode> insns = new LinkedList<MyAbstractInsnNode>();
@@ -108,9 +108,9 @@ public class HollywoodCheckTest {
 		MyAbstractInsnNode n1 = n1a;
 		insns.add(n1);
 		
-		m1.localVariables = null;
 		m1.instructions = insns;
 		m1.name = "badMethod";
+		EasyMock.expect(m1.getVarNames()).andReturn(new ArrayList<String>());
 		
 		EasyMock.replay(curClass, m1, n1a);
 		assertEquals("	Class SubClass calls method repeated from SuperClass in method badMethod\n",

@@ -9,13 +9,30 @@ import data_source.MyLineNumberNode;
 import data_source.MyMethodNode;
 import data_source.MyVarInsnNode;
 
-public class UnusedInstantiationCheck implements SingleClassCheck {
+public class UnusedInstantiationCheck implements ClassCheck {
 	
 	ArrayList<MyFieldInsnNode> fieldStoring = new ArrayList<>();
 	ArrayList<MyFieldInsnNode> fieldLoading = new ArrayList<>();
 	
 	@Override
-	public String runCheck(MyClassNode classNode) {
+	public String runCheck(ArrayList<MyClassNode> classes) {
+		String printString = "";
+		for (MyClassNode classNode : classes) {
+			String classString = "";
+			classString += "	Class: " + classNode.getCleanName() + "\n";
+			classString += this.unusedInstantiationCheck(classNode);
+			if (!classString.equals("	Class: " + classNode.getCleanName() + "\n")) {
+				 printString += classString;
+			}
+		}
+		
+		if (printString == "") {
+			return printString;
+		}
+		return "Unused Instantiation Check:\n" + printString;
+	}
+	
+	private String unusedInstantiationCheck(MyClassNode classNode) {
 		fieldStoring.removeAll(fieldStoring);
 		fieldLoading.removeAll(fieldLoading);
 		
@@ -26,7 +43,7 @@ public class UnusedInstantiationCheck implements SingleClassCheck {
 		String printString = findUnusedFields(classNode);
 		
 		if (!printString.equals("")) {
-			printString = "	Unused Variables: \n" + printString + varString;
+			printString = "		Unused Variables: \n" + printString + varString;
 		}
 		return printString;
 	}
@@ -51,12 +68,12 @@ public class UnusedInstantiationCheck implements SingleClassCheck {
 				int line = 0;
 				if (index != -1) {
 					line = findLineNumber(index, mNode);
-					printString += "		Line " + line + ": Unused field named " + var.name + "\n";
+					printString += "			Line " + line + ": Unused field named " + var.name + "\n";
 					found = true;
 				}
 			}
 			if (!found) {
-				printString += "		Unknown line number: Unused field named " + var.name + "\n";
+				printString += "			Unknown line number: Unused field named " + var.name + "\n";
 			}
 		}
 		
@@ -107,10 +124,10 @@ public class UnusedInstantiationCheck implements SingleClassCheck {
 		for (MyVarInsnNode var : unusedStored) {
 			int line = findLineNumber(method.instructions.indexOf(var), method);
 			if (var.var >= method.localVariables.size()) {
-				printString += "		Line " + line + ": Unused variable in method " + method.name + "\n";
+				printString += "			Line " + line + ": Unused variable in method " + method.name + "\n";
 			} else {
 				String name = method.localVariables.get(var.var).name;
-				printString += "		Line " + line + ": Unused variable named " + name + " in method " + method.name + "\n";
+				printString += "			Line " + line + ": Unused variable named " + name + " in method " + method.name + "\n";
 			}
 		}
 		

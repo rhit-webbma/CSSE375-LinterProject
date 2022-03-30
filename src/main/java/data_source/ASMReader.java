@@ -20,9 +20,9 @@ import org.objectweb.asm.tree.VarInsnNode;
 
 public class ASMReader {
 
-	public static ArrayList<MyClassNode> generateClassNodes(String[] args) {
+	public static ArrayList<MyClassNode> generateClassNodes(ArrayList<String> testableClasses) {
 		ArrayList<ClassNode> classes = new ArrayList<>();
-		for (String className : args) {
+		for (String className : testableClasses) {
 			ClassReader reader = null;
 			try {
 				reader = new ClassReader(className);
