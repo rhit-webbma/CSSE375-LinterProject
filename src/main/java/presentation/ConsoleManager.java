@@ -4,8 +4,11 @@ import java.util.ArrayList;
 import java.util.Scanner;
 
 import data_source.Directory;
+import data_source.GithubImport;
 import data_source.Grabber;
+import data_source.PackageImport;
 import data_source.PopulateJavaFile;
+import data_source.Testable;
 import domain.AdapterPatternCheck;
 import domain.CheckRunner;
 import domain.CompositionCheck;
@@ -31,38 +34,18 @@ public class ConsoleManager {
 	private static void userInterfaceLoop(String inputType) {
 		
 		CheckRunner runner = null;
-		Scanner in = new Scanner(System.in);
+		Testable testingMethod = null;
+		
 		
 		switch(inputType)
 		{
 		case "Github":
-			
-			System.out.println("Please Input a Github Link: ");
-			githubGrabber = new Grabber(in.nextLine());
-			
-			populator = new PopulateJavaFile(githubGrabber.getDownloadURL(),
-					githubGrabber.getFileName());
-			
-			try {
-				Thread.sleep(3000);
-			} catch (InterruptedException e1) {
-				// TODO Auto-generated catch block
-				e1.printStackTrace();
-			}
-			
-			String fileURL = "data_source." + githubGrabber.getFileName().replace(".java", "");
-			
-			ArrayList<String> githubClasses = new ArrayList<String>();
-			githubClasses.add(fileURL);
-			
-			runner = new CheckRunner(githubClasses);
+			testingMethod = new GithubImport();
 		case "Package":
-			System.out.println("Please Input a Package Name: ");
-			directory = new Directory(in.nextLine());
-			runner = new CheckRunner(directory.getDirectoryString());
+			testingMethod = new PackageImport();
 		}
 		
-		
+		runner = new CheckRunner(testingMethod.generateClasses());
 		
 //		CheckRunner runner = new CheckRunner(args);
 		System.out.println("Classes inputted: \n" + runner.classNames());
