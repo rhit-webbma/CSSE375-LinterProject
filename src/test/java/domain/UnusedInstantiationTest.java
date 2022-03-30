@@ -8,7 +8,6 @@ import java.util.Arrays;
 import java.util.LinkedList;
 
 import org.easymock.EasyMock;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import data_source.MyAbstractInsnNode;
@@ -69,10 +68,9 @@ public class UnusedInstantiationTest {
 		lNode.line = 12;
 		
 		method.instructions = insns;
-		check.method = method;
 		EasyMock.replay(lNode);
 		
-		assertEquals(12, check.findLineNumber(0));
+		assertEquals(12, check.findLineNumber(0, method));
 	}
 	
 	@Test
@@ -95,10 +93,9 @@ public class UnusedInstantiationTest {
 		lNode.line = 12;
 		
 		method.instructions = insns;
-		check.method = method;
 		EasyMock.replay(lNode, mNode, fNode, vNode, method);
 		
-		assertEquals(12, check.findLineNumber(3));
+		assertEquals(12, check.findLineNumber(3, method));
 	}
 	
 	@Test
@@ -145,11 +142,10 @@ public class UnusedInstantiationTest {
 		method.localVariables = vars;
 		method.name = "countThings";
 		
-		check.method = method;
 		
 		EasyMock.replay(lNode1, lNode2, lNode3, sNode1, sNode2, sNode3, method, lNode, vLNode);
 		
-		assertEquals("			Line 12: Unused variable named counter in method countThings\n", check.findUnusedVariables(loaded, stored));
+		assertEquals("			Line 12: Unused variable named counter in method countThings\n", check.findUnusedVariables(loaded, stored, method));
 		
 	}
 	
@@ -194,12 +190,9 @@ public class UnusedInstantiationTest {
 		method.localVariables = vars;
 		method.name = "countThings";
 		
-		check.method = method;
-		
 		EasyMock.replay(lNode1, lNode2, lNode3, sNode1, sNode2, sNode3, method, lNode);
-		
-		assertEquals("			Line 12: Unused variable in method countThings\n", check.findUnusedVariables(loaded, stored));
-		
+
+		assertEquals("			Line 12: Unused variable in method countThings\n", check.findUnusedVariables(loaded, stored, method));
 	}
 	
 	@Test
@@ -258,8 +251,6 @@ public class UnusedInstantiationTest {
 		method.localVariables = vars;
 		method.name = "countThings";
 		
-		check.method = method;
-		
 		EasyMock.replay(lNode1, lNode2, sNode1, sNode2, sNode3, method, lNode, vLNode);
 		
 		assertEquals("			Line 12: Unused variable named counter in method countThings\n", check.findVariablesMethods(method));
@@ -290,8 +281,6 @@ public class UnusedInstantiationTest {
 		EasyMock.expect(fInsn2.isLoading()).andReturn(false);
 		
 		method.instructions = insns;
-		
-		check.method = method;
 		
 		EasyMock.replay(method, lNode, fInsn1, fInsn2);
 		
@@ -446,9 +435,7 @@ public class UnusedInstantiationTest {
 		method.instructions = insns;
 		method.localVariables = vars;
 		method.name = "countThings";
-		
-		check.method = method;
-		
+
 		EasyMock.replay(lInsn1, lInsn2, sNode1, sNode2, sNode3, method, lNode1, lNode2, fInsn1, fInsn2, vLNode, classNode);
 		
 		assertEquals("Unused Instantiation Check:\n	Class: null\n		Unused Variables: \n" + "			Line 12: Unused field named download\n" 

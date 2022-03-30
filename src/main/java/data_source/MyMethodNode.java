@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 
+import org.objectweb.asm.Type;
+
 public class MyMethodNode {
 
 	public String name;
@@ -15,12 +17,21 @@ public class MyMethodNode {
 	private static final String CONSTRUCTOR_NAME = "<init>";
 	
 	public MyMethodNode(String name, String desc, LinkedList<MyAbstractInsnNode> instructions,
-			List<MyLocalVariableNode> localVariables, List<String> argTypeNames) {
+			List<MyLocalVariableNode> localVariables) {
 		this.name = name;
 		this.desc = desc;
 		this.instructions = instructions;
 		this.localVariables = localVariables;
-		this.argTypeNames = argTypeNames;
+		this.argTypeNames = getArgTypeNames();
+	}
+	
+	private ArrayList<String> getArgTypeNames() {
+		ArrayList<String> argTypeNames = new ArrayList<>();
+		Type[] argTypes = Type.getArgumentTypes(desc);
+		for (Type type : argTypes) {
+			argTypeNames.add(type.getInternalName());
+		}
+		return argTypeNames;
 	}
   
 	public String getFullDesc() {

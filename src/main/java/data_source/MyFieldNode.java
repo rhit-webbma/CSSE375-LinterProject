@@ -1,5 +1,7 @@
 package data_source;
 
+import org.objectweb.asm.Opcodes;
+
 public class MyFieldNode {
 
 	public String name;
@@ -7,11 +9,12 @@ public class MyFieldNode {
 	private boolean isStatic;
 	private boolean isFinal;
 	
-	public MyFieldNode(String name, String desc, boolean isStatic, boolean isFinal) {
+	public MyFieldNode(String name, String desc, int accessCode) {
 		this.name = name;
 		this.desc = desc;
-		this.isStatic = isStatic;
-		this.isFinal = isFinal;
+		
+		this.isStatic = (accessCode & Opcodes.ACC_STATIC) != 0;
+		this.isFinal = (accessCode & Opcodes.ACC_FINAL) != 0;
 	}
 	
 	public boolean isStatic() {

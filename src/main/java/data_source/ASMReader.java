@@ -43,9 +43,8 @@ public class ASMReader {
 		for (ClassNode node : classes) {
 			ArrayList<MyFieldNode> fields = parseFields(node);
 			ArrayList<MyMethodNode> methods = parseMethods(node);
-			boolean isInterface = (node.access & Opcodes.ACC_INTERFACE) != 0;
 			myClasses.add(new MyClassNode(node.name, node.superName, node.interfaces, fields, 
-					methods, isInterface));
+					methods, node.access));
 		}
 		return myClasses;
 	}
@@ -53,9 +52,7 @@ public class ASMReader {
 	private static ArrayList<MyFieldNode> parseFields(ClassNode node) {
 		ArrayList<MyFieldNode> fields = new ArrayList<>();
 		for (FieldNode field : node.fields) {
-			boolean isStatic = (field.access & Opcodes.ACC_STATIC) != 0;
-			boolean isFinal = (field.access & Opcodes.ACC_FINAL) != 0;
-			fields.add(new MyFieldNode(field.name, field.desc, isStatic, isFinal));
+			fields.add(new MyFieldNode(field.name, field.desc, field.access));
 		}
 		return fields;
 	}
@@ -72,13 +69,7 @@ public class ASMReader {
 				}
 			}
 			
-			ArrayList<String> argTypeNames = new ArrayList<>();
-			Type[] argTypes = Type.getArgumentTypes(method.desc);
-			for (Type type : argTypes) {
-				argTypeNames.add(type.getInternalName());
-			}
-
-			methods.add(new MyMethodNode(method.name, method.desc, instructions, localVariables, argTypeNames));
+			methods.add(new MyMethodNode(method.name, method.desc, instructions, localVariables));
 		}
 		return methods;
 	}
@@ -88,46 +79,13 @@ public class ASMReader {
 		for (AbstractInsnNode insn : method.instructions) {
 			if (insn.getType() == AbstractInsnNode.FIELD_INSN) {
 				FieldInsnNode fInsn = (FieldInsnNode) insn;
-				boolean isLoading = false;
-				boolean isStoring = false;
-
-				switch (fInsn.getOpcode()) {
-				case Opcodes.GETSTATIC:
-				case Opcodes.GETFIELD:
-					isLoading = true;
-					break;
-				case Opcodes.PUTSTATIC:
-				case Opcodes.PUTFIELD:
-					isStoring = true;
-					break;
-				}
-				instructions.add(new MyFieldInsnNode(fInsn.name, fInsn.owner, isLoading, isStoring));
+				instructions.add(new MyFieldInsnNode(fInsn.name, fInsn.owner, fInsn.getOpcode()));
 			} else if (insn.getType() == AbstractInsnNode.METHOD_INSN) {
 				MethodInsnNode mInsn = (MethodInsnNode) insn;
-				boolean invokeVirtual = ((mInsn.getOpcode() & Opcodes.INVOKEVIRTUAL) != 0);
-				instructions.add(new MyMethodInsnNode(mInsn.name, mInsn.owner, invokeVirtual));
+				instructions.add(new MyMethodInsnNode(mInsn.name, mInsn.owner, mInsn.getOpcode()));
 			} else if (insn.getType() == AbstractInsnNode.VAR_INSN) {
 				VarInsnNode vInsn = (VarInsnNode) insn;
-				boolean isLoading = false;
-				boolean isStoring = false;
-
-				switch (vInsn.getOpcode()) {
-				case Opcodes.ALOAD:
-				case Opcodes.ILOAD:
-				case Opcodes.LLOAD:
-				case Opcodes.FLOAD:
-				case Opcodes.DLOAD:
-					isLoading = true;
-					break;
-				case Opcodes.ASTORE:
-				case Opcodes.ISTORE:
-				case Opcodes.LSTORE:
-				case Opcodes.FSTORE:
-				case Opcodes.DSTORE:
-					isStoring = true;
-					break;
-				}
-				instructions.add(new MyVarInsnNode(vInsn.var, isLoading, isStoring));
+				instructions.add(new MyVarInsnNode(vInsn.var, vInsn.getOpcode()));
 			} else if (insn.getType() == AbstractInsnNode.LINE) {
 				LineNumberNode linsn = (LineNumberNode) insn;
 				instructions.add(new MyLineNumberNode(linsn.line));

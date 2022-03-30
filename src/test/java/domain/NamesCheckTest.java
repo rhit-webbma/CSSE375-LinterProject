@@ -7,7 +7,7 @@ import java.util.Arrays;
 import java.util.List;
 
 import org.easymock.EasyMock;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import data_source.MyFieldNode;
 import data_source.MyLocalVariableNode;
 import data_source.MyMethodNode;
