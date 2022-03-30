@@ -3,6 +3,12 @@ package presentation;
 import java.util.ArrayList;
 import java.util.Scanner;
 
+import data_source.Directory;
+import data_source.GithubImport;
+import data_source.Grabber;
+import data_source.PackageImport;
+import data_source.PopulateJavaFile;
+import data_source.Testable;
 import domain.AdapterPatternCheck;
 import domain.CheckRunner;
 import domain.CompositionCheck;
@@ -16,12 +22,32 @@ import domain.UnusedInstantiationCheck;
 
 public class ConsoleManager {
 
+	
+	static Grabber githubGrabber;
+	static PopulateJavaFile populator;
+	static Directory directory;
+	
 	public static void main(String[] args) {
-		userInterfaceLoop(args);
+		userInterfaceLoop("Package");
 	}
 	
-	private static void userInterfaceLoop(String[] args) {
-		CheckRunner runner = new CheckRunner(args);
+	private static void userInterfaceLoop(String inputType) {
+		
+		CheckRunner runner = null;
+		Testable testingMethod = null;
+		
+		
+		switch(inputType)
+		{
+		case "Github":
+			testingMethod = new GithubImport();
+		case "Package":
+			testingMethod = new PackageImport();
+		}
+		
+		runner = new CheckRunner(testingMethod.generateClasses());
+		
+//		CheckRunner runner = new CheckRunner(args);
 		System.out.println("Classes inputted: \n" + runner.classNames());
 		
 		Scanner consoleReader = new Scanner(System.in);
