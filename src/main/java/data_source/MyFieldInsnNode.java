@@ -3,7 +3,7 @@ package data_source;
 public class MyFieldInsnNode extends MyAbstractInsnNode{
 
 	public String name;
-	public String owner;
+	private String owner;
 	private boolean isLoading;
 	private boolean isStoring;
 	
@@ -25,6 +25,24 @@ public class MyFieldInsnNode extends MyAbstractInsnNode{
 	
 	public boolean isStoring() {
 		return isStoring;
+	}
+	
+	public String getFullOwner() {
+		return owner;
+	}
+	
+	public String getCleanOwner() {
+		String toPrint = "";
+		for (int i = 0; i < owner.length(); i++) {
+			if (owner.charAt(i) == '/') {
+				toPrint = "";
+			} else if (owner.charAt(i) == ';') {
+				
+			} else {
+				toPrint += owner.charAt(i);
+			}
+		}
+		return toPrint;
 	}
 
 }
