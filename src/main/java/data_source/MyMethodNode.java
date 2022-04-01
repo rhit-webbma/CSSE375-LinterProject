@@ -22,10 +22,10 @@ public class MyMethodNode {
 		this.desc = desc;
 		this.instructions = instructions;
 		this.localVariables = localVariables;
-		this.argTypeNames = getArgTypeNames();
+		this.argTypeNames = new ArrayList<String>();
 	}
 	
-	private ArrayList<String> getArgTypeNames() {
+	ArrayList<String> getArgTypeNames() {
 		ArrayList<String> argTypeNames = new ArrayList<>();
 		Type[] argTypes = Type.getArgumentTypes(desc);
 		for (Type type : argTypes) {
@@ -88,6 +88,7 @@ public class MyMethodNode {
 	}
 	
 	public ArrayList<String> getCleanArgTypes() {
+		this.argTypeNames = this.getArgTypeNames();
 		ArrayList<String> output = new ArrayList<>();
 		for (String type : argTypeNames) {
 			output.add(sanitizeString(type));
