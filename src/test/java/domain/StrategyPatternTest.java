@@ -170,7 +170,7 @@ class StrategyPatternTest {
 		EasyMock.expect(contextConstructor.getMethodInstructions()).andReturn(new ArrayList<MyMethodInsnNode>());
 		
 		EasyMock.expect(contextMethod.getMethodInstructions()).andReturn(methodInsns);
-		EasyMock.expect(methodInsn.getOwnerName()).andReturn("Pattern");
+		EasyMock.expect(methodInsn.getCleanOwner()).andReturn("Pattern");
 		EasyMock.expect(methodInsn.isInvokeVirtual()).andReturn(true);
 		
 		EasyMock.expect(contextClass.getCleanName()).andReturn("Strategy1");
@@ -265,15 +265,15 @@ class StrategyPatternTest {
 		EasyMock.expect(contextConstructor.getMethodInstructions()).andReturn(new ArrayList<MyMethodInsnNode>());
 		
 		EasyMock.expect(contextMethod.getMethodInstructions()).andReturn(methodInsns);
-		EasyMock.expect(methodInsn1.getOwnerName()).andReturn("Pattern1");
+		EasyMock.expect(methodInsn1.getCleanOwner()).andReturn("Pattern1");
 		EasyMock.expect(methodInsn1.isInvokeVirtual()).andReturn(true);
 		
 		EasyMock.expect(contextClass.getCleanName()).andReturn("Strategy2");
 		EasyMock.expect(contextClass.getCleanName()).andReturn("Strategy2");
 		contextMethod.name = "contextMethod";
 		
-		EasyMock.expect(methodInsn1.getOwnerName()).andReturn("Pattern1");
-		EasyMock.expect(methodInsn2.getOwnerName()).andReturn("Pattern2");
+		EasyMock.expect(methodInsn1.getCleanOwner()).andReturn("Pattern1");
+		EasyMock.expect(methodInsn2.getCleanOwner()).andReturn("Pattern2");
 		EasyMock.expect(methodInsn2.isInvokeVirtual()).andReturn(true);
 		
 		EasyMock.expect(contextClass.getCleanName()).andReturn("Strategy2");

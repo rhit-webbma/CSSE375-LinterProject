@@ -65,7 +65,7 @@ public class StrategyPatternCheck implements ClassCheck {
 	        if (!strategyDone) {
 	          for (MyMethodInsnNode methodInsn : method.getMethodInstructions()) {
 	            if (!strategyDone) {
-	              if ((icf.equals(methodInsn.getOwnerName()))
+	              if ((icf.equals(methodInsn.getCleanOwner()))
 	                  && (methodInsn.isInvokeVirtual())) {
 	                toPrint += "	Implemented in " + curClass.getCleanName()
 	                    + " class using interface " + icf
