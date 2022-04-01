@@ -58,4 +58,14 @@ public class CheckRunner {
 		checks.removeAll(checks);
 	}
 	
+	public boolean removeClass(String toRemove) {
+		for (int i = 0; i < classes.size(); i++) {
+			if (classes.get(i).getCleanName().equals(toRemove)) {
+				classes.remove(i);
+				return true;
+			}
+		}
+		return false;
+	}
+	
 }
