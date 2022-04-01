@@ -40,6 +40,8 @@ public class UnusedInstantiationTest {
 		assertTrue(!check.fieldStates.fieldLoading.isEmpty());
 		assertTrue(check.fieldStates.fieldLoading.contains(fInsn));
 		assertTrue(check.fieldStates.fieldStoring.isEmpty());
+		
+		EasyMock.verify(fInsn);
 	}
 	
 	@Test
@@ -55,6 +57,8 @@ public class UnusedInstantiationTest {
 		assertTrue(check.fieldStates.fieldLoading.isEmpty());
 		assertTrue(!check.fieldStates.fieldStoring.isEmpty());
 		assertTrue(check.fieldStates.fieldStoring.contains(fInsn));
+		
+		EasyMock.verify(fInsn);
 	}
 	
 	@Test
@@ -71,6 +75,8 @@ public class UnusedInstantiationTest {
 		EasyMock.replay(lNode);
 		
 		assertEquals(12, check.findLineNumber(0, method));
+		
+		EasyMock.verify(lNode);
 	}
 	
 	@Test
@@ -96,6 +102,8 @@ public class UnusedInstantiationTest {
 		EasyMock.replay(lNode, mNode, fNode, vNode, method);
 		
 		assertEquals(12, check.findLineNumber(3, method));
+		
+		EasyMock.verify(lNode, mNode, fNode, vNode, method);
 	}
 	
 	@Test
@@ -147,6 +155,8 @@ public class UnusedInstantiationTest {
 		
 		assertEquals("			Line 12: Unused variable named counter in method countThings\n", check.findUnusedVariables(loaded, stored, method));
 		
+		EasyMock.verify(lNode1, lNode2, lNode3, sNode1, sNode2, sNode3, method, lNode, vLNode);
+		
 	}
 	
 	@Test
@@ -193,6 +203,8 @@ public class UnusedInstantiationTest {
 		EasyMock.replay(lNode1, lNode2, lNode3, sNode1, sNode2, sNode3, method, lNode);
 
 		assertEquals("			Line 12: Unused variable in method countThings\n", check.findUnusedVariables(loaded, stored, method));
+		
+		EasyMock.verify(lNode1, lNode2, lNode3, sNode1, sNode2, sNode3, method, lNode);
 	}
 	
 	@Test
@@ -254,6 +266,8 @@ public class UnusedInstantiationTest {
 		EasyMock.replay(lNode1, lNode2, sNode1, sNode2, sNode3, method, lNode, vLNode);
 		
 		assertEquals("			Line 12: Unused variable named counter in method countThings\n", check.findVariablesMethods(method));
+		
+		EasyMock.verify(lNode1, lNode2, sNode1, sNode2, sNode3, method, lNode, vLNode);
 	}
 	
 	@Test
@@ -287,6 +301,8 @@ public class UnusedInstantiationTest {
 		assertEquals("", check.findVariablesMethods(method));
 		assertTrue(check.fieldStates.fieldLoading.contains(fInsn1));
 		assertTrue(check.fieldStates.fieldStoring.contains(fInsn2));
+		
+		EasyMock.verify(method, lNode, fInsn1, fInsn2);
 	}
 	
 	@Test
@@ -315,6 +331,8 @@ public class UnusedInstantiationTest {
 		
 		EasyMock.replay(fInsn1, fInsn2, classNode, method1);
 		assertEquals("			Unknown line number: Unused field named download\n", check.findUnusedFields(classNode));
+		
+		EasyMock.verify(fInsn1, fInsn2, classNode, method1);
 	}
 	
 	@Test
@@ -355,6 +373,8 @@ public class UnusedInstantiationTest {
 		
 		EasyMock.replay(fInsn1, fInsn2, classNode, method1, lNode);
 		assertEquals("			Line 12: Unused field named download\n", check.findUnusedFields(classNode));
+		
+		EasyMock.verify(fInsn1, fInsn2, classNode, method1, lNode);
 	}
 	
 	@Test
@@ -443,6 +463,8 @@ public class UnusedInstantiationTest {
 
 		assertTrue(check.fieldStates.fieldLoading.contains(fInsn1));
 		assertTrue(check.fieldStates.fieldStoring.contains(fInsn2));
+		
+		EasyMock.verify(lInsn1, lInsn2, sNode1, sNode2, sNode3, method, lNode1, lNode2, fInsn1, fInsn2, vLNode, classNode);
 	}
 	
 }
