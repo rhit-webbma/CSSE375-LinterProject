@@ -11,8 +11,7 @@ import data_source.MyVarInsnNode;
 
 public class UnusedInstantiationCheck implements ClassCheck {
 	
-	ArrayList<MyFieldInsnNode> fieldStoring = new ArrayList<>();
-	ArrayList<MyFieldInsnNode> fieldLoading = new ArrayList<>();
+	FieldStates fieldStates = new FieldStates();
 	
 	@Override
 	public String runCheck(ArrayList<MyClassNode> classes) {
@@ -33,8 +32,7 @@ public class UnusedInstantiationCheck implements ClassCheck {
 	}
 	
 	private String unusedInstantiationCheck(MyClassNode classNode) {
-		fieldStoring.removeAll(fieldStoring);
-		fieldLoading.removeAll(fieldLoading);
+		fieldStates.empty();
 		
 		String varString = "";
 		for (MyMethodNode method : classNode.methods) {
@@ -51,11 +49,11 @@ public class UnusedInstantiationCheck implements ClassCheck {
 	String findUnusedFields(MyClassNode classNode) {
 		String printString = "";
 		ArrayList<String> loadedNames = new ArrayList<>();
-		for (MyFieldInsnNode var : fieldLoading) {
+		for (MyFieldInsnNode var : fieldStates.fieldLoading) {
 			loadedNames.add(var.name);
 		}
 		ArrayList<MyFieldInsnNode> unusedStored = new ArrayList<>();
-		for (MyFieldInsnNode var : fieldStoring) {
+		for (MyFieldInsnNode var : fieldStates.fieldStoring) {
 			if (!loadedNames.contains(var.name)) {
 				unusedStored.add(var);
 			}
@@ -82,9 +80,9 @@ public class UnusedInstantiationCheck implements ClassCheck {
 	
 	void determineFieldStatus(MyFieldInsnNode fInsn) {
 		if (fInsn.isLoading()) {
-			fieldLoading.add(fInsn);
+			fieldStates.fieldLoading.add(fInsn);
 		} else {						
-			fieldStoring.add(fInsn);
+			fieldStates.fieldStoring.add(fInsn);
 		}
 	}
 	

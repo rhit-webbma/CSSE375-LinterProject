@@ -34,12 +34,12 @@ public class UnusedInstantiationTest {
 		EasyMock.expect(fInsn.isLoading()).andReturn(true);
 		EasyMock.replay(fInsn);
 		
-		assertTrue(check.fieldLoading.isEmpty());
-		assertTrue(check.fieldStoring.isEmpty());
+		assertTrue(check.fieldStates.fieldLoading.isEmpty());
+		assertTrue(check.fieldStates.fieldStoring.isEmpty());
 		check.determineFieldStatus(fInsn);
-		assertTrue(!check.fieldLoading.isEmpty());
-		assertTrue(check.fieldLoading.contains(fInsn));
-		assertTrue(check.fieldStoring.isEmpty());
+		assertTrue(!check.fieldStates.fieldLoading.isEmpty());
+		assertTrue(check.fieldStates.fieldLoading.contains(fInsn));
+		assertTrue(check.fieldStates.fieldStoring.isEmpty());
 	}
 	
 	@Test
@@ -49,12 +49,12 @@ public class UnusedInstantiationTest {
 		EasyMock.expect(fInsn.isLoading()).andReturn(false);
 		EasyMock.replay(fInsn);
 		
-		assertTrue(check.fieldLoading.isEmpty());
-		assertTrue(check.fieldStoring.isEmpty());
+		assertTrue(check.fieldStates.fieldLoading.isEmpty());
+		assertTrue(check.fieldStates.fieldStoring.isEmpty());
 		check.determineFieldStatus(fInsn);
-		assertTrue(check.fieldLoading.isEmpty());
-		assertTrue(!check.fieldStoring.isEmpty());
-		assertTrue(check.fieldStoring.contains(fInsn));
+		assertTrue(check.fieldStates.fieldLoading.isEmpty());
+		assertTrue(!check.fieldStates.fieldStoring.isEmpty());
+		assertTrue(check.fieldStates.fieldStoring.contains(fInsn));
 	}
 	
 	@Test
@@ -285,8 +285,8 @@ public class UnusedInstantiationTest {
 		EasyMock.replay(method, lNode, fInsn1, fInsn2);
 		
 		assertEquals("", check.findVariablesMethods(method));
-		assertTrue(check.fieldLoading.contains(fInsn1));
-		assertTrue(check.fieldStoring.contains(fInsn2));
+		assertTrue(check.fieldStates.fieldLoading.contains(fInsn1));
+		assertTrue(check.fieldStates.fieldStoring.contains(fInsn2));
 	}
 	
 	@Test
@@ -301,8 +301,8 @@ public class UnusedInstantiationTest {
 		ArrayList<MyFieldInsnNode> fieldStoring = new ArrayList<>();
 		fieldLoading.add(fInsn1);
 		fieldStoring.add(fInsn2);
-		check.fieldLoading = fieldLoading;
-		check.fieldStoring = fieldStoring;
+		check.fieldStates.fieldLoading = fieldLoading;
+		check.fieldStates.fieldStoring = fieldStoring;
 		
 		fInsn1.name = "counter";
 		fInsn2.name = "download";
@@ -329,8 +329,8 @@ public class UnusedInstantiationTest {
 		ArrayList<MyFieldInsnNode> fieldStoring = new ArrayList<>();
 		fieldLoading.add(fInsn1);
 		fieldStoring.add(fInsn2);
-		check.fieldLoading = fieldLoading;
-		check.fieldStoring = fieldStoring;
+		check.fieldStates.fieldLoading = fieldLoading;
+		check.fieldStates.fieldStoring = fieldStoring;
 		
 		fInsn1.name = "counter";
 		fInsn2.name = "download";
@@ -441,8 +441,8 @@ public class UnusedInstantiationTest {
 		assertEquals("Unused Instantiation Check:\n	Class: null\n		Unused Variables: \n" + "			Line 12: Unused field named download\n" 
 				+ "			Line 15: Unused variable named counter in method countThings\n" , check.runCheck(classes));
 
-		assertTrue(check.fieldLoading.contains(fInsn1));
-		assertTrue(check.fieldStoring.contains(fInsn2));
+		assertTrue(check.fieldStates.fieldLoading.contains(fInsn1));
+		assertTrue(check.fieldStates.fieldStoring.contains(fInsn2));
 	}
 	
 }
