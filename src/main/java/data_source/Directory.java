@@ -12,29 +12,12 @@ import java.util.stream.Stream;
 public class Directory {
 	
 	private ArrayList<String> directoryString = new ArrayList<String>();
-//	private List<MyClassNode> directoryClassData = new ArrayList<>();
-	
 	
 	public Directory (String packageName)
 	{
 		this.directoryString = this.getAllClasses(packageName);
 		
 	}
-	
-//	public void stringToClassData()
-//	{
-//		for(String classDataString : directoryString)
-//		{
-//			ClassData newData = null;
-//			try {
-//				newData = new ClassData(classDataString);
-//			} catch (IOException e) {
-//				// TODO Auto-generated catch block
-//				e.printStackTrace();
-//			}
-//			directoryClassData.add(newData);
-//		}
-//	}
 
 	public ArrayList<String> getAllClasses(String packageName)
 	{
@@ -70,8 +53,6 @@ public class Directory {
 		
 		for(String packageString : testString)
 		{
-//			newList = Stream.concat(newString.stream(), this.getAllClasses(packageString).stream())
-//                    .collect(Collectors.toList());
 			newList = Stream.concat(newList.stream(), Stream.concat(newString.stream(), this.getAllClasses(packageString).stream()))
                     .collect(Collectors.toList());
 		}
@@ -83,10 +64,5 @@ public class Directory {
 	public ArrayList<String> getDirectoryString() {
 		return directoryString;
 	}
-
-//	public List<ClassData> getDirectoryClassData() {
-//		return directoryClassData;
-//	}
-//	
 	
 }
