@@ -150,12 +150,22 @@ public class ConsoleManager {
 				}
 				break;
 				
-			case "class":
+			case "remove":
 				System.out.println("Current classes being linted:");
 				System.out.println(runner.classNames());
-				System.out.println("Select a class name to remove from the list:");
+				System.out.println("Input a class name to remove from the list:");
 				String toRemove = consoleReader.next();
 				if (!runner.removeClass(toRemove)) {
+					System.out.println("This is not a valid check name\n");
+				}
+				break;
+				
+			case "readd":
+				System.out.println("Classes removed from linting:");
+				System.out.println(runner.deletedClassNames());
+				System.out.println("Input a class name to re-add to the list:");
+				String toAdd = consoleReader.next();
+				if (!runner.reAddClass(toAdd)) {
 					System.out.println("This is not a valid check name\n");
 				}
 				break;

@@ -10,11 +10,13 @@ import data_source.FileWriter;
 public class CheckRunner {
 
 	private ArrayList<MyClassNode> classes;
+	private ArrayList<MyClassNode> deleted;
 	private ArrayList<ClassCheck> checks;
 	private FileWriter fileWriter;
 	public CheckRunner(ArrayList<String> testableClasses) {
 		this.classes = ASMReader.generateClassNodes(testableClasses);
 		this.checks = new ArrayList<>();
+		this.deleted = new ArrayList<>();
 		this.fileWriter = new FileWriter("LintOutput.txt");
 	}
 	
@@ -22,6 +24,14 @@ public class CheckRunner {
 		String printString = "";
 		for (int i = 0; i < classes.size(); i++) {
 			printString += "	" + classes.get(i).getCleanName() + "\n";
+		}
+		return printString;
+	}
+	
+	public String deletedClassNames() {
+		String printString = "";
+		for (int i = 0; i < deleted.size(); i++) {
+			printString += "	" + deleted.get(i).getCleanName() + "\n";
 		}
 		return printString;
 	}
@@ -61,7 +71,17 @@ public class CheckRunner {
 	public boolean removeClass(String toRemove) {
 		for (int i = 0; i < classes.size(); i++) {
 			if (classes.get(i).getCleanName().equals(toRemove)) {
-				classes.remove(i);
+				deleted.add(classes.remove(i));
+				return true;
+			}
+		}
+		return false;
+	}
+	
+	public boolean reAddClass(String toAdd) {
+		for (int i = 0; i < deleted.size(); i++) {
+			if (deleted.get(i).getCleanName().equals(toAdd)) {
+				classes.add(deleted.remove(i));
 				return true;
 			}
 		}
