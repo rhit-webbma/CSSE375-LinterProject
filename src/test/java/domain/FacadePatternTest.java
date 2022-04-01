@@ -56,6 +56,8 @@ class FacadePatternTest {
 		EasyMock.replay(classNode, method1, mInsn1, mInsn2, mInsn3);
 		assertEquals("	Java/Theater looks to be a facade for the following classes:\n" 
 				+ "		Java/PopcornMaker\n" + "		Java/Projector\n", check.checkForFacade(classNode, fieldUserClassNames));
+		
+		EasyMock.verify(classNode, method1, mInsn1, mInsn2, mInsn3);
 	}
 	
 	@Test
@@ -91,6 +93,8 @@ class FacadePatternTest {
 		EasyMock.replay(classNode, method1, mInsn1, mInsn2, mInsn3);
 		assertEquals("	Java/Theater might be an attempt at facade pattern. It is missing calls to methods in these classes:\n" 
 				+ "		Java/Lights\n", check.checkForFacade(classNode, fieldUserClassNames));
+		
+		EasyMock.verify(classNode, method1, mInsn1, mInsn2, mInsn3);
 	}
 	
 	@Test
@@ -115,8 +119,6 @@ class FacadePatternTest {
 		EasyMock.expect(classNode3.getFullName()).andReturn("Java/Projector");
 		EasyMock.expect(classNode3.getCleanName()).andReturn("Projector");
 		EasyMock.expect(classNode1.getFullName()).andReturn("Java/Theater");
-		EasyMock.expect(classNode2.getFullName()).andReturn("Java/PopcornMaker");
-		EasyMock.expect(classNode3.getFullName()).andReturn("Java/Projector");
 		
 		EasyMock.expect(mInsn1.getFullOwner()).andReturn("Java/PopcornMaker");
 		EasyMock.expect(mInsn2.getFullOwner()).andReturn("Java/ArrayList");
@@ -148,6 +150,8 @@ class FacadePatternTest {
 		EasyMock.replay(classNode1, classNode2, classNode3, method1, mInsn1, mInsn2, mInsn3, field1, field2, field3);
 		assertEquals("\nFacade Pattern Check:\n" + "	Java/Theater looks to be a facade for the following classes:\n" 
 				+ "		Java/PopcornMaker\n" + "		Java/Projector\n", check.runCheck(classes));
+		
+		EasyMock.verify(classNode1, classNode2, classNode3, method1, mInsn1, mInsn2, mInsn3, field1, field2, field3);
 	}
 	
 	@Test
@@ -177,6 +181,7 @@ class FacadePatternTest {
 		EasyMock.expect(classNode2.getFullName()).andReturn("Java/PopcornMaker");
 		EasyMock.expect(classNode3.getFullName()).andReturn("Java/Projector");
 		EasyMock.expect(classNode4.getFullName()).andReturn("Java/Lights");
+		
 		
 		EasyMock.expect(mInsn1.getFullOwner()).andReturn("Java/PopcornMaker");
 		EasyMock.expect(mInsn2.getFullOwner()).andReturn("Java/ArrayList");
@@ -208,6 +213,8 @@ class FacadePatternTest {
 		EasyMock.replay(classNode1, classNode2, classNode3, classNode4, method1, mInsn1, mInsn2, mInsn3, field1, field2, field3);
 		assertEquals("\nFacade Pattern Check:\n" + "	Java/TheaterFacade might be an attempt at facade pattern. It is missing calls to methods in these classes:\n" 
 				+ "		Java/Lights\n", check.runCheck(classes));
+		
+		EasyMock.verify(classNode1, classNode2, classNode3, classNode4, method1, mInsn1, mInsn2, mInsn3, field1, field2, field3);
 	}
 	
 	@Test
@@ -242,6 +249,8 @@ class FacadePatternTest {
 		EasyMock.replay(classNode1, classNode2, classNode3, classNode4);
 		assertEquals("\nFacade Pattern Check:\n" + "	Java/TheaterFacade contains the word 'facade' but is not a facade pattern\n"
 				, check.runCheck(classes));
+		
+		EasyMock.verify(classNode1, classNode2, classNode3, classNode4);
 	}
 
 }
