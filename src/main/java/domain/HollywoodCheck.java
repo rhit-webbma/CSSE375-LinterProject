@@ -26,19 +26,7 @@ public class HollywoodCheck implements ClassCheck {
 				}
 				
 				if (superClass != null) {
-					ArrayList<String> curMethodNames = curClass.getMethodNames();
-					ArrayList<String> superMethodNames = superClass.getMethodNames();
-					for (String curName : curMethodNames) {
-						superMethodNames.remove(curName);
-					}
-					
-					ArrayList<String> curFieldNames = curClass.getFieldNames();
-					ArrayList<String> superFieldNames = superClass.getFieldNames();
-					for (String curName : curFieldNames) {
-						superFieldNames.remove(curName);
-					}
-	
-					toPrint += checkHollywoodViolations(curClass, superFieldNames, superMethodNames, superClass.getCleanName());
+					toPrint += checkHollywoodViolations(curClass, superClass);
 				}
 			}
 		}
@@ -48,9 +36,12 @@ public class HollywoodCheck implements ClassCheck {
 		return toPrint;
 	}
 	
-	protected String checkHollywoodViolations(MyClassNode curClass, ArrayList<String> superFieldNames,
-												ArrayList<String> superMethodNames, String superName) {
+	protected String checkHollywoodViolations(MyClassNode curClass, MyClassNode superClass) {
 		String toPrint = "";
+		
+		ArrayList<String> superMethodNames = this.getSuperMethodNames(curClass, superClass);
+		ArrayList<String> superFieldNames = this.getSuperFieldNames(curClass, superClass);
+		
 		for (MyMethodNode method : curClass.methods) {
 			ArrayList<String> superFieldNamesTemp = superFieldNames;
 			ArrayList<String> localVarNames = method.getVarNames();
@@ -62,18 +53,38 @@ public class HollywoodCheck implements ClassCheck {
 					MyMethodInsnNode methodInsn = (MyMethodInsnNode) insn;
 					if (superMethodNames.contains(methodInsn.name)) {
 						toPrint += "	Class " + curClass.getCleanName() + " calls method " + methodInsn.name + " from " + 
-								superName + " in method " + method.name + "\n";
+								superClass.getCleanName() + " in method " + method.name + "\n";
 					}
 				} else if (insn instanceof MyFieldInsnNode) {
 					MyFieldInsnNode fieldInsn = (MyFieldInsnNode) insn;
 					if (superFieldNamesTemp.contains(fieldInsn.name)) {
 						toPrint += "	Class " + curClass.getCleanName() + " uses field " + fieldInsn.name + " from " + 
-								superName + " in method " + method.name + "\n";
+								superClass.getCleanName() + " in method " + method.name + "\n";
 					}
 				}
 			}
 		}
 		return toPrint;
+	}
+	
+	private ArrayList<String> getSuperMethodNames(MyClassNode curClass, MyClassNode superClass) {
+		ArrayList<String> curMethodNames = curClass.getMethodNames();
+		ArrayList<String> superMethodNames = superClass.getMethodNames();
+		for (String curName : curMethodNames) {
+			superMethodNames.remove(curName);
+		}
+		
+		return superMethodNames;
+	}
+	
+	private ArrayList<String> getSuperFieldNames(MyClassNode curClass, MyClassNode superClass) {
+		ArrayList<String> curFieldNames = curClass.getFieldNames();
+		ArrayList<String> superFieldNames = superClass.getFieldNames();
+		for (String curName : curFieldNames) {
+			superFieldNames.remove(curName);
+		}
+		
+		return superFieldNames;
 	}
 	
 	@Override

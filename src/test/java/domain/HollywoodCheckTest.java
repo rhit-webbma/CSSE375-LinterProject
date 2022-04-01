@@ -32,10 +32,17 @@ public class HollywoodCheckTest {
 	@Test
 	public void testUsingField() {
 		MyClassNode curClass = EasyMock.createMock(MyClassNode.class);
+		MyClassNode superClass = EasyMock.createMock(MyClassNode.class);
+		ArrayList<String> emptyArrayList = new ArrayList<>();
+		
+		EasyMock.expect(curClass.getMethodNames()).andReturn(emptyArrayList);
+		EasyMock.expect(superClass.getMethodNames()).andReturn(emptyArrayList);
+		
 		ArrayList<String> superFieldNames = new ArrayList<>();
 		superFieldNames.add("repeated");
-		ArrayList<String> superMethodNames = new ArrayList<>();
-		String superName = "SuperClass";
+		EasyMock.expect(curClass.getFieldNames()).andReturn(emptyArrayList);
+		EasyMock.expect(superClass.getFieldNames()).andReturn(superFieldNames);
+		
 		MyMethodNode m1 = EasyMock.createMock(MyMethodNode.class);
 		ArrayList<MyMethodNode> methods = new ArrayList<MyMethodNode>();
 		methods.add(m1);
@@ -52,22 +59,31 @@ public class HollywoodCheckTest {
 		m1.name = "badMethod";
 		EasyMock.expect(m1.getVarNames()).andReturn(new ArrayList<String>());
 		
-		EasyMock.replay(curClass, m1, n1a);
+		EasyMock.expect(superClass.getCleanName()).andReturn("SuperClass");
+		
+		EasyMock.replay(curClass, superClass, m1, n1a);
 		assertEquals("	Class SubClass uses field repeated from SuperClass in method badMethod\n",
-				checker.checkHollywoodViolations(curClass, superFieldNames, superMethodNames, superName));
+				checker.checkHollywoodViolations(curClass, superClass));
+		EasyMock.verify(curClass, superClass, m1, n1a);
 	}
 	
 	@Test
 	public void testUsingFieldVarInMethod() {
 		MyClassNode curClass = EasyMock.createMock(MyClassNode.class);
+		MyClassNode superClass = EasyMock.createMock(MyClassNode.class);
+		ArrayList<String> emptyArrayList = new ArrayList<>();
+
+		EasyMock.expect(curClass.getMethodNames()).andReturn(emptyArrayList);
+		EasyMock.expect(superClass.getMethodNames()).andReturn(emptyArrayList);
+		
 		ArrayList<String> superFieldNames = new ArrayList<>();
 		superFieldNames.add("repeated");
-		ArrayList<String> superMethodNames = new ArrayList<>();
-		String superName = "SuperClass";
+		EasyMock.expect(curClass.getFieldNames()).andReturn(emptyArrayList);
+		EasyMock.expect(superClass.getFieldNames()).andReturn(superFieldNames);
+		
 		MyMethodNode m1 = EasyMock.createMock(MyMethodNode.class);
 		ArrayList<MyMethodNode> methods = new ArrayList<MyMethodNode>();
 		methods.add(m1);
-		EasyMock.expect(curClass.getCleanName()).andReturn("SubClass");
 		curClass.methods = methods;
 		
 		LinkedList<MyAbstractInsnNode> insns = new LinkedList<MyAbstractInsnNode>();
@@ -84,18 +100,27 @@ public class HollywoodCheckTest {
 		EasyMock.expect(m1.getVarNames()).andReturn(locals);
 		
 		
-		EasyMock.replay(curClass, m1, n1a, lv1);
+		EasyMock.replay(curClass, superClass, m1, n1a, lv1);
 		assertEquals("",
-				checker.checkHollywoodViolations(curClass, superFieldNames, superMethodNames, superName));
+				checker.checkHollywoodViolations(curClass, superClass));
+		
+		EasyMock.verify(curClass, superClass, m1, n1a, lv1);
 	}
 	
 	@Test
 	public void testUsingMethod() {
 		MyClassNode curClass = EasyMock.createMock(MyClassNode.class);
-		ArrayList<String> superFieldNames = new ArrayList<>();
+		MyClassNode superClass = EasyMock.createMock(MyClassNode.class);
+		ArrayList<String> emptyArrayList = new ArrayList<>();
+		
 		ArrayList<String> superMethodNames = new ArrayList<>();
 		superMethodNames.add("repeated");
-		String superName = "SuperClass";
+		EasyMock.expect(curClass.getMethodNames()).andReturn(emptyArrayList);
+		EasyMock.expect(superClass.getMethodNames()).andReturn(superMethodNames);
+
+		EasyMock.expect(curClass.getFieldNames()).andReturn(emptyArrayList);
+		EasyMock.expect(superClass.getFieldNames()).andReturn(emptyArrayList);
+		
 		MyMethodNode m1 = EasyMock.createMock(MyMethodNode.class);
 		ArrayList<MyMethodNode> methods = new ArrayList<MyMethodNode>();
 		methods.add(m1);
@@ -111,9 +136,13 @@ public class HollywoodCheckTest {
 		m1.instructions = insns;
 		m1.name = "badMethod";
 		EasyMock.expect(m1.getVarNames()).andReturn(new ArrayList<String>());
+
+		EasyMock.expect(superClass.getCleanName()).andReturn("SuperClass");
 		
-		EasyMock.replay(curClass, m1, n1a);
+		EasyMock.replay(curClass, superClass, m1, n1a);
 		assertEquals("	Class SubClass calls method repeated from SuperClass in method badMethod\n",
-				checker.checkHollywoodViolations(curClass, superFieldNames, superMethodNames, superName));
+				checker.checkHollywoodViolations(curClass, superClass));
+		
+		EasyMock.verify(curClass, superClass, m1, n1a);
 	}
 }
