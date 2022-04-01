@@ -16,7 +16,6 @@ public class Directory {
 	public Directory (String packageName)
 	{
 		this.directoryString = this.getAllClasses(packageName);
-		
 	}
 
 	public ArrayList<String> getAllClasses(String packageName)

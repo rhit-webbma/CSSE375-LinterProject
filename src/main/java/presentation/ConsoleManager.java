@@ -28,7 +28,10 @@ public class ConsoleManager {
 	static Directory directory;
 	
 	public static void main(String[] args) {
-		userInterfaceLoop("Package");
+		
+		Scanner in = new Scanner(System.in);
+		System.out.println("What type of Import would you like to do: ");
+		userInterfaceLoop(in.nextLine());
 	}
 	
 	private static void userInterfaceLoop(String inputType) {
@@ -41,8 +44,10 @@ public class ConsoleManager {
 		{
 		case "Github":
 			testingMethod = new GithubImport();
+			break;
 		case "Package":
 			testingMethod = new PackageImport();
+			break;
 		}
 		
 		runner = new CheckRunner(testingMethod.generateClasses());
