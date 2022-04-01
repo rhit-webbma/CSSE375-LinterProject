@@ -15,7 +15,6 @@ import java.nio.file.StandardCopyOption;
 public class PopulateJavaFile {
 	
 	private File populatedFile;
-	private byte[] fileBytes;
 	
 	public PopulateJavaFile(String url, String fileName)
 	{
@@ -31,11 +30,6 @@ public class PopulateJavaFile {
 	public File getPopulatedFile()
 	{
 		return this.populatedFile;
-	}
-	
-	public byte[] getFileBytes()
-	{
-		return this.fileBytes;
 	}
 	
 	public void populate(String rawData, String fileName) throws IOException
@@ -70,16 +64,6 @@ public class PopulateJavaFile {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
-			
-			fileBytes = new byte[(int) this.populatedFile.length()];
-			
-			try(FileInputStream fis = new FileInputStream(this.populatedFile))
-			{
-				fis.read(fileBytes);
-			}
-             
-
-             
 	}
 	
 }
