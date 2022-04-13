@@ -4,14 +4,11 @@ import static org.junit.jupiter.api.Assertions.*;
 
 import java.util.ArrayList;
 import java.util.LinkedList;
-import java.util.List;
 
 import org.easymock.EasyMock;
 import org.junit.jupiter.api.Test;
 
 import data_source.MyAbstractInsnNode;
-import data_source.MyClassNode;
-import data_source.MyFieldNode;
 import data_source.MyMethodInsnNode;
 import data_source.MyMethodNode;
 
