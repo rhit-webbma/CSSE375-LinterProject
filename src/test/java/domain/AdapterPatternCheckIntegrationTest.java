@@ -69,12 +69,12 @@ class AdapterPatternCheckIntegrationTest {
 	@Test
 	void testClaimsAdapterIsAdapter() {
 		MyClassNode curClass = createTestableClass(true, true);
-		List<MyMethodNode> curMethods = curClass.methods;
-		List<String> fieldTypes = curClass.getNonBuiltInFieldTypes();
-		for (MyMethodNode method : curMethods) {
-			assertTrue(checker.checkMethod(method, fieldTypes));
-		}
-		assertTrue(checker.checkMethods(curClass, fieldTypes));
+
+
+		String expected = "	Class testAdapter uses Adapter Pattern to adapt Class testFieldClass to "
+				+ "Interface testInterface \n";
+		
+		assertEquals(expected, checker.checkAdapter(curClass));
 	}
 
 	@Test
