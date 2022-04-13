@@ -5,10 +5,6 @@ import static org.junit.jupiter.api.Assertions.*;
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.regex.Pattern;
-
-import org.easymock.EasyMock;
-import org.easymock.asm.Type;
 import org.junit.jupiter.api.Test;
 import org.objectweb.asm.Opcodes;
 
