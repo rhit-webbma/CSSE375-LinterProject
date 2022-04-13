@@ -23,10 +23,15 @@ class StrategyPatternTest {
 	
 	@Test
 	void failNoCall() {
+		
+		//Arrange Stage
+		
+		//Creating Interface Class Parameters
 		List<String> interfaceClassInterfaces = new ArrayList<>();
 		List<MyFieldNode> interfaceClassFields = new ArrayList<>();
 		List<MyMethodNode> interfaceClassMethods = new ArrayList<>();
 		
+		//Creating the Interface Class
 		MyClassNode interfaceClass = new MyClassNode("Pattern", "", 
 				interfaceClassInterfaces, 
 				interfaceClassFields, 
@@ -34,19 +39,23 @@ class StrategyPatternTest {
 				Opcodes.ACC_INTERFACE
 				);
 		
+		//Creating Context Class Parameters
 		List<String> contextClassInterfaces = new ArrayList<>();
 		List<MyFieldNode> contextClassFields = new ArrayList<>();
 		List<MyMethodNode> contextClassMethods = new ArrayList<>();
 		
+		//Creating a Field which has the Interface Classes Type
 		MyFieldNode interfaceField = new MyFieldNode("strategyPattern", "Pattern", 0);
 		contextClassFields.add(interfaceField);
 		
 		LinkedList<MyAbstractInsnNode> contextConstructorInsn = new LinkedList<>();
 		List<MyLocalVariableNode> contextConstructorlocalVariables = new ArrayList<>();
 		
+		//Creating a False Method Call
 		MyFieldInsnNode interfaceInit = new MyFieldInsnNode("strategyPattern", "", Opcodes.ACC_PUBLIC);
 		contextConstructorInsn.add(interfaceInit);
 		
+		//Creating a Constructor with the Interface passed in through Dependency Injection
 		MyMethodNode contextConstructor = new MyMethodNode("<init>", "(LPattern;)V",
 				contextConstructorInsn,
 				contextConstructorlocalVariables
@@ -56,6 +65,7 @@ class StrategyPatternTest {
 		LinkedList<MyAbstractInsnNode> contextMethodInsn = new LinkedList<>();
 		List<MyLocalVariableNode> contextMethodlocalVariables = new ArrayList<>();
 		
+		//Creating the method in Context that is supposed to call the Interfaces Method
 		MyMethodNode contextMethod = new MyMethodNode("contextMethod", "()V",
 				contextMethodInsn,
 				contextMethodlocalVariables
@@ -63,6 +73,7 @@ class StrategyPatternTest {
 		
 		contextClassMethods.add(contextMethod);
 		
+		//Creating of the context class which will hold the context call method
 		MyClassNode contextClass = new MyClassNode("AlmostStrategy", "",
 				contextClassInterfaces,
 				contextClassFields,
@@ -75,20 +86,31 @@ class StrategyPatternTest {
 		classes.add(interfaceClass);
 		classes.add(contextClass);
 		
-		assertEquals(checker.runCheck(classes),
-				"\nStrategy Pattern Implementations: \n"
+		String expected = "\nStrategy Pattern Implementations: \n"
 				+ "	Strategy pattern is nearly implemented in AlmostStrategy"
 				+ " using interface Pattern. To finish implementing strategy pattern, the function/functions "
-						+ "called from the interface must be used\n");
+						+ "called from the interface must be used\n";
+		
+		//Act Stage
+		String actual = checker.runCheck(classes);
+		
+		
+		//Assert Stage
+		assertEquals(actual,
+				expected);
 	}
 	
 	@Test
 	void failNotConstructored()
 	{
+		//Arrange Stage
+		
+		//Creating Interface Class Parameters
 		List<String> interfaceClassInterfaces = new ArrayList<>();
 		List<MyFieldNode> interfaceClassFields = new ArrayList<>();
 		List<MyMethodNode> interfaceClassMethods = new ArrayList<>();
 		
+		//Creating the Interface Class
 		MyClassNode interfaceClass = new MyClassNode("Pattern", "", 
 				interfaceClassInterfaces, 
 				interfaceClassFields, 
@@ -96,25 +118,30 @@ class StrategyPatternTest {
 				Opcodes.ACC_INTERFACE
 				);
 		
+		//Creating Context Class Parameters
 		List<String> contextClassInterfaces = new ArrayList<>();
 		List<MyFieldNode> contextClassFields = new ArrayList<>();
 		List<MyMethodNode> contextClassMethods = new ArrayList<>();
 		
+		//Creating a Field which has the Interface Classes Type
 		MyFieldNode interfaceField = new MyFieldNode("strategyPattern", "Pattern", 0);
 		contextClassFields.add(interfaceField);
 		
 		LinkedList<MyAbstractInsnNode> contextConstructorInsn = new LinkedList<>();
 		List<MyLocalVariableNode> contextConstructorlocalVariables = new ArrayList<>();
 		
+		//Creating a Method Call
 		MyFieldInsnNode interfaceInit = new MyFieldInsnNode("strategyPattern", "", Opcodes.ACC_PUBLIC);
 		contextConstructorInsn.add(interfaceInit);
 		
+		//Creating a Constructor with the Interface intentionally not passed in
 		MyMethodNode contextConstructor = new MyMethodNode("<init>", "()V",
 				contextConstructorInsn,
 				contextConstructorlocalVariables
 				);
 		contextClassMethods.add(contextConstructor);
 		
+		//Creating of the context class which will hold the context call method
 		MyClassNode contextClass = new MyClassNode("AlmostStrategy", "",
 				contextClassInterfaces,
 				contextClassFields,
@@ -127,16 +154,26 @@ class StrategyPatternTest {
 		classes.add(interfaceClass);
 		classes.add(contextClass);
 		
-		assertEquals(checker.runCheck(classes), "");
+		String expected = "";
+		
+		//Act stage
+		String actual = checker.runCheck(classes);
+		
+		//Assert Stage
+		assertEquals(actual, expected);
 	}
 	
 	@Test
 	void passSingleStrategy()
 	{
+		//Arrange Stage
+		
+		//Creating Interface Class Parameters
 		List<String> interfaceClassInterfaces = new ArrayList<>();
 		List<MyFieldNode> interfaceClassFields = new ArrayList<>();
 		List<MyMethodNode> interfaceClassMethods = new ArrayList<>();
 		
+		//Creating the Interface Class
 		MyClassNode interfaceClass = new MyClassNode("Pattern", "", 
 				interfaceClassInterfaces, 
 				interfaceClassFields, 
@@ -144,19 +181,23 @@ class StrategyPatternTest {
 				Opcodes.ACC_INTERFACE
 				);
 		
+		//Creating Context Class Parameters
 		List<String> contextClassInterfaces = new ArrayList<>();
 		List<MyFieldNode> contextClassFields = new ArrayList<>();
 		List<MyMethodNode> contextClassMethods = new ArrayList<>();
 		
+		//Creating a Field which has the Interface Classes Type
 		MyFieldNode interfaceField = new MyFieldNode("strategyPattern", "Pattern", 0);
 		contextClassFields.add(interfaceField);
 		
 		LinkedList<MyAbstractInsnNode> contextConstructorInsn = new LinkedList<>();
 		List<MyLocalVariableNode> contextConstructorlocalVariables = new ArrayList<>();
 		
+		//Creating a Method Call
 		MyFieldInsnNode interfaceInit = new MyFieldInsnNode("strategyPattern", "", Opcodes.ACC_PUBLIC);
 		contextConstructorInsn.add(interfaceInit);
 		
+		//Creating a Constructor with the Interface passed in through Dependency Injection
 		MyMethodNode contextConstructor = new MyMethodNode("<init>", "(LPattern;)V",
 				contextConstructorInsn,
 				contextConstructorlocalVariables
@@ -166,9 +207,11 @@ class StrategyPatternTest {
 		LinkedList<MyAbstractInsnNode> contextMethodInsn = new LinkedList<>();
 		List<MyLocalVariableNode> contextMethodlocalVariables = new ArrayList<>();
 		
+		//Creating a method Instruction call to the interface to complete the strategy pattern
 		MyMethodInsnNode methodInsn = new MyMethodInsnNode("methodCall", "Pattern", Opcodes.INVOKEVIRTUAL);
 		contextMethodInsn.add(methodInsn);
 		
+		//Creating the method in Context that is supposed to call the Interfaces Method
 		MyMethodNode contextMethod = new MyMethodNode("contextMethod", "()V",
 				contextMethodInsn,
 				contextMethodlocalVariables
@@ -176,6 +219,7 @@ class StrategyPatternTest {
 		
 		contextClassMethods.add(contextMethod);
 		
+		//Creating of the context class which will hold the context call method
 		MyClassNode contextClass = new MyClassNode("Strategy1", "",
 				contextClassInterfaces,
 				contextClassFields,
@@ -188,20 +232,32 @@ class StrategyPatternTest {
 		classes.add(interfaceClass);
 		classes.add(contextClass);
 		
-		assertEquals(checker.runCheck(classes),
-		"\nStrategy Pattern Implementations: \n"
-		+ "	Implemented in Strategy1"
-		+ " class using interface Pattern"
-		+ ", and invoked for the first time in method contextMethod\n");
+		String expected = 		"\nStrategy Pattern Implementations: \n"
+				+ "	Implemented in Strategy1"
+				+ " class using interface Pattern"
+				+ ", and invoked for the first time in method contextMethod\n";
+		
+		//Act Stage
+		
+		String actual = checker.runCheck(classes);
+		
+		//Assert Stage
+		
+		assertEquals(actual, expected);
 	}
 	
 	@Test
 	void passMultiStrategy()
 	{
+		//Arrange Stage
+		
+		//Creating First Interface Class Parameters
 		List<String> interfaceClass1Interfaces = new ArrayList<>();
 		List<MyFieldNode> interfaceClass1Fields = new ArrayList<>();
 		List<MyMethodNode> interfaceClass1Methods = new ArrayList<>();
 		
+		
+		//Creating the First interface Class
 		MyClassNode interface1Class = new MyClassNode("Pattern1", "", 
 				interfaceClass1Interfaces, 
 				interfaceClass1Fields, 
@@ -209,10 +265,12 @@ class StrategyPatternTest {
 				Opcodes.ACC_INTERFACE
 				);
 		
+		//Creating Second Interface Class Parameters
 		List<String> interfaceClass2Interfaces = new ArrayList<>();
 		List<MyFieldNode> interfaceClass2Fields = new ArrayList<>();
 		List<MyMethodNode> interfaceClass2Methods = new ArrayList<>();
 		
+		//Creating the First interface Class
 		MyClassNode interface2Class = new MyClassNode("Pattern2", "", 
 				interfaceClass2Interfaces, 
 				interfaceClass2Fields, 
@@ -220,25 +278,31 @@ class StrategyPatternTest {
 				Opcodes.ACC_INTERFACE
 				);
 		
+		//Creating context class parameters
 		List<String> contextClassInterfaces = new ArrayList<>();
 		List<MyFieldNode> contextClassFields = new ArrayList<>();
 		List<MyMethodNode> contextClassMethods = new ArrayList<>();
 		
+		//Creating a Field which has Interface 1's Class Type
 		MyFieldNode interface1Field = new MyFieldNode("strategyPattern1", "Pattern1", 0);
 		contextClassFields.add(interface1Field);
 		
+		//Creating a Field which has Interface 2's Class Type
 		MyFieldNode interface2Field = new MyFieldNode("strategyPattern2", "Pattern2", 0);
 		contextClassFields.add(interface2Field);
 		
 		LinkedList<MyAbstractInsnNode> contextConstructorInsn = new LinkedList<>();
 		List<MyLocalVariableNode> contextConstructorlocalVariables = new ArrayList<>();
 		
+		//Creating a Method Call for Interface 1
 		MyFieldInsnNode interface1Init = new MyFieldInsnNode("strategyPattern1", "", Opcodes.ACC_PUBLIC);
 		contextConstructorInsn.add(interface1Init);
 		
+		//Creating a Method Call for Interface 2
 		MyFieldInsnNode interface2Init = new MyFieldInsnNode("strategyPattern2", "", Opcodes.ACC_PUBLIC);
 		contextConstructorInsn.add(interface2Init);
 		
+		//Creating a constructor for the context class which passes in Interface 1 and 2 through depedency injection
 		MyMethodNode contextConstructor = new MyMethodNode("<init>", "(LPattern1;LPattern2;)V",
 				contextConstructorInsn,
 				contextConstructorlocalVariables
@@ -248,12 +312,15 @@ class StrategyPatternTest {
 		LinkedList<MyAbstractInsnNode> contextMethodInsn = new LinkedList<>();
 		List<MyLocalVariableNode> contextMethodlocalVariables = new ArrayList<>();
 		
+		//Creating the instruction method call for the first interface
 		MyMethodInsnNode methodInsn1 = new MyMethodInsnNode("methodCall1", "Pattern1", Opcodes.INVOKEVIRTUAL);
 		contextMethodInsn.add(methodInsn1);
 		
+		//Creating the instruction method call for the first interface
 		MyMethodInsnNode methodInsn2 = new MyMethodInsnNode("methodCall2", "Pattern2", Opcodes.INVOKEVIRTUAL);
 		contextMethodInsn.add(methodInsn2);
 		
+		//Creating the method in Context that is supposed to call the Interfaces Method
 		MyMethodNode contextMethod = new MyMethodNode("contextMethod", "()V",
 				contextMethodInsn,
 				contextMethodlocalVariables
@@ -261,6 +328,7 @@ class StrategyPatternTest {
 		
 		contextClassMethods.add(contextMethod);
 		
+		//Creating the context class which will call each interface method
 		MyClassNode contextClass = new MyClassNode("Strategy2", "",
 				contextClassInterfaces,
 				contextClassFields,
@@ -274,13 +342,20 @@ class StrategyPatternTest {
 		classes.add(interface2Class);
 		classes.add(contextClass);
 		
-		assertEquals(checker.runCheck(classes),
-		"\nStrategy Pattern Implementations: \n"
-		+ "	Implemented in Strategy2"
-		+ " class using interface Pattern1"
-		+ ", and invoked for the first time in method contextMethod\n"
-		+ "	Implemented in Strategy2"
-		+ " class using interface Pattern2"
-		+ ", and invoked for the first time in method contextMethod\n");
+		String expected = 		"\nStrategy Pattern Implementations: \n"
+				+ "	Implemented in Strategy2"
+				+ " class using interface Pattern1"
+				+ ", and invoked for the first time in method contextMethod\n"
+				+ "	Implemented in Strategy2"
+				+ " class using interface Pattern2"
+				+ ", and invoked for the first time in method contextMethod\n";
+		
+		//Act Stage
+		
+		String actual = checker.runCheck(classes);
+		
+		//Assert Stage
+		
+		assertEquals(actual, expected);
 	}
 }
