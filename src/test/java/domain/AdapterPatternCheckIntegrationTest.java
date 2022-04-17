@@ -108,9 +108,11 @@ class AdapterPatternCheckIntegrationTest {
 	
 	@Test
 	void testClaimsAdapterClassNotAdapter() {
-		MyClassNode curClass = new MyClassNode("BadClassAdapter", "", null, null, null, 0);
-		String expected = 	"Class BadClassAdapter has \"adapter\" in name, but does not implement an interface and have a "
+		MyClassNode curClass = new MyClassNode("BadClassAdapter", "", new ArrayList<String>(), new ArrayList<MyFieldNode>(), null, 0);
+		String expected = 	"	Class BadClassAdapter has \"adapter\" in name, but does not implement an interface and have a "
 				+ "field of a user defined class to adapt. \n";
+		
+		assertEquals(expected, checker.checkAdapter(curClass));
 	}
 
 }
