@@ -59,7 +59,7 @@ public class HollywoodCheckIntegrationTest {
 	}
 	
 	public void initializeMethod(String name, boolean withInsns, boolean withLocals, boolean firstMethod) {
-		MyMethodNode m1 = new MyMethodNode(name, "", new LinkedList<MyAbstractInsnNode>(), new ArrayList<MyLocalVariableNode>());;
+		MyMethodNode m1 = new MyMethodNode(name, "", new LinkedList<MyAbstractInsnNode>(), new ArrayList<MyLocalVariableNode>());
 		if (withInsns && withLocals) {
 			m1 = new MyMethodNode(name, "", insns, locals);
 		} else if (withInsns) {
