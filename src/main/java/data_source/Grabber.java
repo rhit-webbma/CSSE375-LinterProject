@@ -3,10 +3,12 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.Reader;
+import java.lang.reflect.Array;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.HashMap;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -17,11 +19,17 @@ public class Grabber {
 	private String repoName;
 	private String path;
 	private String jsonString;
-	private String downloadURL;
-	private String fileName;
+
+	HashMap<String, String> jsonInformation;
+
+	private Parsable parsingMethod;
+
+	private boolean controlFlagJavaFile;
 	
 	public Grabber(String url)
 	{
+		jsonInformation = new HashMap<>();
+		controlFlagJavaFile = false;
 		this.grabCreds(url);
 		try {
 			this.apiGrabber();
@@ -30,23 +38,27 @@ public class Grabber {
 			e.printStackTrace();
 		}
 		try {
-			this.parseJSON();
+			if(controlFlagJavaFile)
+			{
+				parsingMethod = new javaClassParse();
+			}
+			else
+			{
+				parsingMethod = new javaFolderParse();
+			}
+
+			this.jsonInformation = parsingMethod.parseJSON(this.jsonString);
 		} catch (JSONException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	}
 	
-	public String getDownloadURL()
+	public HashMap<String,String> getJSONInfo()
 	{
-		return this.downloadURL;
+		return this.jsonInformation;
 	}
-	
-	public String getFileName()
-	{
-		return this.fileName;
-	}
-	
+
 	public void grabCreds(String URL)
 	{	
 		String githubURL = URL.substring(0, 19);
@@ -72,15 +84,23 @@ public class Grabber {
 		for(int i = 4; i < spilt.length; i++)
 		{
 			pathList.add(spilt[i]);
-			if(i == spilt.length-1) this.fileName = spilt[i];
+//			if(i == spilt.length-1) this.fileName.add(spilt[i]);
 		}	
 		this.path = String.join("/", pathList);
 	}
 	
 	public void apiGrabber() throws IOException
 	{
-		
+//		https://api.github.com/repos/rhit-webbma/ShoppingCartAPI/contents/src
+
+
 		String urlString = "https://api.github.com/repos/" + this.userName+ "/" + this.repoName + "/contents/" + this.path;
+
+		if(this.path.endsWith(".java"))
+		{
+			controlFlagJavaFile = true;
+		}
+
 		String contentType = null;
 		int status = 0;
 		URL url = null;
@@ -128,14 +148,6 @@ public class Grabber {
 		this.jsonString = content.toString();
 		
 		connection.disconnect();
-	}
-	
-	public void parseJSON() throws JSONException
-	{
-		JSONObject obj = new JSONObject(this.jsonString);
-		
-		this.downloadURL = obj.getString("download_url");
-		
 	}
 	
 	

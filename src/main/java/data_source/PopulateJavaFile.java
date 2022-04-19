@@ -11,16 +11,24 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 
 public class PopulateJavaFile {
 	
 	private File populatedFile;
 	
-	public PopulateJavaFile(String url, String fileName)
+	public PopulateJavaFile(HashMap<String,String> jsonInfo)
 	{
 		
 		try {
-			this.populate(url, fileName);
+
+			for(Map.Entry<String,String> entry : jsonInfo.entrySet()) {
+				String filename = entry.getKey();
+				String url = entry.getValue();
+				this.populate(url, filename);
+			}
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
