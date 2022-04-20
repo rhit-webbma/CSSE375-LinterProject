@@ -53,6 +53,7 @@ class SystemTests {
 				"				Class Name does not start with a capital letter \n" + 
 				"				Class Name contains the non-alphanumeric character: $\n" + 
 				"			Field Name checks: \n" + 
+				"				Field string has the same name as its type \n" +
 				"				Field NotGood has an uppercase first letter, and is not static and final \n" + 
 				"				Field j has too short of a name (1 character) \n" + 
 				"			Method & Method Variable Name checks: \n" + 
@@ -362,7 +363,10 @@ class SystemTests {
 				"	SwimBehavior\n" + 
 				"	SwimFast\n" + 
 				"	TwoFish\n" + 
-				"\n" + 
+				"\n\n" + 
+				"Strategy Pattern Implementations: \n" + 
+				"	Implemented in Fish class using interface SwimBehavior, and invoked for the first time in method doSwim\n" +
+				"	Implemented in Fish class using interface OtherSwimBehavior, and invoked for the first time in method doSwim\n" +
 				"\n" + 
 				"Facade Pattern Check:\n" + 
 				"	example/goodStrategy/Fish looks to be a facade for the following classes:\n" + 
@@ -401,7 +405,7 @@ class SystemTests {
 				"		example/goodAdapter/Cat\n" + 
 				"\n" + 
 				"Adapter Pattern Checker: \n" + 
-				"	Class CatToFishAdapter has \"adapter\" in name, but has methods that are not empty or calling methods of Class Cat; \n" + 
+				"	Class CatToFishAdapter uses Adapter Pattern to adapt Class Cat to Interface Fish \n" + 
 				"\r\n" + 
 				"Input the name of the check you would like to run:", outContent.toString().trim());
 	}
@@ -449,7 +453,7 @@ class SystemTests {
 				"Adapter Pattern Checker: \n" + 
 				"	Class FifthBadAdapter has \"adapter\" in name, but does not implement an interface and have a field of a user defined class to adapt. \n" + 
 				"	Class FirstBadAdapter has \"adapter\" in name, but does not implement an interface and have a field of a user defined class to adapt. \n" + 
-				"	Class FourthBadAdapter has \"adapter\" in name, but has methods that are not empty or calling methods of Class Fish; \n" + 
+				"	Class FourthBadAdapter has \"adapter\" in name, but has methods that are not empty or calling methods of Class Fish \n" + 
 				"	Class SecondBadAdapter has \"adapter\" in name, but does not implement an interface and have a field of a user defined class to adapt. \n" + 
 				"	Class ThirdBadAdapter has \"adapter\" in name, but does not implement an interface and have a field of a user defined class to adapt. \n" + 
 				"\r\n" + 
@@ -518,7 +522,8 @@ class SystemTests {
 				"			Class Name checks: \n" + 
 				"				Class Name does not start with a capital letter \n" + 
 				"				Class Name contains the non-alphanumeric character: $\n" + 
-				"			Field Name checks: \n" + 
+				"			Field Name checks: \n" +
+				"				Field string has the same name as its type \n" +
 				"				Field NotGood has an uppercase first letter, and is not static and final \n" + 
 				"				Field j has too short of a name (1 character) \n" + 
 				"			Method & Method Variable Name checks: \n" + 
@@ -576,12 +581,12 @@ class SystemTests {
 	void testGithubGrabber() {
 		//requires internet and that the link provided it valid
 		//Testing on https://github.com/TheAlgorithms/Java/blob/master/src/main/java/com/thealgorithms/searches/BinarySearch.java
-//		ByteArrayInputStream in = new ByteArrayInputStream("Github\nhttps://github.com/TheAlgorithms/Java/blob/master/src/main/java/com/thealgorithms/searches/BinarySearch.java\nrun\ndone".getBytes());
-//		System.setIn(in);
-//		ConsoleManager.main(new String[0]);
-//		
-//		assertEquals("", outContent.toString().trim());
-		fail("Mike please look at this because I can't figure out a good github link that works");
+		ByteArrayInputStream in = new ByteArrayInputStream("Github\nhttps://github.com/TheAlgorithms/Java/blob/master/src/main/java/com/thealgorithms/searches/BinarySearch.java\nrun\ndone".getBytes());
+		System.setIn(in);
+		ConsoleManager.main(new String[0]);
+		
+		assertEquals("", outContent.toString().trim());
+//		fail("Mike please look at this because I can't figure out a good github link that works");
 	}
 
 }
