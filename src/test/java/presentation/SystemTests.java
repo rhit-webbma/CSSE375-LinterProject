@@ -713,7 +713,6 @@ class SystemTests {
 				"	Class BinarySearch inherits from user created class Object. Could composition be used instead? \n" + 
 				"\r\n" + 
 				"Input the name of the check you would like to run:", outContent.toString().trim());
-//		fail("Mike please look at this because I can't figure out a good github link that works");
 	}
 
 }
