@@ -184,7 +184,6 @@ class SystemTests {
 				"\n" + 
 				"Redundant Interfaces: \n" + 
 				"	1 class uses RedundantInterface\n" + 
-				"	4 classes use NonRedundantInterface\n" + 
 				"	1 class uses FlyingBirds\n" + 
 				"	0 classes use FlyingCats\n" + 
 				"\r\n" + 
