@@ -2,17 +2,17 @@ package domain;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-import java.awt.List;
 import java.util.ArrayList;
 import java.util.LinkedList;
-
-import org.easymock.EasyMock;
+import java.util.List;
 import org.junit.jupiter.api.Test;
+import org.objectweb.asm.Opcodes;
 
 import data_source.MyAbstractInsnNode;
 import data_source.MyClassNode;
 import data_source.MyFieldInsnNode;
 import data_source.MyFieldNode;
+import data_source.MyLocalVariableNode;
 import data_source.MyMethodInsnNode;
 import data_source.MyMethodNode;
 import domain.StrategyPatternCheck;
@@ -23,293 +23,339 @@ class StrategyPatternTest {
 	
 	@Test
 	void failNoCall() {
-		MyClassNode interfaceClass = EasyMock.createMock(MyClassNode.class);
-		MyClassNode contextClass = EasyMock.createMock(MyClassNode.class);
+		
+		//Arrange Stage
+		
+		//Creating Interface Class Parameters
+		List<String> interfaceClassInterfaces = new ArrayList<>();
+		List<MyFieldNode> interfaceClassFields = new ArrayList<>();
+		List<MyMethodNode> interfaceClassMethods = new ArrayList<>();
+		
+		//Creating the Interface Class
+		MyClassNode interfaceClass = new MyClassNode("Pattern", "", 
+				interfaceClassInterfaces, 
+				interfaceClassFields, 
+				interfaceClassMethods,
+				Opcodes.ACC_INTERFACE
+				);
+		
+		//Creating Context Class Parameters
+		List<String> contextClassInterfaces = new ArrayList<>();
+		List<MyFieldNode> contextClassFields = new ArrayList<>();
+		List<MyMethodNode> contextClassMethods = new ArrayList<>();
+		
+		//Creating a Field which has the Interface Classes Type
+		MyFieldNode interfaceField = new MyFieldNode("strategyPattern", "Pattern", 0);
+		contextClassFields.add(interfaceField);
+		
+		LinkedList<MyAbstractInsnNode> contextConstructorInsn = new LinkedList<>();
+		List<MyLocalVariableNode> contextConstructorlocalVariables = new ArrayList<>();
+		
+		//Creating a False Method Call
+		MyFieldInsnNode interfaceInit = new MyFieldInsnNode("strategyPattern", "", Opcodes.ACC_PUBLIC);
+		contextConstructorInsn.add(interfaceInit);
+		
+		//Creating a Constructor with the Interface passed in through Dependency Injection
+		MyMethodNode contextConstructor = new MyMethodNode("<init>", "(LPattern;)V",
+				contextConstructorInsn,
+				contextConstructorlocalVariables
+				);
+		contextClassMethods.add(contextConstructor);
+		
+		LinkedList<MyAbstractInsnNode> contextMethodInsn = new LinkedList<>();
+		List<MyLocalVariableNode> contextMethodlocalVariables = new ArrayList<>();
+		
+		//Creating the method in Context that is supposed to call the Interfaces Method
+		MyMethodNode contextMethod = new MyMethodNode("contextMethod", "()V",
+				contextMethodInsn,
+				contextMethodlocalVariables
+				);
+		
+		contextClassMethods.add(contextMethod);
+		
+		//Creating of the context class which will hold the context call method
+		MyClassNode contextClass = new MyClassNode("AlmostStrategy", "",
+				contextClassInterfaces,
+				contextClassFields,
+				contextClassMethods,
+				Opcodes.ACC_PUBLIC
+				);
+		
+		
 		ArrayList<MyClassNode> classes = new ArrayList<>();
 		classes.add(interfaceClass);
 		classes.add(contextClass);
 		
-		MyMethodNode contextConstructor = EasyMock.createMock(MyMethodNode.class);
-		EasyMock.expect(interfaceClass.getConstructor()).andReturn(null);
-		EasyMock.expect(contextClass.getConstructor()).andReturn(contextConstructor);
-		
-		MyFieldNode interfaceField = EasyMock.createMock(MyFieldNode.class);
-		ArrayList<MyFieldNode> contextFields = new ArrayList<>();
-		contextFields.add(interfaceField);
-		contextClass.fields = contextFields;
-		
-		ArrayList<String> argTypeNames = new ArrayList<>();
-		argTypeNames.add("Pattern");
-		EasyMock.expect(contextConstructor.getCleanArgTypes()).andReturn(argTypeNames);
-		
-		MyFieldInsnNode interfaceInit = EasyMock.createMock(MyFieldInsnNode.class);
-		ArrayList<MyFieldInsnNode> constructorInsns = new ArrayList<>();
-		constructorInsns.add(interfaceInit);
-		EasyMock.expect(contextConstructor.getFieldInstructionNodes()).andReturn(constructorInsns);
-		interfaceField.name = "strategyPattern";
-		interfaceInit.name = "strategyPattern";
-		EasyMock.expect(interfaceField.getCleanDesc()).andReturn("Pattern");
-		EasyMock.expect(interfaceField.getCleanDesc()).andReturn("Pattern");
-		
-		EasyMock.expect(interfaceClass.getCleanName()).andReturn("Pattern");
-		EasyMock.expect(interfaceClass.isInterface()).andReturn(true);
-		
-		MyMethodNode contextMethod = EasyMock.createMock(MyMethodNode.class);
-		ArrayList<MyMethodNode> contextMethods = new ArrayList<>();
-		contextMethods.add(contextConstructor);
-		contextMethods.add(contextMethod);
-		contextClass.methods = contextMethods;
-		
-		EasyMock.expect(contextConstructor.getMethodInstructions()).andReturn(new ArrayList<MyMethodInsnNode>());
-		EasyMock.expect(contextMethod.getMethodInstructions()).andReturn(new ArrayList<MyMethodInsnNode>());
-		EasyMock.expect(contextClass.getCleanName()).andReturn("AlmostStrategy");
-		EasyMock.expect(contextClass.getCleanName()).andReturn("AlmostStrategy");
-		
-		EasyMock.replay(interfaceClass,
-				contextClass,
-				contextConstructor,
-				interfaceField,
-				interfaceInit,
-				contextMethod);
-		
-		assertEquals(checker.runCheck(classes),
-				"\nStrategy Pattern Implementations: \n"
+		String expected = "\nStrategy Pattern Implementations: \n"
 				+ "	Strategy pattern is nearly implemented in AlmostStrategy"
 				+ " using interface Pattern. To finish implementing strategy pattern, the function/functions "
-						+ "called from the interface must be used\n");
-	
-		EasyMock.verify(interfaceClass,
-				contextClass,
-				contextConstructor,
-				interfaceField,
-				interfaceInit,
-				contextMethod);
+						+ "called from the interface must be used\n";
+		
+		//Act Stage
+		String actual = checker.runCheck(classes);
+		
+		
+		//Assert Stage
+		assertEquals(actual,
+				expected);
 	}
 	
 	@Test
-	void failNotConstructed() {
-		MyClassNode interfaceClass = EasyMock.createMock(MyClassNode.class);
-		MyClassNode contextClass = EasyMock.createMock(MyClassNode.class);
+	void failNotConstructored()
+	{
+		//Arrange Stage
+		
+		//Creating Interface Class Parameters
+		List<String> interfaceClassInterfaces = new ArrayList<>();
+		List<MyFieldNode> interfaceClassFields = new ArrayList<>();
+		List<MyMethodNode> interfaceClassMethods = new ArrayList<>();
+		
+		//Creating the Interface Class
+		MyClassNode interfaceClass = new MyClassNode("Pattern", "", 
+				interfaceClassInterfaces, 
+				interfaceClassFields, 
+				interfaceClassMethods,
+				Opcodes.ACC_INTERFACE
+				);
+		
+		//Creating Context Class Parameters
+		List<String> contextClassInterfaces = new ArrayList<>();
+		List<MyFieldNode> contextClassFields = new ArrayList<>();
+		List<MyMethodNode> contextClassMethods = new ArrayList<>();
+		
+		//Creating a Field which has the Interface Classes Type
+		MyFieldNode interfaceField = new MyFieldNode("strategyPattern", "Pattern", 0);
+		contextClassFields.add(interfaceField);
+		
+		LinkedList<MyAbstractInsnNode> contextConstructorInsn = new LinkedList<>();
+		List<MyLocalVariableNode> contextConstructorlocalVariables = new ArrayList<>();
+		
+		//Creating a Method Call
+		MyFieldInsnNode interfaceInit = new MyFieldInsnNode("strategyPattern", "", Opcodes.ACC_PUBLIC);
+		contextConstructorInsn.add(interfaceInit);
+		
+		//Creating a Constructor with the Interface intentionally not passed in
+		MyMethodNode contextConstructor = new MyMethodNode("<init>", "()V",
+				contextConstructorInsn,
+				contextConstructorlocalVariables
+				);
+		contextClassMethods.add(contextConstructor);
+		
+		//Creating of the context class which will hold the context call method
+		MyClassNode contextClass = new MyClassNode("AlmostStrategy", "",
+				contextClassInterfaces,
+				contextClassFields,
+				contextClassMethods,
+				Opcodes.ACC_PUBLIC
+				);
+		
+		
 		ArrayList<MyClassNode> classes = new ArrayList<>();
 		classes.add(interfaceClass);
 		classes.add(contextClass);
 		
-		MyMethodNode contextConstructor = EasyMock.createMock(MyMethodNode.class);
-		EasyMock.expect(interfaceClass.getConstructor()).andReturn(null);
-		EasyMock.expect(contextClass.getConstructor()).andReturn(contextConstructor);
+		String expected = "";
 		
-		MyFieldNode interfaceField = EasyMock.createMock(MyFieldNode.class);
-		ArrayList<MyFieldNode> contextFields = new ArrayList<>();
-		contextFields.add(interfaceField);
-		contextClass.fields = contextFields;
+		//Act stage
+		String actual = checker.runCheck(classes);
 		
-		ArrayList<String> argTypeNames = new ArrayList<>();
-		EasyMock.expect(contextConstructor.getCleanArgTypes()).andReturn(argTypeNames);
-		
-		MyFieldInsnNode interfaceInit = EasyMock.createMock(MyFieldInsnNode.class);
-		ArrayList<MyFieldInsnNode> constructorInsns = new ArrayList<>();
-		EasyMock.expect(contextConstructor.getFieldInstructionNodes()).andReturn(constructorInsns);
-		
-		EasyMock.replay(interfaceClass,
-				contextClass,
-				contextConstructor,
-				interfaceField,
-				interfaceInit);
-		
-		assertEquals(checker.runCheck(classes), "");
-	
-		EasyMock.verify(interfaceClass,
-				contextClass,
-				contextConstructor,
-				interfaceField,
-				interfaceInit);
+		//Assert Stage
+		assertEquals(actual, expected);
 	}
 	
 	@Test
-	void passSingleStrategy() {
-		MyClassNode interfaceClass = EasyMock.createMock(MyClassNode.class);
-		MyClassNode contextClass = EasyMock.createMock(MyClassNode.class);
+	void passSingleStrategy()
+	{
+		//Arrange Stage
+		
+		//Creating Interface Class Parameters
+		List<String> interfaceClassInterfaces = new ArrayList<>();
+		List<MyFieldNode> interfaceClassFields = new ArrayList<>();
+		List<MyMethodNode> interfaceClassMethods = new ArrayList<>();
+		
+		//Creating the Interface Class
+		MyClassNode interfaceClass = new MyClassNode("Pattern", "", 
+				interfaceClassInterfaces, 
+				interfaceClassFields, 
+				interfaceClassMethods,
+				Opcodes.ACC_INTERFACE
+				);
+		
+		//Creating Context Class Parameters
+		List<String> contextClassInterfaces = new ArrayList<>();
+		List<MyFieldNode> contextClassFields = new ArrayList<>();
+		List<MyMethodNode> contextClassMethods = new ArrayList<>();
+		
+		//Creating a Field which has the Interface Classes Type
+		MyFieldNode interfaceField = new MyFieldNode("strategyPattern", "Pattern", 0);
+		contextClassFields.add(interfaceField);
+		
+		LinkedList<MyAbstractInsnNode> contextConstructorInsn = new LinkedList<>();
+		List<MyLocalVariableNode> contextConstructorlocalVariables = new ArrayList<>();
+		
+		//Creating a Method Call
+		MyFieldInsnNode interfaceInit = new MyFieldInsnNode("strategyPattern", "", Opcodes.ACC_PUBLIC);
+		contextConstructorInsn.add(interfaceInit);
+		
+		//Creating a Constructor with the Interface passed in through Dependency Injection
+		MyMethodNode contextConstructor = new MyMethodNode("<init>", "(LPattern;)V",
+				contextConstructorInsn,
+				contextConstructorlocalVariables
+				);
+		contextClassMethods.add(contextConstructor);
+		
+		LinkedList<MyAbstractInsnNode> contextMethodInsn = new LinkedList<>();
+		List<MyLocalVariableNode> contextMethodlocalVariables = new ArrayList<>();
+		
+		//Creating a method Instruction call to the interface to complete the strategy pattern
+		MyMethodInsnNode methodInsn = new MyMethodInsnNode("methodCall", "Pattern", Opcodes.INVOKEVIRTUAL);
+		contextMethodInsn.add(methodInsn);
+		
+		//Creating the method in Context that is supposed to call the Interfaces Method
+		MyMethodNode contextMethod = new MyMethodNode("contextMethod", "()V",
+				contextMethodInsn,
+				contextMethodlocalVariables
+				);
+		
+		contextClassMethods.add(contextMethod);
+		
+		//Creating of the context class which will hold the context call method
+		MyClassNode contextClass = new MyClassNode("Strategy1", "",
+				contextClassInterfaces,
+				contextClassFields,
+				contextClassMethods,
+				Opcodes.ACC_PUBLIC
+				);
+		
+		
 		ArrayList<MyClassNode> classes = new ArrayList<>();
 		classes.add(interfaceClass);
 		classes.add(contextClass);
 		
-		MyMethodNode contextConstructor = EasyMock.createMock(MyMethodNode.class);
-		EasyMock.expect(interfaceClass.getConstructor()).andReturn(null);
-		EasyMock.expect(contextClass.getConstructor()).andReturn(contextConstructor);
-		
-		MyFieldNode interfaceField = EasyMock.createMock(MyFieldNode.class);
-		ArrayList<MyFieldNode> contextFields = new ArrayList<>();
-		contextFields.add(interfaceField);
-		contextClass.fields = contextFields;
-		
-		ArrayList<String> argTypeNames = new ArrayList<>();
-		argTypeNames.add("Pattern");
-		EasyMock.expect(contextConstructor.getCleanArgTypes()).andReturn(argTypeNames);
-		
-		MyFieldInsnNode interfaceInit = EasyMock.createMock(MyFieldInsnNode.class);
-		ArrayList<MyFieldInsnNode> constructorInsns = new ArrayList<>();
-		constructorInsns.add(interfaceInit);
-		EasyMock.expect(contextConstructor.getFieldInstructionNodes()).andReturn(constructorInsns);
-		interfaceField.name = "strategyPattern";
-		interfaceInit.name = "strategyPattern";
-		EasyMock.expect(interfaceField.getCleanDesc()).andReturn("Pattern");
-		EasyMock.expect(interfaceField.getCleanDesc()).andReturn("Pattern");
-		
-		EasyMock.expect(interfaceClass.getCleanName()).andReturn("Pattern");
-		EasyMock.expect(interfaceClass.isInterface()).andReturn(true);
-		
-		MyMethodNode contextMethod = EasyMock.createMock(MyMethodNode.class);
-		ArrayList<MyMethodNode> contextMethods = new ArrayList<>();
-		contextMethods.add(contextConstructor);
-		contextMethods.add(contextMethod);
-		contextClass.methods = contextMethods;
-		
-		MyMethodInsnNode methodInsn = EasyMock.createMock(MyMethodInsnNode.class);
-		ArrayList<MyMethodInsnNode> methodInsns = new ArrayList<MyMethodInsnNode>();
-		methodInsns.add(methodInsn);
-		EasyMock.expect(contextConstructor.getMethodInstructions()).andReturn(new ArrayList<MyMethodInsnNode>());
-		
-		EasyMock.expect(contextMethod.getMethodInstructions()).andReturn(methodInsns);
-		EasyMock.expect(methodInsn.getCleanOwner()).andReturn("Pattern");
-		EasyMock.expect(methodInsn.isInvokeVirtual()).andReturn(true);
-		
-		EasyMock.expect(contextClass.getCleanName()).andReturn("Strategy1");
-		EasyMock.expect(contextClass.getCleanName()).andReturn("Strategy1");
-		contextMethod.name = "contextMethod";
-		
-		EasyMock.replay(interfaceClass,
-				contextClass,
-				contextConstructor,
-				interfaceField,
-				interfaceInit,
-				contextMethod,
-				methodInsn);
-		
-		assertEquals(checker.runCheck(classes),
-				"\nStrategy Pattern Implementations: \n"
+		String expected = 		"\nStrategy Pattern Implementations: \n"
 				+ "	Implemented in Strategy1"
 				+ " class using interface Pattern"
-				+ ", and invoked for the first time in method contextMethod\n");
-	
-		EasyMock.verify(interfaceClass,
-				contextClass,
-				contextConstructor,
-				interfaceField,
-				interfaceInit,
-				contextMethod,
-				methodInsn);
+				+ ", and invoked for the first time in method contextMethod\n";
+		
+		//Act Stage
+		
+		String actual = checker.runCheck(classes);
+		
+		//Assert Stage
+		
+		assertEquals(actual, expected);
 	}
 	
 	@Test
-	void passMultiStrategy() {
-		MyClassNode interfaceClass1 = EasyMock.createMock(MyClassNode.class);
-		MyClassNode interfaceClass2 = EasyMock.createMock(MyClassNode.class);
-		MyClassNode contextClass = EasyMock.createMock(MyClassNode.class);
+	void passMultiStrategy()
+	{
+		//Arrange Stage
+		
+		//Creating First Interface Class Parameters
+		List<String> interfaceClass1Interfaces = new ArrayList<>();
+		List<MyFieldNode> interfaceClass1Fields = new ArrayList<>();
+		List<MyMethodNode> interfaceClass1Methods = new ArrayList<>();
+		
+		
+		//Creating the First interface Class
+		MyClassNode interface1Class = new MyClassNode("Pattern1", "", 
+				interfaceClass1Interfaces, 
+				interfaceClass1Fields, 
+				interfaceClass1Methods,
+				Opcodes.ACC_INTERFACE
+				);
+		
+		//Creating Second Interface Class Parameters
+		List<String> interfaceClass2Interfaces = new ArrayList<>();
+		List<MyFieldNode> interfaceClass2Fields = new ArrayList<>();
+		List<MyMethodNode> interfaceClass2Methods = new ArrayList<>();
+		
+		//Creating the First interface Class
+		MyClassNode interface2Class = new MyClassNode("Pattern2", "", 
+				interfaceClass2Interfaces, 
+				interfaceClass2Fields, 
+				interfaceClass2Methods,
+				Opcodes.ACC_INTERFACE
+				);
+		
+		//Creating context class parameters
+		List<String> contextClassInterfaces = new ArrayList<>();
+		List<MyFieldNode> contextClassFields = new ArrayList<>();
+		List<MyMethodNode> contextClassMethods = new ArrayList<>();
+		
+		//Creating a Field which has Interface 1's Class Type
+		MyFieldNode interface1Field = new MyFieldNode("strategyPattern1", "Pattern1", 0);
+		contextClassFields.add(interface1Field);
+		
+		//Creating a Field which has Interface 2's Class Type
+		MyFieldNode interface2Field = new MyFieldNode("strategyPattern2", "Pattern2", 0);
+		contextClassFields.add(interface2Field);
+		
+		LinkedList<MyAbstractInsnNode> contextConstructorInsn = new LinkedList<>();
+		List<MyLocalVariableNode> contextConstructorlocalVariables = new ArrayList<>();
+		
+		//Creating a Method Call for Interface 1
+		MyFieldInsnNode interface1Init = new MyFieldInsnNode("strategyPattern1", "", Opcodes.ACC_PUBLIC);
+		contextConstructorInsn.add(interface1Init);
+		
+		//Creating a Method Call for Interface 2
+		MyFieldInsnNode interface2Init = new MyFieldInsnNode("strategyPattern2", "", Opcodes.ACC_PUBLIC);
+		contextConstructorInsn.add(interface2Init);
+		
+		//Creating a constructor for the context class which passes in Interface 1 and 2 through depedency injection
+		MyMethodNode contextConstructor = new MyMethodNode("<init>", "(LPattern1;LPattern2;)V",
+				contextConstructorInsn,
+				contextConstructorlocalVariables
+				);
+		contextClassMethods.add(contextConstructor);
+		
+		LinkedList<MyAbstractInsnNode> contextMethodInsn = new LinkedList<>();
+		List<MyLocalVariableNode> contextMethodlocalVariables = new ArrayList<>();
+		
+		//Creating the instruction method call for the first interface
+		MyMethodInsnNode methodInsn1 = new MyMethodInsnNode("methodCall1", "Pattern1", Opcodes.INVOKEVIRTUAL);
+		contextMethodInsn.add(methodInsn1);
+		
+		//Creating the instruction method call for the first interface
+		MyMethodInsnNode methodInsn2 = new MyMethodInsnNode("methodCall2", "Pattern2", Opcodes.INVOKEVIRTUAL);
+		contextMethodInsn.add(methodInsn2);
+		
+		//Creating the method in Context that is supposed to call the Interfaces Method
+		MyMethodNode contextMethod = new MyMethodNode("contextMethod", "()V",
+				contextMethodInsn,
+				contextMethodlocalVariables
+				);
+		
+		contextClassMethods.add(contextMethod);
+		
+		//Creating the context class which will call each interface method
+		MyClassNode contextClass = new MyClassNode("Strategy2", "",
+				contextClassInterfaces,
+				contextClassFields,
+				contextClassMethods,
+				Opcodes.ACC_PUBLIC
+				);
+		
+		
 		ArrayList<MyClassNode> classes = new ArrayList<>();
-		classes.add(interfaceClass1);
-		classes.add(interfaceClass2);
+		classes.add(interface1Class);
+		classes.add(interface2Class);
 		classes.add(contextClass);
 		
-		MyMethodNode contextConstructor = EasyMock.createMock(MyMethodNode.class);
-		EasyMock.expect(interfaceClass1.getConstructor()).andReturn(null);
-		EasyMock.expect(interfaceClass2.getConstructor()).andReturn(null);
-		EasyMock.expect(contextClass.getConstructor()).andReturn(contextConstructor);
-		
-		MyFieldNode interfaceField1 = EasyMock.createMock(MyFieldNode.class);
-		MyFieldNode interfaceField2 = EasyMock.createMock(MyFieldNode.class);
-		ArrayList<MyFieldNode> contextFields = new ArrayList<>();
-		contextFields.add(interfaceField1);
-		contextFields.add(interfaceField2);
-		contextClass.fields = contextFields;
-		
-		ArrayList<String> argTypeNames = new ArrayList<>();
-		argTypeNames.add("Pattern1");
-		argTypeNames.add("Pattern2");
-		EasyMock.expect(contextConstructor.getCleanArgTypes()).andReturn(argTypeNames);
-
-		MyFieldInsnNode interfaceInit1 = EasyMock.createMock(MyFieldInsnNode.class);
-		MyFieldInsnNode interfaceInit2 = EasyMock.createMock(MyFieldInsnNode.class);
-		ArrayList<MyFieldInsnNode> constructorInsns = new ArrayList<>();
-		constructorInsns.add(interfaceInit1);
-		constructorInsns.add(interfaceInit2);
-		EasyMock.expect(contextConstructor.getFieldInstructionNodes()).andReturn(constructorInsns);
-		interfaceField1.name = "strategyPattern1";
-		interfaceInit1.name = "strategyPattern1";
-		interfaceField2.name = "strategyPattern2";
-		interfaceInit2.name = "strategyPattern2";
-		EasyMock.expect(interfaceField1.getCleanDesc()).andReturn("Pattern1");
-		EasyMock.expect(interfaceField1.getCleanDesc()).andReturn("Pattern1");
-		EasyMock.expect(interfaceField2.getCleanDesc()).andReturn("Pattern2");
-		EasyMock.expect(interfaceField2.getCleanDesc()).andReturn("Pattern2");
-		
-		EasyMock.expect(interfaceClass1.getCleanName()).andReturn("Pattern1");
-		EasyMock.expect(interfaceClass1.isInterface()).andReturn(true);
-		EasyMock.expect(interfaceClass1.getCleanName()).andReturn("Pattern1");
-		EasyMock.expect(interfaceClass2.getCleanName()).andReturn("Pattern2");
-		EasyMock.expect(interfaceClass2.isInterface()).andReturn(true);
-		EasyMock.expect(interfaceClass2.getCleanName()).andReturn("Pattern2");
-		
-		MyMethodNode contextMethod = EasyMock.createMock(MyMethodNode.class);
-		ArrayList<MyMethodNode> contextMethods = new ArrayList<>();
-		contextMethods.add(contextConstructor);
-		contextMethods.add(contextMethod);
-		contextClass.methods = contextMethods;
-		
-		MyMethodInsnNode methodInsn1 = EasyMock.createMock(MyMethodInsnNode.class);
-		MyMethodInsnNode methodInsn2 = EasyMock.createMock(MyMethodInsnNode.class);
-		ArrayList<MyMethodInsnNode> methodInsns = new ArrayList<MyMethodInsnNode>();
-		methodInsns.add(methodInsn1);
-		methodInsns.add(methodInsn2);
-		EasyMock.expect(contextConstructor.getMethodInstructions()).andReturn(new ArrayList<MyMethodInsnNode>());
-		EasyMock.expect(contextMethod.getMethodInstructions()).andReturn(methodInsns);
-		EasyMock.expect(contextConstructor.getMethodInstructions()).andReturn(new ArrayList<MyMethodInsnNode>());
-		
-		EasyMock.expect(contextMethod.getMethodInstructions()).andReturn(methodInsns);
-		EasyMock.expect(methodInsn1.getCleanOwner()).andReturn("Pattern1");
-		EasyMock.expect(methodInsn1.isInvokeVirtual()).andReturn(true);
-		
-		EasyMock.expect(contextClass.getCleanName()).andReturn("Strategy2");
-		EasyMock.expect(contextClass.getCleanName()).andReturn("Strategy2");
-		contextMethod.name = "contextMethod";
-		
-		EasyMock.expect(methodInsn1.getCleanOwner()).andReturn("Pattern1");
-		EasyMock.expect(methodInsn2.getCleanOwner()).andReturn("Pattern2");
-		EasyMock.expect(methodInsn2.isInvokeVirtual()).andReturn(true);
-		
-		EasyMock.expect(contextClass.getCleanName()).andReturn("Strategy2");
-		EasyMock.expect(contextClass.getCleanName()).andReturn("Strategy2");
-		
-		EasyMock.replay(interfaceClass1,
-				interfaceClass2,
-				contextClass,
-				contextConstructor,
-				interfaceField1,
-				interfaceField2,
-				interfaceInit1,
-				interfaceInit2,
-				contextMethod,
-				methodInsn1,
-				methodInsn2);
-		
-		assertEquals(checker.runCheck(classes),
-				"\nStrategy Pattern Implementations: \n"
+		String expected = 		"\nStrategy Pattern Implementations: \n"
 				+ "	Implemented in Strategy2"
 				+ " class using interface Pattern1"
 				+ ", and invoked for the first time in method contextMethod\n"
 				+ "	Implemented in Strategy2"
 				+ " class using interface Pattern2"
-				+ ", and invoked for the first time in method contextMethod\n");
-	
-		EasyMock.verify(interfaceClass1,
-				interfaceClass2,
-				contextClass,
-				contextConstructor,
-				interfaceField1,
-				interfaceField2,
-				interfaceInit1,
-				interfaceInit2,
-				contextMethod,
-				methodInsn1,
-				methodInsn2);
+				+ ", and invoked for the first time in method contextMethod\n";
+		
+		//Act Stage
+		
+		String actual = checker.runCheck(classes);
+		
+		//Assert Stage
+		
+		assertEquals(actual, expected);
 	}
 }

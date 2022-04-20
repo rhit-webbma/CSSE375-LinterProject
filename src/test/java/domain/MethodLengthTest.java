@@ -4,13 +4,18 @@ import static org.junit.jupiter.api.Assertions.*;
 
 import java.util.ArrayList;
 import java.util.LinkedList;
+import java.util.List;
 
 import org.easymock.EasyMock;
+import org.easymock.asm.Opcodes;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import data_source.MyAbstractInsnNode;
 import data_source.MyClassNode;
+import data_source.MyFieldNode;
 import data_source.MyLineNumberNode;
+import data_source.MyLocalVariableNode;
 import data_source.MyMethodInsnNode;
 import data_source.MyMethodNode;
 import domain.MethodLengthCheck;
@@ -18,123 +23,89 @@ import domain.MethodLengthCheck;
 class MethodLengthTest {
 	
 	MethodLengthCheck checker = new MethodLengthCheck();
+	ArrayList<MyClassNode> classes;
+	
+	public MyMethodNode createTestableMethod(int numberOfLines)
+	{
+		LinkedList<MyAbstractInsnNode> instructionsList = this.populateMethodInstructions(numberOfLines); 
+		List<MyLocalVariableNode> localVars = new ArrayList<>();
+		
+		return new MyMethodNode("TestableMethod", "()V", instructionsList, localVars);
+	}
+	
+	public MyClassNode createMethodLengthClass(MyMethodNode methodPassIn)
+	{
+		List<String> interfaces = new ArrayList<>();
+		List<MyFieldNode> fields = new ArrayList<>();
+		List<MyMethodNode> methods = new ArrayList<>();
+		
+		methods.add(methodPassIn);
+		
+		return new MyClassNode("TestableClass", "", interfaces, fields, methods, Opcodes.ACC_PUBLIC);
+	}
+	
+	public LinkedList<MyAbstractInsnNode> populateMethodInstructions(int numberOfLines)
+	{
+		LinkedList<MyAbstractInsnNode> instructionsList = new LinkedList<MyAbstractInsnNode>();
+		
+		for(int i = 0; i < numberOfLines; i++)
+		{
+			MyLineNumberNode insn = new MyLineNumberNode(i);
+			MyAbstractInsnNode n1 = insn;
+			instructionsList.add(n1);	
+		}
+		
+		return instructionsList;
+	}
+	
+	@BeforeEach
+	void init()
+	{
+		classes = new ArrayList<>();
+	}
 	
 	@Test
 	public void testMethodEmpty()
-	{
-		MyClassNode currentClass = EasyMock.createMock(MyClassNode.class);
-		ArrayList<MyClassNode> classes = new ArrayList<>();
+	{	
+		
+		MyMethodNode testMethod = this.createTestableMethod(0);
+		MyClassNode currentClass = this.createMethodLengthClass(testMethod);
+		
 		classes.add(currentClass);
-		
-		EasyMock.expect(currentClass.getCleanName()).andReturn("TestClass");
-		EasyMock.expect(currentClass.getCleanName()).andReturn("TestClass");
-		
-		MyMethodNode testMethod = EasyMock.createMock(MyMethodNode.class);
-		
-		LinkedList<MyAbstractInsnNode> instructionsList = new LinkedList<MyAbstractInsnNode>(); 
-		
-		testMethod.name = "TestMethod";
-		
-//		for(int i = 0; i < 10; i++)
-//		{
-//			MyLineNumberNode insn = EasyMock.createMock(MyLineNumberNode.class);
-//			insn.line = i;
-//			MyAbstractInsnNode n1 = insn;
-//			instructionsList.add(n1);
-//		}
-		
-		testMethod.instructions = instructionsList;
-		
-		ArrayList<MyMethodNode> methods = new ArrayList<MyMethodNode>();
-		
-		methods.add(testMethod);
-		
-		currentClass.methods = methods;
-		
-		EasyMock.expect(testMethod.getLength()).andReturn(0);
-		
-		EasyMock.replay(currentClass, testMethod);
 		
 		//Given that this method is under length, method length should return nothing
 		String expected = "";
 		
 		assertEquals(expected, checker.runCheck(classes));
-		
-		EasyMock.verify(currentClass, testMethod);
 		
 	}
 	
 	@Test
 	public void testMethodUnderLength()
-	{
-		MyClassNode currentClass = EasyMock.createMock(MyClassNode.class);
-		ArrayList<MyClassNode> classes = new ArrayList<>();
+	{	
+		MyMethodNode testMethod = this.createTestableMethod(10);
+		MyClassNode currentClass = this.createMethodLengthClass(testMethod);
 		classes.add(currentClass);
-		
-		EasyMock.expect(currentClass.getCleanName()).andReturn("TestClass");
-		EasyMock.expect(currentClass.getCleanName()).andReturn("TestClass");
-		
-		MyMethodNode testMethod = EasyMock.createMock(MyMethodNode.class);
-		
-		LinkedList<MyAbstractInsnNode> instructionsList = new LinkedList<MyAbstractInsnNode>(); 
-		
-		testMethod.name = "TestMethod";
-		
-		testMethod.instructions = instructionsList;
-		
-		ArrayList<MyMethodNode> methods = new ArrayList<MyMethodNode>();
-		
-		methods.add(testMethod);
-		
-		currentClass.methods = methods;
-		
-		EasyMock.expect(testMethod.getLength()).andReturn(13);
-		
-		EasyMock.replay(currentClass, testMethod);
 		
 		//Given that this method is under length, method length should return nothing
 		String expected = "";
 		
 		assertEquals(expected, checker.runCheck(classes));
-		
-		EasyMock.verify(currentClass, testMethod);
-		
 	}
 	
 	@Test
 	public void testMethodOver35()
-	{
-		MyClassNode currentClass = EasyMock.createMock(MyClassNode.class);
-		ArrayList<MyClassNode> classes = new ArrayList<>();
+	{			
+		MyMethodNode testMethod = this.createTestableMethod(50);
+		MyClassNode currentClass = this.createMethodLengthClass(testMethod);
 		classes.add(currentClass);
 		
-		EasyMock.expect(currentClass.getCleanName()).andReturn("TestClass");
-		EasyMock.expect(currentClass.getCleanName()).andReturn("TestClass");
+		//Given that this method is under length, method length should return nothing
+		String expected = "Method Length Check:\n	Class: TestableClass\n" + "		Method: " + "TestableMethod" + "\n";
+		expected += "			Method too long: (50 lines) Shorten it to 35 lines or less. \n";
 		
-		MyMethodNode testMethod = EasyMock.createMock(MyMethodNode.class);
-		
-		LinkedList<MyAbstractInsnNode> instructionsList = new LinkedList<MyAbstractInsnNode>(); 
-		
-		testMethod.name = "TestMethod";
-		
-		
-		testMethod.instructions = instructionsList;
-		
-		ArrayList<MyMethodNode> methods = new ArrayList<MyMethodNode>();
-		
-		methods.add(testMethod);
-		
-		currentClass.methods = methods;
-
-		EasyMock.expect(testMethod.getLength()).andReturn(40);
-		
-		EasyMock.replay(currentClass, testMethod);
-		
-		String expected = "Method Length Check:\n	Class: TestClass\n" + "		Method: " + "TestMethod" + "\n";
-		expected += "			Method too long: (40 lines) Shorten it to 35 lines or less. \n";
-		
-		assertEquals(expected, checker.runCheck(classes));;
-		
+		assertEquals(expected, checker.runCheck(classes));
 	}
+	
 
 }
