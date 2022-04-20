@@ -1,6 +1,7 @@
 package data_source;
 
 import java.util.ArrayList;
+import java.util.Map;
 import java.util.Scanner;
 
 import domain.CheckRunner;
@@ -24,8 +25,7 @@ public class GithubImport implements Testable{
 		System.out.println("Please Input a Github Link: ");
 		githubGrabber = new Grabber(in.nextLine());
 		
-		populator = new PopulateJavaFile(githubGrabber.getDownloadURL(),
-				githubGrabber.getFileName());
+		populator = new PopulateJavaFile(githubGrabber.getJSONInfo());
 		
 		try {
 			Thread.sleep(3000);
@@ -33,12 +33,14 @@ public class GithubImport implements Testable{
 			// TODO Auto-generated catch block
 			e1.printStackTrace();
 		}
-		
-		String fileURL = "data_source." + githubGrabber.getFileName().replace(".java", "");
-		
 		ArrayList<String> githubClasses = new ArrayList<String>();
-		githubClasses.add(fileURL);
-		
+
+		for(Map.Entry<String,String> entry : githubGrabber.getJSONInfo().entrySet())
+		{
+			String fileURL = "data_source." + entry.getKey().replace(".java", "");
+			githubClasses.add(fileURL);
+		}
+
 		return githubClasses;
 	}
 
