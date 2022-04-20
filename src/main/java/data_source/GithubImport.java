@@ -17,6 +17,11 @@ public class GithubImport implements Testable{
 		in = new Scanner(System.in);
 	}
 	
+	public GithubImport(Scanner in)
+	{
+		this.in = in;
+	}
+	
 	
 	@Override
 	public ArrayList<String> generateClasses() {

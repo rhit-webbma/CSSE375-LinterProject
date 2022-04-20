@@ -578,14 +578,86 @@ class SystemTests {
 	}
 	
 	@Test
+	void testRemoveSuperBadClassCheck() {
+		ByteArrayInputStream in = new ByteArrayInputStream("Package\nexample\nremove\nsuperBadClass$\nname\nrun\ndone".getBytes());
+		System.setIn(in);
+
+		ConsoleManager.main(new String[0]);
+		
+		assertEquals("What type of Import would you like to do: \r\n" + 
+				"Please Input a Package Name: \r\n" + 
+				"Classes inputted: \n" + 
+				"	badClass$\n" + 
+				"	superBadClass$\n" + 
+				"\r\n" + 
+				"Input the name of the check you would like to run:Input the name of the check you would like to run:Running checks: \n" + 
+				"	Name Style\n" + 
+				"\n" + 
+				"On classes: \n" + 
+				"	badClass$\n" + 
+				"	superBadClass$\n" + 
+				"\n" + 
+				"Names Check:\n" + 
+				"	Class: badClass$\n" + 
+				"		Name Style Violations: \n" + 
+				"			Class Name checks: \n" + 
+				"				Class Name does not start with a capital letter \n" + 
+				"				Class Name contains the non-alphanumeric character: $\n" + 
+				"			Field Name checks: \n" + 
+				"				Field string has the same name as its type \n" +
+				"				Field NotGood has an uppercase first letter, and is not static and final \n" + 
+				"				Field j has too short of a name (1 character) \n" + 
+				"			Method & Method Variable Name checks: \n" + 
+				"				Variable Ok has an uppercase first letter in method <init>\n" + 
+				"				Variable Integer has an uppercase first letter in method BadMethodName\n" + 
+				"				Variable i has the same name as its type in method BadMethodName\n" + 
+				"				Method BadMethodName has an uppercase first letter \n" + 
+				"				Method m has too short of a name (1 character) \n" + 
+				"				Variable i has the same name as its type in method methodWithUnusedVariables\n" + 
+				"				Variable i has the same name as its type in method longMethod\n" + 
+				"	Class: superBadClass$\n" + 
+				"		Name Style Violations: \n" + 
+				"			Class Name checks: \n" + 
+				"				Class Name does not start with a capital letter \n" + 
+				"				Class Name contains the non-alphanumeric character: $\n" + 
+				"\r\n" + 
+				"Input the name of the check you would like to run:", outContent.toString().trim());
+	}
+	
+	@Test
 	void testGithubGrabber() {
 		//requires internet and that the link provided it valid
 		//Testing on https://github.com/TheAlgorithms/Java/blob/master/src/main/java/com/thealgorithms/searches/BinarySearch.java
-		ByteArrayInputStream in = new ByteArrayInputStream("Github\nhttps://github.com/TheAlgorithms/Java/blob/master/src/main/java/com/thealgorithms/searches/BinarySearch.java\nrun\ndone".getBytes());
+		ByteArrayInputStream in = new ByteArrayInputStream("Github\nhttps://github.com/TheAlgorithms/Java/blob/master/src/main/java/com/thealgorithms/searches/BinarySearch.java\nall\nrun\ndone".getBytes());
 		System.setIn(in);
 		ConsoleManager.main(new String[0]);
 		
-		assertEquals("", outContent.toString().trim());
+		assertEquals("What type of Import would you like to do: \r\n" + 
+				"Please Input a Github Link: \r\n" + 
+				"TheAlgorithms/Java/blob/master/src/main/java/com/thealgorithms/searches/BinarySearch.java\r\n" + 
+				"File: BinarySearch.java has been created!\n" + 
+				"Classes inputted: \n" + 
+				"	BinarySearch\n" + 
+				"\r\n" + 
+				"Input the name of the check you would like to run:Input the name of the check you would like to run:Running checks: \n" + 
+				"	Name Style\n" + 
+				"	Unused Instantiation\n" + 
+				"	Method Length\n" + 
+				"	Hollywood Principle\n" + 
+				"	Composition Over Inheritance\n" + 
+				"	Redundant Interfaces\n" + 
+				"	Strategy Pattern\n" + 
+				"	Facade Pattern\n" + 
+				"	Adapter Pattern\n" + 
+				"\n" + 
+				"On classes: \n" + 
+				"	BinarySearch\n" + 
+				"\n" + 
+				"\n" + 
+				"Composition Over Inheritance: \n" + 
+				"	Class BinarySearch inherits from user created class Object. Could composition be used instead? \n" + 
+				"\r\n" + 
+				"Input the name of the check you would like to run:", outContent.toString().trim());
 //		fail("Mike please look at this because I can't figure out a good github link that works");
 	}
 

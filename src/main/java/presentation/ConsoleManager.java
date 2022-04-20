@@ -44,7 +44,7 @@ public class ConsoleManager {
 		switch(inputType)
 		{
 		case "Github":
-			testingMethod = new GithubImport();
+			testingMethod = new GithubImport(in);
 			break;
 		case "Package":
 			testingMethod = new PackageImport(in);
