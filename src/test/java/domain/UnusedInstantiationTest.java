@@ -377,88 +377,95 @@ public class UnusedInstantiationTest {
 		EasyMock.verify(fInsn1, fInsn2, classNode, method1, lNode);
 	}
 	
+	private MyClassNode createRunCheckMyClassNodeMock(ArrayList<MyMethodNode> methods) {
+		MyClassNode classNode = EasyMock.createMock(MyClassNode.class);
+		EasyMock.expect(classNode.getCleanName()).andReturn(null);
+		EasyMock.expect(classNode.getCleanName()).andReturn(null);
+		classNode.methods = methods;
+		return classNode;
+	}
+	
+	private MyMethodNode createRunCheckMyMethodNode(String name, LinkedList<MyAbstractInsnNode> insns, ArrayList<MyLocalVariableNode> vars) {
+		MyMethodNode method = EasyMock.createMock(MyMethodNode.class);
+		method.instructions = insns;
+		method.localVariables = vars;
+		method.name = name;
+		return method;
+	}
+	
+	private MyVarInsnNode createRunCheckLoadingMyVarInsnNodeMock(int var) {
+		MyVarInsnNode vInsn = EasyMock.createMock(MyVarInsnNode.class);
+		EasyMock.expect(vInsn.getType()).andReturn(MyAbstractInsnNode.VAR_INSN);
+		EasyMock.expect(vInsn.isLoading()).andReturn(true);
+		vInsn.var = var;
+		return vInsn;
+	}
+	
+	private MyVarInsnNode createRunCheckStoringMyVarInsnNodeMock(int var) {
+		MyVarInsnNode vInsn = EasyMock.createMock(MyVarInsnNode.class);
+		EasyMock.expect(vInsn.getType()).andReturn(MyAbstractInsnNode.VAR_INSN);
+		EasyMock.expect(vInsn.isLoading()).andReturn(false);
+		EasyMock.expect(vInsn.isStoring()).andReturn(true);
+		vInsn.var = var;
+		return vInsn;
+	}
+	
+	private MyLineNumberNode createRunCheckMyLineNumberNode(int line) {
+		MyLineNumberNode lNode = EasyMock.createMock(MyLineNumberNode.class);
+		lNode.line = line;
+		EasyMock.expect(lNode.getType()).andReturn(MyAbstractInsnNode.LINE);
+		EasyMock.expect(lNode.getType()).andReturn(MyAbstractInsnNode.LINE);
+		EasyMock.expect(lNode.getType()).andReturn(MyAbstractInsnNode.LINE);
+		return lNode;
+	}
+	
+	private MyFieldInsnNode createRunCheckMyFieldInsnNode(String name, boolean loading) {
+		MyFieldInsnNode fInsn = EasyMock.createMock(MyFieldInsnNode.class);
+		fInsn.name = name;
+		EasyMock.expect(fInsn.getType()).andReturn(MyAbstractInsnNode.FIELD_INSN);
+		EasyMock.expect(fInsn.getType()).andReturn(MyAbstractInsnNode.FIELD_INSN);
+		EasyMock.expect(fInsn.isLoading()).andReturn(loading);
+		EasyMock.expect(fInsn.getType()).andReturn(MyAbstractInsnNode.FIELD_INSN);
+		return fInsn;
+	}
+	
+	private MyLocalVariableNode createRunCheckMyLocalVariableNode(String name) {
+		MyLocalVariableNode vLNode = EasyMock.createMock(MyLocalVariableNode.class);
+		vLNode.name = name;
+		return vLNode;
+	}
+	
 	@Test
 	public void testRunCheck() {
 		UnusedInstantiationCheck check = new UnusedInstantiationCheck();
-		MyClassNode classNode = EasyMock.createMock(MyClassNode.class);
-		ArrayList<MyClassNode> classes = new ArrayList<>();
-		classes.add(classNode);
-		LinkedList<MyAbstractInsnNode> insns = new LinkedList<>();
 		
-		MyVarInsnNode lInsn1 = EasyMock.createMock(MyVarInsnNode.class);
-		MyVarInsnNode lInsn2 = EasyMock.createMock(MyVarInsnNode.class);
-		
-		MyVarInsnNode sNode1 = EasyMock.createMock(MyVarInsnNode.class);
-		MyVarInsnNode sNode2 = EasyMock.createMock(MyVarInsnNode.class);
-		MyVarInsnNode sNode3 = EasyMock.createMock(MyVarInsnNode.class);
-		
-		MyLineNumberNode lNode1 = EasyMock.createMock(MyLineNumberNode.class);
-		MyLineNumberNode lNode2 = EasyMock.createMock(MyLineNumberNode.class);
-		
-		MyFieldInsnNode fInsn1 = EasyMock.createMock(MyFieldInsnNode.class);
-		MyFieldInsnNode fInsn2 = EasyMock.createMock(MyFieldInsnNode.class);
-		
-		MyMethodNode method = EasyMock.createMock(MyMethodNode.class);
-		ArrayList<MyMethodNode> methods = new ArrayList<>();
-		methods.add(method);
-		classNode.methods = methods;
+		MyVarInsnNode lInsn1 = createRunCheckLoadingMyVarInsnNodeMock(2);
+		MyVarInsnNode lInsn2 = createRunCheckLoadingMyVarInsnNodeMock(3);
+		MyVarInsnNode sNode1 = createRunCheckStoringMyVarInsnNodeMock(0);
+		MyVarInsnNode sNode2 = createRunCheckStoringMyVarInsnNodeMock(2);
+		MyVarInsnNode sNode3 = createRunCheckStoringMyVarInsnNodeMock(3);
+		MyLineNumberNode lNode1 = createRunCheckMyLineNumberNode(15);
+		MyLineNumberNode lNode2 = createRunCheckMyLineNumberNode(12);
+		MyFieldInsnNode fInsn1 = createRunCheckMyFieldInsnNode("counter", true);
+		MyFieldInsnNode fInsn2 = createRunCheckMyFieldInsnNode("download", false);
 
-		insns.addAll(Arrays.asList(lInsn1, lInsn2, lNode1, sNode1, sNode2, sNode3, lNode2, fInsn1, fInsn2));
-		
-		lInsn1.var = 2;
-		lInsn2.var = 3;
-		sNode1.var = 0;
-		sNode2.var = 2;
-		sNode3.var = 3;
-		lNode1.line = 15;
-		lNode2.line = 12;
-		fInsn1.name = "counter";
-		fInsn2.name = "download";
-		
-		EasyMock.expect(classNode.getCleanName()).andReturn(null);
-		EasyMock.expect(classNode.getCleanName()).andReturn(null);
-		EasyMock.expect(lInsn1.getType()).andReturn(MyAbstractInsnNode.VAR_INSN);
-		EasyMock.expect(lInsn1.isLoading()).andReturn(true);
-		EasyMock.expect(lInsn2.getType()).andReturn(MyAbstractInsnNode.VAR_INSN);
-		EasyMock.expect(lInsn2.isLoading()).andReturn(true);
-		EasyMock.expect(lNode1.getType()).andReturn(MyAbstractInsnNode.LINE);
-		EasyMock.expect(lNode1.getType()).andReturn(MyAbstractInsnNode.LINE);
-		EasyMock.expect(sNode1.getType()).andReturn(MyAbstractInsnNode.VAR_INSN);
-		EasyMock.expect(sNode1.isLoading()).andReturn(false);
-		EasyMock.expect(sNode1.isStoring()).andReturn(true);
-		EasyMock.expect(sNode2.getType()).andReturn(MyAbstractInsnNode.VAR_INSN);
-		EasyMock.expect(sNode2.isLoading()).andReturn(false);
-		EasyMock.expect(sNode2.isStoring()).andReturn(true);
-		EasyMock.expect(sNode3.getType()).andReturn(MyAbstractInsnNode.VAR_INSN);
-		EasyMock.expect(sNode3.isLoading()).andReturn(false);
-		EasyMock.expect(sNode3.isStoring()).andReturn(true);
-		EasyMock.expect(lNode2.getType()).andReturn(MyAbstractInsnNode.LINE);
-		EasyMock.expect(lNode2.getType()).andReturn(MyAbstractInsnNode.LINE);
-		EasyMock.expect(fInsn1.getType()).andReturn(MyAbstractInsnNode.FIELD_INSN);
-		EasyMock.expect(fInsn1.getType()).andReturn(MyAbstractInsnNode.FIELD_INSN);
-		EasyMock.expect(fInsn1.isLoading()).andReturn(true);
-		EasyMock.expect(fInsn2.getType()).andReturn(MyAbstractInsnNode.FIELD_INSN);
-		EasyMock.expect(fInsn2.getType()).andReturn(MyAbstractInsnNode.FIELD_INSN);
-		EasyMock.expect(fInsn2.isLoading()).andReturn(false);
+		LinkedList<MyAbstractInsnNode> insns = new LinkedList<>(Arrays.asList(lInsn1, lInsn2, lNode1, sNode1, sNode2, sNode3, lNode2, fInsn1, fInsn2));
 		
 		EasyMock.expect(sNode1.getType()).andReturn(MyAbstractInsnNode.VAR_INSN);
-		EasyMock.expect(lNode1.getType()).andReturn(MyAbstractInsnNode.LINE);
 		
-		EasyMock.expect(fInsn1.getType()).andReturn(MyAbstractInsnNode.FIELD_INSN);
-		EasyMock.expect(fInsn2.getType()).andReturn(MyAbstractInsnNode.FIELD_INSN);
-		EasyMock.expect(lNode2.getType()).andReturn(MyAbstractInsnNode.LINE);
-
-		ArrayList<MyLocalVariableNode> vars = new ArrayList<>();
-		MyLocalVariableNode vLNode = EasyMock.createMock(MyLocalVariableNode.class);
-		vars.add(vLNode);
-		vLNode.name = "counter";
-		method.instructions = insns;
-		method.localVariables = vars;
-		method.name = "countThings";
-
+		MyLocalVariableNode vLNode = createRunCheckMyLocalVariableNode("counter");
+		ArrayList<MyLocalVariableNode> vars = new ArrayList<>(Arrays.asList(vLNode));
+		
+		MyMethodNode method = createRunCheckMyMethodNode("countThings", insns, vars);
+		ArrayList<MyMethodNode> methods = new ArrayList<>(Arrays.asList(method));
+		
+		MyClassNode classNode = createRunCheckMyClassNodeMock(methods);
+		ArrayList<MyClassNode> classes = new ArrayList<>(Arrays.asList(classNode));
+		
 		EasyMock.replay(lInsn1, lInsn2, sNode1, sNode2, sNode3, method, lNode1, lNode2, fInsn1, fInsn2, vLNode, classNode);
 		
-		assertEquals("Unused Instantiation Check:\n	Class: null\n		Unused Variables: \n" + "			Line 12: Unused field named download\n" 
+		assertEquals("Unused Instantiation Check:\n	Class: null\n		Unused Variables: \n" 
+				+ "			Line 12: Unused field named download\n" 
 				+ "			Line 15: Unused variable named counter in method countThings\n" , check.runCheck(classes));
 
 		assertTrue(check.fieldStates.fieldLoading.contains(fInsn1));
