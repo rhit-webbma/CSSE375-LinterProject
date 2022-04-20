@@ -1,6 +1,7 @@
 package domain;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import data_source.MyAbstractInsnNode;
 import data_source.MyClassNode;
@@ -70,7 +71,7 @@ public class AdapterPatternCheck implements ClassCheck {
 		return typeNames;
 	}
 
-	boolean checkMethods(MyClassNode classNode, ArrayList<String> fieldTypes) {
+	boolean checkMethods(MyClassNode classNode, List<String> fieldTypes) {
 		for (MyMethodNode method : classNode.methods) {
 			if (!checkMethod(method, fieldTypes))
 				return false;
@@ -78,7 +79,7 @@ public class AdapterPatternCheck implements ClassCheck {
 		return true;
 	}
 
-	boolean checkMethod(MyMethodNode method, ArrayList<String> fieldTypes) {
+	boolean checkMethod(MyMethodNode method, List<String> fieldTypes) {
 		if (method.isConstructor())
 			return true;
 		int methodInsns = 0;

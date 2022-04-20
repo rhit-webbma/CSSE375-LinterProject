@@ -35,7 +35,7 @@ public class MyFieldNode {
 	}
 	
 	public String getCleanDesc() {
-		String[] nameSplit = desc.split("/");
+		String[] nameSplit = desc.split("/|;");
 		return nameSplit[nameSplit.length-1];
 	}
 	
