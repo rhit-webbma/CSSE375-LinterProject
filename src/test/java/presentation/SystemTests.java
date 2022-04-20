@@ -590,6 +590,61 @@ class SystemTests {
 				"	badClass$\n" + 
 				"	superBadClass$\n" + 
 				"\r\n" + 
+				"Input the name of the check you would like to run:Current classes being linted:\r\n" + 
+				"	badClass$\n" + 
+				"	superBadClass$\n" + 
+				"\r\n" + 
+				"Input a class name to remove from the list:\r\n" + 
+				"Input the name of the check you would like to run:Input the name of the check you would like to run:Running checks: \n" + 
+				"	Name Style\n" + 
+				"\n" + 
+				"On classes: \n" + 
+				"	badClass$\n" + 
+				"\n" + 
+				"Names Check:\n" + 
+				"	Class: badClass$\n" + 
+				"		Name Style Violations: \n" + 
+				"			Class Name checks: \n" + 
+				"				Class Name does not start with a capital letter \n" + 
+				"				Class Name contains the non-alphanumeric character: $\n" + 
+				"			Field Name checks: \n" + 
+				"				Field string has the same name as its type \n" +
+				"				Field NotGood has an uppercase first letter, and is not static and final \n" + 
+				"				Field j has too short of a name (1 character) \n" + 
+				"			Method & Method Variable Name checks: \n" + 
+				"				Variable Ok has an uppercase first letter in method <init>\n" + 
+				"				Variable Integer has an uppercase first letter in method BadMethodName\n" + 
+				"				Variable i has the same name as its type in method BadMethodName\n" + 
+				"				Method BadMethodName has an uppercase first letter \n" + 
+				"				Method m has too short of a name (1 character) \n" + 
+				"				Variable i has the same name as its type in method methodWithUnusedVariables\n" + 
+				"				Variable i has the same name as its type in method longMethod\n" + 
+				"\r\n" + 
+				"Input the name of the check you would like to run:", outContent.toString().trim());
+	}
+	
+	@Test
+	void testRemoveReaddSuperBadClassCheck() {
+		ByteArrayInputStream in = new ByteArrayInputStream("Package\nexample\nremove\nsuperBadClass$\nreadd\nsuperBadClass$\nname\nrun\ndone".getBytes());
+		System.setIn(in);
+
+		ConsoleManager.main(new String[0]);
+		
+		assertEquals("What type of Import would you like to do: \r\n" + 
+				"Please Input a Package Name: \r\n" + 
+				"Classes inputted: \n" + 
+				"	badClass$\n" + 
+				"	superBadClass$\n" + 
+				"\r\n" + 
+				"Input the name of the check you would like to run:Current classes being linted:\r\n" + 
+				"	badClass$\n" + 
+				"	superBadClass$\n" + 
+				"\r\n" + 
+				"Input a class name to remove from the list:\r\n" + 
+				"Input the name of the check you would like to run:Classes removed from linting:\r\n" + 
+				"	superBadClass$\n" + 
+				"\r\n" + 
+				"Input a class name to re-add to the list:\r\n" + 
 				"Input the name of the check you would like to run:Input the name of the check you would like to run:Running checks: \n" + 
 				"	Name Style\n" + 
 				"\n" + 
@@ -635,7 +690,7 @@ class SystemTests {
 		assertEquals("What type of Import would you like to do: \r\n" + 
 				"Please Input a Github Link: \r\n" + 
 				"TheAlgorithms/Java/blob/master/src/main/java/com/thealgorithms/searches/BinarySearch.java\r\n" + 
-				"File: BinarySearch.java has been created!\n" + 
+				"File: BinarySearch.java has been created!\r\n" + 
 				"Classes inputted: \n" + 
 				"	BinarySearch\n" + 
 				"\r\n" + 
