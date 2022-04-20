@@ -24,11 +24,9 @@ import data_source.MyLocalVariableNode;
 import data_source.MyMethodInsnNode;
 import data_source.MyMethodNode;
 
-
-// Note: These tests were written for when the system did not use personalized class nodes
 public class HollywoodCheckTest {
 	HollywoodCheck checker = new HollywoodCheck();
-	
+
 	@Test
 	public void testUsingField() {
 		MyClassNode curClass = EasyMock.createMock(MyClassNode.class);
