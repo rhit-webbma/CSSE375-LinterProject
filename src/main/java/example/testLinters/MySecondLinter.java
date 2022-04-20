@@ -1,4 +1,4 @@
-package example;
+package example.testLinters;
 
 import java.io.IOException;
 import java.util.ArrayList;

@@ -2,6 +2,8 @@ package example;
 
 import java.util.ArrayList;
 
+import example.testLinters.MyFirstLinter;
+
 public class badClass$ extends superBadClass$ {
 	String string = "oh no";
 	String okay = "new val";

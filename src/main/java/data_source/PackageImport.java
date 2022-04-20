@@ -15,6 +15,10 @@ public class PackageImport implements Testable{
 		in = new Scanner(System.in);
 	}
 	
+	public PackageImport(Scanner in) {
+		this.in = in;
+	}
+	
 	
 	@Override
 	public ArrayList<String> generateClasses() {
