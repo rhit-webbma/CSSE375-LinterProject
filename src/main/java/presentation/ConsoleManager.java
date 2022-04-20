@@ -26,10 +26,11 @@ public class ConsoleManager {
 	static Grabber githubGrabber;
 	static PopulateJavaFile populator;
 	static Directory directory;
+	private static Scanner in;
 	
 	public static void main(String[] args) {
 		
-		Scanner in = new Scanner(System.in);
+		in = new Scanner(System.in);
 		System.out.println("What type of Import would you like to do: ");
 		userInterfaceLoop(in.nextLine());
 	}
@@ -46,7 +47,7 @@ public class ConsoleManager {
 			testingMethod = new GithubImport();
 			break;
 		case "Package":
-			testingMethod = new PackageImport();
+			testingMethod = new PackageImport(in);
 			break;
 		}
 		
@@ -55,12 +56,11 @@ public class ConsoleManager {
 //		CheckRunner runner = new CheckRunner(args);
 		System.out.println("Classes inputted: \n" + runner.classNames());
 		
-		Scanner consoleReader = new Scanner(System.in);
 		ArrayList<String> added = new ArrayList<>();
 		boolean complete = false;
 		while (!complete) {
 			System.out.print("Input the name of the check you would like to run:");
-			String checkName = consoleReader.next().toLowerCase();
+			String checkName = in.next().toLowerCase();
 			switch (checkName) {
 			case "help":
 				System.out.println("Possible commands:\n"
@@ -73,6 +73,8 @@ public class ConsoleManager {
 						+ "'interface' : Checks for interfaces that might be redundant\n"
 						+ "'pattern' : Detects use of Strategy, Adapter, and Facade patterns\n"
 						+ "'run' : Runs the checks that have been added\n"
+						+ "'remove' : Select classes added to list of classes to be tested to be removed from list\n"
+						+ "'readd' : Select classes previously removed from list of classes to be tested to be added back to list\n"
 						+ "'done' : Exits the program");
 				break;
 				
@@ -159,7 +161,7 @@ public class ConsoleManager {
 				System.out.println("Current classes being linted:");
 				System.out.println(runner.classNames());
 				System.out.println("Input a class name to remove from the list:");
-				String toRemove = consoleReader.next();
+				String toRemove = in.next();
 				if (!runner.removeClass(toRemove)) {
 					System.out.println("This is not a valid check name\n");
 				}
@@ -169,7 +171,7 @@ public class ConsoleManager {
 				System.out.println("Classes removed from linting:");
 				System.out.println(runner.deletedClassNames());
 				System.out.println("Input a class name to re-add to the list:");
-				String toAdd = consoleReader.next();
+				String toAdd = in.next();
 				if (!runner.reAddClass(toAdd)) {
 					System.out.println("This is not a valid check name\n");
 				}
