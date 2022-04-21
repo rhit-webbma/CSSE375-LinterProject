@@ -72,7 +72,7 @@ public class GithubImport implements Testable{
 		    for (WatchEvent<?> event: key.pollEvents()) {
 		        WatchEvent.Kind<?> kind = event.kind();
 
-		        System.out.println(event.kind().name());
+//		        System.out.println(event.kind().name());
 		        
 		        if (kind == OVERFLOW) {
 		            continue;
