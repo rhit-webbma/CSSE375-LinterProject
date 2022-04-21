@@ -74,7 +74,7 @@ public class GUIManager {
 	
 	private void githubImport() {
 		JFrame gitFrame = new JFrame("Github Import");
-		gitFrame.setPreferredSize(new Dimension(800,125));
+		gitFrame.setPreferredSize(new Dimension(650,125));
 		JPanel gitPanel = new JPanel();
 		
 		gitPanel.add(new JLabel("Input the link to the project file/package you want to add, then press add. "
@@ -87,7 +87,6 @@ public class GUIManager {
             public void actionPerformed(ActionEvent e){
             }
         });
-		gitPanel.add(gitLabel, BorderLayout.PAGE_END);
 		gitPanel.add(addButton, BorderLayout.CENTER);
 		
 		JButton submitButton = new JButton("Submit");
@@ -97,6 +96,8 @@ public class GUIManager {
             }
         });
 		gitPanel.add(submitButton, BorderLayout.CENTER);
+		
+		gitPanel.add(gitLabel, BorderLayout.PAGE_END);
 		
 		gitFrame.add(gitPanel);
 		gitFrame.pack();
@@ -108,7 +109,7 @@ public class GUIManager {
 		ArrayList<String> packages = new ArrayList<>();
 		
 		JFrame pkgFrame = new JFrame("Package Import");
-		pkgFrame.setPreferredSize(new Dimension(800,125));
+		pkgFrame.setPreferredSize(new Dimension(650,125));
 		JPanel pkgPanel = new JPanel();
 		
 		pkgPanel.add(new JLabel("Input the name of the package you want to add, then press add. Once all"
@@ -123,7 +124,6 @@ public class GUIManager {
                 pkgLabel.setText("Added package "+ pkgTxt.getText());
             }
         });
-		pkgPanel.add(pkgLabel, BorderLayout.PAGE_END);
 		pkgPanel.add(addButton, BorderLayout.CENTER);
 		
 		JButton submitButton = new JButton("Submit");
@@ -146,6 +146,8 @@ public class GUIManager {
             }
         });
 		pkgPanel.add(submitButton, BorderLayout.CENTER);
+		
+		pkgPanel.add(pkgLabel, BorderLayout.PAGE_END);
 		
 		pkgFrame.add(pkgPanel);
 		pkgFrame.pack();

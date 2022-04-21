@@ -88,32 +88,31 @@ public class UnusedInstantiationCheck implements ClassCheck {
 	
 	String findVariablesMethods(MyMethodNode method) {
 		LinkedList<MyAbstractInsnNode> instructions = method.instructions;
-		ArrayList<MyVarInsnNode> loading = new ArrayList<>();
-		ArrayList<MyVarInsnNode> storing = new ArrayList<>();
+		VarStates varStates = new VarStates();
 		for (MyAbstractInsnNode insn : instructions) {
 			if (insn.getType() == MyAbstractInsnNode.VAR_INSN) {
 				MyVarInsnNode vInsn = (MyVarInsnNode) insn;
 				if (vInsn.isLoading()) {
-					loading.add(vInsn);
+					varStates.varLoading.add(vInsn);
 				} else if (vInsn.isStoring()) {
-					storing.add(vInsn);
+					varStates.varStoring.add(vInsn);
 				}
 			} else if (insn.getType() == MyAbstractInsnNode.FIELD_INSN) {
 				MyFieldInsnNode fInsn = (MyFieldInsnNode) insn;
 				determineFieldStatus(fInsn);
 			}
 		}
-		return findUnusedVariables(loading, storing, method);
+		return findUnusedVariables(varStates, method);
 	}
 	
-	String findUnusedVariables(ArrayList<MyVarInsnNode> loaded, ArrayList<MyVarInsnNode> stored, MyMethodNode method) {
+	String findUnusedVariables(VarStates varStates, MyMethodNode method) {
 		String printString = "";
 		ArrayList<Integer> loadedIndexes = new ArrayList<>();
-		for (MyVarInsnNode var : loaded) {
+		for (MyVarInsnNode var : varStates.varLoading) {
 			loadedIndexes.add(var.var);
 		}
 		ArrayList<MyVarInsnNode> unusedStored = new ArrayList<>();
-		for (MyVarInsnNode var : stored) {
+		for (MyVarInsnNode var : varStates.varStoring) {
 			if (!loadedIndexes.contains(var.var)) {
 				unusedStored.add(var);
 			}
