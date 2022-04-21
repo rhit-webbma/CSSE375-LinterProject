@@ -1,6 +1,8 @@
 package presentation;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Scanner;
 
 import data_source.Directory;
@@ -26,6 +28,14 @@ public class ConsoleManager {
 	static Directory directory;
 	private Scanner in;
 	
+
+
+	public static void main(String[] args) {
+		in = new Scanner(System.in);
+		System.out.println("What type of Import would you like to do: ");
+		userInterfaceLoop(in.nextLine());
+  }
+    
 	public ConsoleManager(Scanner in) {
 		this.in = in;
 	}
@@ -36,7 +46,7 @@ public class ConsoleManager {
 		
 		CheckRunner runner = null;
 		Testable testingMethod = null;
-		
+		Grabber gitGrabber = null;
 		
 		switch(in.nextLine())
 		{
@@ -49,6 +59,9 @@ public class ConsoleManager {
 		}
 		
 		runner = new CheckRunner(testingMethod.generateClasses());
+		gitGrabber = ((GithubImport) testingMethod).getGrabber();
+		
+		if(inputType.equals("Github")) gitGrabber.deleteFiles();
 		
 		System.out.println("Classes inputted: \n" + runner.classNames());
 		
