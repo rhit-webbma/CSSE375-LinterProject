@@ -92,8 +92,10 @@ class UnusedInstantiationIntegrationTest {
 		MyVarInsnNode sNode2 = new MyVarInsnNode(2, Opcodes.ASTORE);
 		MyVarInsnNode sNode3 = new MyVarInsnNode(3, Opcodes.ASTORE);
 		
-		ArrayList<MyVarInsnNode> loaded = new ArrayList<>(Arrays.asList(lNode1, lNode2, lNode3));
-		ArrayList<MyVarInsnNode> stored = new ArrayList<>(Arrays.asList(sNode1, sNode2, sNode3));
+		VarStates vStates = new VarStates();
+		vStates.varLoading = new ArrayList<>(Arrays.asList(lNode1, lNode2, lNode3));
+		vStates.varStoring = new ArrayList<>(Arrays.asList(sNode1, sNode2, sNode3));
+
 		
 		MyLineNumberNode lNode = new MyLineNumberNode(12);
 		LinkedList<MyAbstractInsnNode> insns = new LinkedList<>(Arrays.asList(lNode, sNode1));
@@ -103,7 +105,7 @@ class UnusedInstantiationIntegrationTest {
 		
 		MyMethodNode method = new MyMethodNode("countThings", null, insns, vars);
 		
-		assertEquals("			Line 12: Unused variable named counter in method countThings\n", check.findUnusedVariables(loaded, stored, method));
+		assertEquals("			Line 12: Unused variable named counter in method countThings\n", check.findUnusedVariables(vStates, method));
 	}
 	
 	@Test
@@ -118,8 +120,9 @@ class UnusedInstantiationIntegrationTest {
 		MyVarInsnNode sNode2 = new MyVarInsnNode(2, Opcodes.ASTORE);
 		MyVarInsnNode sNode3 = new MyVarInsnNode(3, Opcodes.ASTORE);
 		
-		ArrayList<MyVarInsnNode> loaded = new ArrayList<>(Arrays.asList(lNode1, lNode2, lNode3));
-		ArrayList<MyVarInsnNode> stored = new ArrayList<>(Arrays.asList(sNode1, sNode2, sNode3));
+		VarStates vStates = new VarStates();
+		vStates.varLoading = new ArrayList<>(Arrays.asList(lNode1, lNode2, lNode3));
+		vStates.varStoring = new ArrayList<>(Arrays.asList(sNode1, sNode2, sNode3));
 		
 		MyLineNumberNode lNode = new MyLineNumberNode(12);
 		LinkedList<MyAbstractInsnNode> insns = new LinkedList<>(Arrays.asList(lNode, sNode1));
@@ -128,7 +131,7 @@ class UnusedInstantiationIntegrationTest {
 		
 		MyMethodNode method = new MyMethodNode("countThings", null, insns, vars);
 
-		assertEquals("			Line 12: Unused variable in method countThings\n", check.findUnusedVariables(loaded, stored, method));
+		assertEquals("			Line 12: Unused variable in method countThings\n", check.findUnusedVariables(vStates, method));
 	}
 	
 	@Test

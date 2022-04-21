@@ -109,8 +109,7 @@ public class UnusedInstantiationTest {
 	@Test
 	public void testFindUnusedVariableLocationsUnusedNamed() {
 		UnusedInstantiationCheck check = new UnusedInstantiationCheck();
-		ArrayList<MyVarInsnNode> loaded = new ArrayList<>();
-		ArrayList<MyVarInsnNode> stored = new ArrayList<>();
+		VarStates vStates = new VarStates();
 		MyMethodNode method = EasyMock.createMock(MyMethodNode.class);
 		
 		MyVarInsnNode lNode1 = EasyMock.createMock(MyVarInsnNode.class);
@@ -121,12 +120,12 @@ public class UnusedInstantiationTest {
 		MyVarInsnNode sNode2 = EasyMock.createMock(MyVarInsnNode.class);
 		MyVarInsnNode sNode3 = EasyMock.createMock(MyVarInsnNode.class);
 		
-		loaded.add(lNode1);
-		loaded.add(lNode2);
-		loaded.add(lNode3);
-		stored.add(sNode1);
-		stored.add(sNode2);
-		stored.add(sNode3);
+		vStates.varLoading.add(lNode1);
+		vStates.varLoading.add(lNode2);
+		vStates.varLoading.add(lNode3);
+		vStates.varStoring.add(sNode1);
+		vStates.varStoring.add(sNode2);
+		vStates.varStoring.add(sNode3);
 		
 		lNode1.var = 2;
 		lNode2.var = 3;
@@ -153,7 +152,7 @@ public class UnusedInstantiationTest {
 		
 		EasyMock.replay(lNode1, lNode2, lNode3, sNode1, sNode2, sNode3, method, lNode, vLNode);
 		
-		assertEquals("			Line 12: Unused variable named counter in method countThings\n", check.findUnusedVariables(loaded, stored, method));
+		assertEquals("			Line 12: Unused variable named counter in method countThings\n", check.findUnusedVariables(vStates, method));
 		
 		EasyMock.verify(lNode1, lNode2, lNode3, sNode1, sNode2, sNode3, method, lNode, vLNode);
 		
@@ -162,8 +161,7 @@ public class UnusedInstantiationTest {
 	@Test
 	public void testFindUnusedVariableLocationsUnusedUnknownName() {
 		UnusedInstantiationCheck check = new UnusedInstantiationCheck();
-		ArrayList<MyVarInsnNode> loaded = new ArrayList<>();
-		ArrayList<MyVarInsnNode> stored = new ArrayList<>();
+		VarStates vStates = new VarStates();
 		MyMethodNode method = EasyMock.createMock(MyMethodNode.class);
 		
 		MyVarInsnNode lNode1 = EasyMock.createMock(MyVarInsnNode.class);
@@ -174,12 +172,12 @@ public class UnusedInstantiationTest {
 		MyVarInsnNode sNode2 = EasyMock.createMock(MyVarInsnNode.class);
 		MyVarInsnNode sNode3 = EasyMock.createMock(MyVarInsnNode.class);
 		
-		loaded.add(lNode1);
-		loaded.add(lNode2);
-		loaded.add(lNode3);
-		stored.add(sNode1);
-		stored.add(sNode2);
-		stored.add(sNode3);
+		vStates.varLoading.add(lNode1);
+		vStates.varLoading.add(lNode2);
+		vStates.varLoading.add(lNode3);
+		vStates.varStoring.add(sNode1);
+		vStates.varStoring.add(sNode2);
+		vStates.varStoring.add(sNode3);
 		
 		lNode1.var = 2;
 		lNode2.var = 3;
@@ -202,7 +200,7 @@ public class UnusedInstantiationTest {
 		
 		EasyMock.replay(lNode1, lNode2, lNode3, sNode1, sNode2, sNode3, method, lNode);
 
-		assertEquals("			Line 12: Unused variable in method countThings\n", check.findUnusedVariables(loaded, stored, method));
+		assertEquals("			Line 12: Unused variable in method countThings\n", check.findUnusedVariables(vStates, method));
 		
 		EasyMock.verify(lNode1, lNode2, lNode3, sNode1, sNode2, sNode3, method, lNode);
 	}
