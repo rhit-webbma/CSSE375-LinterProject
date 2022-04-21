@@ -35,18 +35,13 @@ public class MyClassNode {
 	public String getFullSuperName() {
 		return superName;
 	}
-  
-	private String sanitizeString(String s) {
-		String[] nameSplit = s.split("/");
-		return nameSplit[nameSplit.length-1];
-	}
 	
 	public String getCleanName() {
-		return sanitizeString(name);
+		return Sanitizer.sanitizeString(name);
 	}
 	
 	public String getCleanSuperName() {
-		return sanitizeString(superName);
+		return Sanitizer.sanitizeString(superName);
 	}
 	
 	public boolean isSuperBuiltIn() {
@@ -57,7 +52,7 @@ public class MyClassNode {
 	public ArrayList<String> getInterfaces() {
 		ArrayList<String> output = new ArrayList<>();
 		for (String name : interfaces) {
-			output.add(sanitizeString(name));
+			output.add(Sanitizer.sanitizeString(name));
 		}
 		return output;
 	}
