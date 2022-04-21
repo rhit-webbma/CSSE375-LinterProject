@@ -1,7 +1,6 @@
-package example;
+package example.testLinters;
 
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.List;
 
 import org.objectweb.asm.ClassReader;
@@ -18,7 +17,8 @@ import org.objectweb.asm.tree.ParameterNode;
 import org.objectweb.asm.tree.VarInsnNode;
 
 // FIXME: this code has TERRIBLE DESIGN all around
-public class MyThirdLinter {
+// Test Commit
+public class MyFirstLinter {
 	
 	String[] fieldForAnalysisByThisProgram = new String[1];
 	
@@ -34,13 +34,25 @@ public class MyThirdLinter {
 	 * @throws ClassNotFoundException
 	 */
 	public static void main(String[] args) throws IOException {
+		// TODO: Learn how to create separate Run Configurations so you can run
+		// your code on different programs without changing the code each time.
 		for (String className : args) {
+			// The 3 steps read in a Java class:
+			// 1. ASM's ClassReader does the heavy lifting of parsing the compiled Java class.
 			ClassReader reader = new ClassReader(className);
+
+			// 2. ClassNode is just a data container for the parsed class
 			ClassNode classNode = new ClassNode();
+
+			// 3. Tell the Reader to parse the specified class and store its data in our ClassNode.
+			// EXPAND_FRAMES means: I want my code to work. (Always pass this flag.)
 			reader.accept(classNode, ClassReader.EXPAND_FRAMES);
-			
+
+			// Now we can navigate the classNode and look for things we are interested in.
 			printClass(classNode);
+
 			printFields(classNode);
+			
 			printMethods(classNode);
 		}
 	}
@@ -53,6 +65,7 @@ public class MyThirdLinter {
 				+ ((classNode.access & Opcodes.ACC_PUBLIC) != 0));
 		System.out.println("Extends: " + classNode.superName);
 		System.out.println("Implements: " + classNode.interfaces);
+		// TODO: how do I write a lint check to tell if this class has a bad name?
 	}
 
 	private static void printFields(ClassNode classNode) {
@@ -67,6 +80,11 @@ public class MyThirdLinter {
 
 			System.out.println("	public? "
 					+ ((field.access & Opcodes.ACC_PUBLIC) != 0));
+
+			// DONE: how do you tell if something has package-private access? (ie no access modifiers?)
+			//!Opcodes.ACC_PRIVATE && !Opcodes.ACC_PROTECTED && !Opcodes.ACC_PUBLIC
+			// DONE: how do I write a lint check to tell if this field has a bad name?
+			// Does it start with lowercase? If looking for camelcase make sure no underscores
 			System.out.println();
 		}
 	}
@@ -82,18 +100,25 @@ public class MyThirdLinter {
 					+ Type.getReturnType(method.desc).getClassName());
 
 			System.out.println("	Args: ");
+			// *** Original ***
 			for (Type argType : Type.getArgumentTypes(method.desc)) {
 				System.out.println("		" + argType.getClassName());
+				// FIXME: what is the argument's *variable* name?
+				// Look at MySecondLinter
+				// print both name of parameter from list and argument type
 			}
+			
 
 			System.out.println("	public? "
 					+ ((method.access & Opcodes.ACC_PUBLIC) != 0));
 			System.out.println("	static? "
 					+ ((method.access & Opcodes.ACC_STATIC) != 0));
+			// How do you tell if something has default access? (ie no access modifiers?)
+			// package private
 			System.out.println();
 
+			// Print the method's instructions
 			printInstructions(method);
-			System.out.println();
 		}
 	}
 
@@ -103,8 +128,7 @@ public class MyThirdLinter {
 
 			// We don't know immediately what kind of instruction we have.
 			AbstractInsnNode insn = instructions.get(i);
-			
-			
+
 			// FIXME: Is instanceof the best way to deal with the instruction's type?
 			if (insn instanceof MethodInsnNode) {
 				// A method call of some sort; what other useful fields does this object have?
@@ -127,6 +151,4 @@ public class MyThirdLinter {
 			// TODO: how do I write a lint check to tell if this method has a bad name?
 		}
 	}
-	
-	
 }

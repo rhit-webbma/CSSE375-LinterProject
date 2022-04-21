@@ -4,18 +4,31 @@ import static org.junit.jupiter.api.Assertions.*;
 
 import java.util.ArrayList;
 import java.util.LinkedList;
-import java.util.List;
 
 import org.easymock.EasyMock;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import data_source.MyAbstractInsnNode;
-import data_source.MyClassNode;
-import data_source.MyFieldNode;
 import data_source.MyMethodInsnNode;
 import data_source.MyMethodNode;
 
 class AdapterPatternCheckTest {
+	
+	ArrayList<String> types;
+	MyMethodNode method;
+	ArrayList<MyMethodInsnNode> instructions;
+	AdapterPatternCheck check;
+	
+	@BeforeEach
+	void init() {
+		types = new ArrayList<>();
+		types.add("ArrayList");
+		method = EasyMock.createMock(MyMethodNode.class);
+		method.name = "lol";
+		instructions = new ArrayList<MyMethodInsnNode>();
+		check = new AdapterPatternCheck();
+	}
 
 	@Test
 	void testNameOneInterface() {
@@ -96,15 +109,9 @@ class AdapterPatternCheckTest {
 	
 	@Test
 	void testCheckMethodGood() {
-		ArrayList<String> types = new ArrayList<>();
-		types.add("ArrayList");
-		MyMethodNode method = EasyMock.createMock(MyMethodNode.class);
-		method.name = "lol";
-		ArrayList<MyMethodInsnNode> instructions = new ArrayList<MyMethodInsnNode>();
 		MyMethodInsnNode insn = EasyMock.createMock(MyMethodInsnNode.class);
 		EasyMock.expect(insn.getCleanOwner()).andReturn("ArrayList");
 		instructions.add(insn);
-		AdapterPatternCheck check = new AdapterPatternCheck();
 		EasyMock.expect(method.isConstructor()).andReturn(false);
 		EasyMock.expect(method.getMethodInstructions()).andReturn(instructions);
 		EasyMock.replay(insn, method);
@@ -114,20 +121,20 @@ class AdapterPatternCheckTest {
 	
 	@Test
 	void testCheckMethodBad() {
-		ArrayList<String> types = new ArrayList<>();
-		types.add("LinkedList");
-		MyMethodNode method = EasyMock.createMock(MyMethodNode.class);
-		method.name = "lol";
+		ArrayList<String> types2 = new ArrayList<>();
+		types2.add("LinkedList");
+		MyMethodNode method2 = EasyMock.createMock(MyMethodNode.class);
+		method2.name = "lol";
 		ArrayList<MyMethodInsnNode> instructions = new ArrayList<MyMethodInsnNode>();
-		MyMethodInsnNode insn = EasyMock.createMock(MyMethodInsnNode.class);
-		EasyMock.expect(insn.getCleanOwner()).andReturn("ArrayList");
-		instructions.add(insn);
-		EasyMock.expect(method.isConstructor()).andReturn(false);
-		EasyMock.expect(method.getMethodInstructions()).andReturn(instructions);
+		MyMethodInsnNode insn2 = EasyMock.createMock(MyMethodInsnNode.class);
+		EasyMock.expect(insn2.getCleanOwner()).andReturn("ArrayList");
+		instructions.add(insn2);
+		EasyMock.expect(method2.isConstructor()).andReturn(false);
+		EasyMock.expect(method2.getMethodInstructions()).andReturn(instructions);
 		AdapterPatternCheck check = new AdapterPatternCheck();
-		EasyMock.replay(method);
-		assertFalse(check.checkMethod(method, types));
-		EasyMock.verify(method);
+		EasyMock.replay(method2);
+		assertFalse(check.checkMethod(method2, types2));
+		EasyMock.verify(method2);
 	}
 
 }

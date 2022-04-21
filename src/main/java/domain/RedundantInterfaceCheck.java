@@ -18,7 +18,7 @@ public class RedundantInterfaceCheck implements ClassCheck {
 			}
 		}
 		for (MyClassNode node : classes) {
-			for (String name : node.interfaces) {
+			for (String name : node.getInterfaces()) {
 				if (interfaces.containsKey(name)) {
 					int value = interfaces.get(name);
 					interfaces.replace(name, value + 1);

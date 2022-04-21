@@ -20,27 +20,16 @@ public class GithubImport implements Testable{
 	Grabber githubGrabber;
 	PopulateJavaFile populator;
 	Scanner in;
-	
-	public GithubImport()
-	{
-		in = new Scanner(System.in);
-	}
-	
-<<<<<<< Updated upstream
-=======
+
 	public GithubImport(Scanner in)
 	{
 		this.in = in;
 	}
-	
-<<<<<<< Updated upstream
-=======
+
 	public Grabber getGrabber()
 	{
 		return this.githubGrabber;
 	}
->>>>>>> Stashed changes
->>>>>>> Stashed changes
 	
 	@Override
 	public ArrayList<String> generateClasses() {
