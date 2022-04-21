@@ -28,12 +28,13 @@ class SystemTests {
 
 	@Test
 	void testNameCheck() {
-		ByteArrayInputStream in = new ByteArrayInputStream("Package\nexample\nname\nrun\ndone".getBytes());
+		ByteArrayInputStream in = new ByteArrayInputStream("Console\nPackage\nexample\nname\nrun\ndone".getBytes());
 		System.setIn(in);
 
-		ConsoleManager.main(new String[0]);
+		InputManager.main(new String[0]);
 		
-		assertEquals("What type of Import would you like to do: \r\n" + 
+		assertEquals("Would you like to input with GUI or Console? [GUI, Console]\r\n" + 
+				"What type of Import would you like to do: \r\n" + 
 				"Please Input a Package Name: \r\n" + 
 				"Classes inputted: \n" + 
 				"	badClass$\n" + 
@@ -75,12 +76,13 @@ class SystemTests {
 	
 	@Test
 	void testUnusedInstantiationCheck() {
-		ByteArrayInputStream in = new ByteArrayInputStream("Package\nexample\ninstantiation\nrun\ndone".getBytes());
+		ByteArrayInputStream in = new ByteArrayInputStream("Console\nPackage\nexample\ninstantiation\nrun\ndone".getBytes());
 		System.setIn(in);
 
-		ConsoleManager.main(new String[0]);
+		InputManager.main(new String[0]);
 		
-		assertEquals("What type of Import would you like to do: \r\n" + 
+		assertEquals("Would you like to input with GUI or Console? [GUI, Console]\r\n" + 
+				"What type of Import would you like to do: \r\n" + 
 				"Please Input a Package Name: \r\n" + 
 				"Classes inputted: \n" + 
 				"	badClass$\n" + 
@@ -121,12 +123,13 @@ class SystemTests {
 	
 	@Test
 	void testMethodLengthCheck() {
-		ByteArrayInputStream in = new ByteArrayInputStream("Package\nexample\nlength\nrun\ndone".getBytes());
+		ByteArrayInputStream in = new ByteArrayInputStream("Console\nPackage\nexample\nlength\nrun\ndone".getBytes());
 		System.setIn(in);
 
-		ConsoleManager.main(new String[0]);
+		InputManager.main(new String[0]);
 		
-		assertEquals("What type of Import would you like to do: \r\n" + 
+		assertEquals("Would you like to input with GUI or Console? [GUI, Console]\r\n" + 
+				"What type of Import would you like to do: \r\n" + 
 				"Please Input a Package Name: \r\n" + 
 				"Classes inputted: \n" + 
 				"	badClass$\n" + 
@@ -149,11 +152,12 @@ class SystemTests {
 	
 	@Test
 	void testRedundantInterfaces() {
-		ByteArrayInputStream in = new ByteArrayInputStream("Package\nexample.interfaces\ninterface\nrun\ndone".getBytes());
+		ByteArrayInputStream in = new ByteArrayInputStream("Console\nPackage\nexample.interfaces\ninterface\nrun\ndone".getBytes());
 		System.setIn(in);
-		ConsoleManager.main(new String[0]);
+		InputManager.main(new String[0]);
 		
-		assertEquals("What type of Import would you like to do: \r\n" + 
+		assertEquals("Would you like to input with GUI or Console? [GUI, Console]\r\n" + 
+				"What type of Import would you like to do: \r\n" + 
 				"Please Input a Package Name: \r\n" + 
 				"Classes inputted: \n" + 
 				"	Animal\n" + 
@@ -193,12 +197,13 @@ class SystemTests {
 	
 	@Test
 	void testCompositionCheck() {
-		ByteArrayInputStream in = new ByteArrayInputStream("Package\nexample\ncomposition\nrun\ndone".getBytes());
+		ByteArrayInputStream in = new ByteArrayInputStream("Console\nPackage\nexample\ncomposition\nrun\ndone".getBytes());
 		System.setIn(in);
 
-		ConsoleManager.main(new String[0]);
+		InputManager.main(new String[0]);
 		
-		assertEquals("What type of Import would you like to do: \r\n" + 
+		assertEquals("Would you like to input with GUI or Console? [GUI, Console]\r\n" + 
+				"What type of Import would you like to do: \r\n" + 
 				"Please Input a Package Name: \r\n" + 
 				"Classes inputted: \n" + 
 				"	badClass$\n" + 
@@ -221,12 +226,13 @@ class SystemTests {
 	
 	@Test
 	void testHollywoodCheck() {
-		ByteArrayInputStream in = new ByteArrayInputStream("Package\nexample\nhollywood\nrun\ndone".getBytes());
+		ByteArrayInputStream in = new ByteArrayInputStream("Console\nPackage\nexample\nhollywood\nrun\ndone".getBytes());
 		System.setIn(in);
 
-		ConsoleManager.main(new String[0]);
+		InputManager.main(new String[0]);
 		
-		assertEquals("What type of Import would you like to do: \r\n" + 
+		assertEquals("Would you like to input with GUI or Console? [GUI, Console]\r\n" + 
+				"What type of Import would you like to do: \r\n" + 
 				"Please Input a Package Name: \r\n" + 
 				"Classes inputted: \n" + 
 				"	badClass$\n" + 
@@ -249,11 +255,12 @@ class SystemTests {
 	
 	@Test
 	void testGoodFacadePattern() {
-		ByteArrayInputStream in = new ByteArrayInputStream("Package\nexample.goodFacade\npattern\nrun\ndone".getBytes());
+		ByteArrayInputStream in = new ByteArrayInputStream("Console\nPackage\nexample.goodFacade\npattern\nrun\ndone".getBytes());
 		System.setIn(in);
-		ConsoleManager.main(new String[0]);
+		InputManager.main(new String[0]);
 		
-		assertEquals("What type of Import would you like to do: \r\n" + 
+		assertEquals("Would you like to input with GUI or Console? [GUI, Console]\r\n" + 
+				"What type of Import would you like to do: \r\n" + 
 				"Please Input a Package Name: \r\n" + 
 				"Classes inputted: \n" + 
 				"	CdPlayer\n" + 
@@ -303,11 +310,12 @@ class SystemTests {
 	
 	@Test
 	void testBadFacadePattern() {
-		ByteArrayInputStream in = new ByteArrayInputStream("Package\nexample.badFacade\npattern\nrun\ndone".getBytes());
+		ByteArrayInputStream in = new ByteArrayInputStream("Console\nPackage\nexample.badFacade\npattern\nrun\ndone".getBytes());
 		System.setIn(in);
-		ConsoleManager.main(new String[0]);
+		InputManager.main(new String[0]);
 		
-		assertEquals("What type of Import would you like to do: \r\n" + 
+		assertEquals("Would you like to input with GUI or Console? [GUI, Console]\r\n" + 
+				"What type of Import would you like to do: \r\n" + 
 				"Please Input a Package Name: \r\n" + 
 				"Classes inputted: \n" + 
 				"	CatFacade\n" + 
@@ -329,11 +337,12 @@ class SystemTests {
 	
 	@Test
 	void testGoodStrategyPattern() {
-		ByteArrayInputStream in = new ByteArrayInputStream("Package\nexample.goodStrategy\npattern\nrun\ndone".getBytes());
+		ByteArrayInputStream in = new ByteArrayInputStream("Console\nPackage\nexample.goodStrategy\npattern\nrun\ndone".getBytes());
 		System.setIn(in);
-		ConsoleManager.main(new String[0]);
+		InputManager.main(new String[0]);
 		
-		assertEquals("What type of Import would you like to do: \r\n" + 
+		assertEquals("Would you like to input with GUI or Console? [GUI, Console]\r\n" + 
+				"What type of Import would you like to do: \r\n" + 
 				"Please Input a Package Name: \r\n" + 
 				"Classes inputted: \n" + 
 				"	BlueFish\n" + 
@@ -378,11 +387,12 @@ class SystemTests {
 	
 	@Test
 	void testGoodAdapterPattern() {
-		ByteArrayInputStream in = new ByteArrayInputStream("Package\nexample.goodAdapter\npattern\nrun\ndone".getBytes());
+		ByteArrayInputStream in = new ByteArrayInputStream("Console\nPackage\nexample.goodAdapter\npattern\nrun\ndone".getBytes());
 		System.setIn(in);
-		ConsoleManager.main(new String[0]);
+		InputManager.main(new String[0]);
 		
-		assertEquals("What type of Import would you like to do: \r\n" + 
+		assertEquals("Would you like to input with GUI or Console? [GUI, Console]\r\n" + 
+				"What type of Import would you like to do: \r\n" + 
 				"Please Input a Package Name: \r\n" + 
 				"Classes inputted: \n" + 
 				"	Cat\n" + 
@@ -412,11 +422,12 @@ class SystemTests {
 	
 	@Test
 	void testBadAdapterPattern() {
-		ByteArrayInputStream in = new ByteArrayInputStream("Package\nexample.badAdapter\npattern\nrun\ndone".getBytes());
+		ByteArrayInputStream in = new ByteArrayInputStream("Console\nPackage\nexample.badAdapter\npattern\nrun\ndone".getBytes());
 		System.setIn(in);
-		ConsoleManager.main(new String[0]);
+		InputManager.main(new String[0]);
 		
-		assertEquals("What type of Import would you like to do: \r\n" + 
+		assertEquals("Would you like to input with GUI or Console? [GUI, Console]\r\n" + 
+				"What type of Import would you like to do: \r\n" + 
 				"Please Input a Package Name: \r\n" + 
 				"Classes inputted: \n" + 
 				"	Cat\n" + 
@@ -462,11 +473,12 @@ class SystemTests {
 	
 	@Test
 	void testCheckRunnerHelpMethod() {
-		ByteArrayInputStream in = new ByteArrayInputStream("Package\nexample\nhelp\ndone".getBytes());
+		ByteArrayInputStream in = new ByteArrayInputStream("Console\nPackage\nexample\nhelp\ndone".getBytes());
 		System.setIn(in);
-		ConsoleManager.main(new String[0]);
+		InputManager.main(new String[0]);
 		
-		assertEquals("What type of Import would you like to do: \r\n" + 
+		assertEquals("Would you like to input with GUI or Console? [GUI, Console]\r\n" + 
+				"What type of Import would you like to do: \r\n" + 
 				"Please Input a Package Name: \r\n" + 
 				"Classes inputted: \n" + 
 				"	badClass$\n" + 
@@ -491,11 +503,12 @@ class SystemTests {
 	
 	@Test
 	void testAllChecks() {
-		ByteArrayInputStream in = new ByteArrayInputStream("Package\nexample\nall\nrun\ndone".getBytes());
+		ByteArrayInputStream in = new ByteArrayInputStream("Console\nPackage\nexample\nall\nrun\ndone".getBytes());
 		System.setIn(in);
-		ConsoleManager.main(new String[0]);
+		InputManager.main(new String[0]);
 		
-		assertEquals("What type of Import would you like to do: \r\n" + 
+		assertEquals("Would you like to input with GUI or Console? [GUI, Console]\r\n" + 
+				"What type of Import would you like to do: \r\n" + 
 				"Please Input a Package Name: \r\n" + 
 				"Classes inputted: \n" + 
 				"	badClass$\n" + 
@@ -579,12 +592,13 @@ class SystemTests {
 	
 	@Test
 	void testRemoveSuperBadClassCheck() {
-		ByteArrayInputStream in = new ByteArrayInputStream("Package\nexample\nremove\nsuperBadClass$\nname\nrun\ndone".getBytes());
+		ByteArrayInputStream in = new ByteArrayInputStream("Console\nPackage\nexample\nremove\nsuperBadClass$\nname\nrun\ndone".getBytes());
 		System.setIn(in);
 
-		ConsoleManager.main(new String[0]);
+		InputManager.main(new String[0]);
 		
-		assertEquals("What type of Import would you like to do: \r\n" + 
+		assertEquals("Would you like to input with GUI or Console? [GUI, Console]\r\n" + 
+				"What type of Import would you like to do: \r\n" + 
 				"Please Input a Package Name: \r\n" + 
 				"Classes inputted: \n" + 
 				"	badClass$\n" + 
@@ -625,12 +639,13 @@ class SystemTests {
 	
 	@Test
 	void testRemoveReaddSuperBadClassCheck() {
-		ByteArrayInputStream in = new ByteArrayInputStream("Package\nexample\nremove\nsuperBadClass$\nreadd\nsuperBadClass$\nname\nrun\ndone".getBytes());
+		ByteArrayInputStream in = new ByteArrayInputStream("Console\nPackage\nexample\nremove\nsuperBadClass$\nreadd\nsuperBadClass$\nname\nrun\ndone".getBytes());
 		System.setIn(in);
 
-		ConsoleManager.main(new String[0]);
+		InputManager.main(new String[0]);
 		
-		assertEquals("What type of Import would you like to do: \r\n" + 
+		assertEquals("Would you like to input with GUI or Console? [GUI, Console]\r\n" + 
+				"What type of Import would you like to do: \r\n" + 
 				"Please Input a Package Name: \r\n" + 
 				"Classes inputted: \n" + 
 				"	badClass$\n" + 
@@ -683,11 +698,12 @@ class SystemTests {
 	void testGithubGrabber() {
 		//requires internet and that the link provided it valid
 		//Testing on https://github.com/TheAlgorithms/Java/blob/master/src/main/java/com/thealgorithms/searches/BinarySearch.java
-		ByteArrayInputStream in = new ByteArrayInputStream("Github\nhttps://github.com/TheAlgorithms/Java/blob/master/src/main/java/com/thealgorithms/searches/BinarySearch.java\nall\nrun\ndone".getBytes());
+		ByteArrayInputStream in = new ByteArrayInputStream("Console\nGithub\nhttps://github.com/TheAlgorithms/Java/blob/master/src/main/java/com/thealgorithms/searches/BinarySearch.java\nall\nrun\ndone".getBytes());
 		System.setIn(in);
-		ConsoleManager.main(new String[0]);
+		InputManager.main(new String[0]);
 		
-		assertEquals("What type of Import would you like to do: \r\n" + 
+		assertEquals("Would you like to input with GUI or Console? [GUI, Console]\r\n" + 
+				"What type of Import would you like to do: \r\n" + 
 				"Please Input a Github Link: \r\n" + 
 				"TheAlgorithms/Java/blob/master/src/main/java/com/thealgorithms/searches/BinarySearch.java\r\n" + 
 				"File: BinarySearch.java has been created!\r\n" + 
