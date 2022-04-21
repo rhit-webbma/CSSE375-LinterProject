@@ -21,27 +21,24 @@ import domain.StrategyPatternCheck;
 import domain.UnusedInstantiationCheck;
 
 public class ConsoleManager {
-
-	
 	static Grabber githubGrabber;
 	static PopulateJavaFile populator;
 	static Directory directory;
-	private static Scanner in;
+	private Scanner in;
 	
-	public static void main(String[] args) {
-		
-		in = new Scanner(System.in);
-		System.out.println("What type of Import would you like to do: ");
-		userInterfaceLoop(in.nextLine());
+	public ConsoleManager(Scanner in) {
+		this.in = in;
 	}
 	
-	private static void userInterfaceLoop(String inputType) {
+	public void userInterfaceLoop() {
+		System.out.println("What type of Import would you like to do: ");
+		
 		
 		CheckRunner runner = null;
 		Testable testingMethod = null;
 		
 		
-		switch(inputType)
+		switch(in.nextLine())
 		{
 		case "Github":
 			testingMethod = new GithubImport(in);
@@ -53,7 +50,6 @@ public class ConsoleManager {
 		
 		runner = new CheckRunner(testingMethod.generateClasses());
 		
-//		CheckRunner runner = new CheckRunner(args);
 		System.out.println("Classes inputted: \n" + runner.classNames());
 		
 		ArrayList<String> added = new ArrayList<>();
