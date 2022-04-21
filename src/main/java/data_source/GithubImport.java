@@ -1,5 +1,14 @@
 package data_source;
 
+import java.io.File;
+import java.io.IOException;
+import static java.nio.file.StandardWatchEventKinds.*;
+import java.nio.file.FileSystems;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.nio.file.WatchEvent;
+import java.nio.file.WatchKey;
+import java.nio.file.WatchService;
 import java.util.ArrayList;
 import java.util.Map;
 import java.util.Scanner;
@@ -17,6 +26,21 @@ public class GithubImport implements Testable{
 		in = new Scanner(System.in);
 	}
 	
+<<<<<<< Updated upstream
+=======
+	public GithubImport(Scanner in)
+	{
+		this.in = in;
+	}
+	
+<<<<<<< Updated upstream
+=======
+	public Grabber getGrabber()
+	{
+		return this.githubGrabber;
+	}
+>>>>>>> Stashed changes
+>>>>>>> Stashed changes
 	
 	@Override
 	public ArrayList<String> generateClasses() {
@@ -25,23 +49,70 @@ public class GithubImport implements Testable{
 		System.out.println("Please Input a Github Link: ");
 		githubGrabber = new Grabber(in.nextLine());
 		
-		populator = new PopulateJavaFile(githubGrabber.getJSONInfo());
-		
+		WatchService watcher = null;
 		try {
-			Thread.sleep(3000);
-		} catch (InterruptedException e1) {
+			watcher = FileSystems.getDefault().newWatchService();
+		} catch (IOException e) {
 			// TODO Auto-generated catch block
-			e1.printStackTrace();
+			e.printStackTrace();
 		}
-		ArrayList<String> githubClasses = new ArrayList<String>();
-
-		for(Map.Entry<String,String> entry : githubGrabber.getJSONInfo().entrySet())
+		Path dir = Paths.get("src/main/java/data_source");
+		try
 		{
-			String fileURL = "data_source." + entry.getKey().replace(".java", "");
-			githubClasses.add(fileURL);
+			WatchKey key = dir.register(watcher, ENTRY_CREATE);
+		} catch (IOException x)
+		{
+			System.err.println(x);
 		}
+		
+		
+		populator = new PopulateJavaFile(githubGrabber.getJSONInfo());
+		githubGrabber.setFileList(populator.getFileList());
+		for (;;) {
+		    // wait for key to be signaled
+		    WatchKey key = null;
+		    
+	        try {
+				key = watcher.take();
+			} catch (InterruptedException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			}
+		    if(key == null) continue;
 
-		return githubClasses;
+		    for (WatchEvent<?> event: key.pollEvents()) {
+		        WatchEvent.Kind<?> kind = event.kind();
+
+		        System.out.println(event.kind().name());
+		        
+		        if (kind == OVERFLOW) {
+		            continue;
+		        }
+		        
+		        try {
+					Thread.sleep(5000);
+				} catch (InterruptedException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+		        
+				ArrayList<String> githubClasses = new ArrayList<String>();
+
+				for(Map.Entry<String,String> entry : githubGrabber.getJSONInfo().entrySet())
+				{
+					String fileURL = "data_source." + entry.getKey().replace(".java", "");
+					githubClasses.add(fileURL);
+				}
+
+				return githubClasses;
+		  
+		    }
+		    boolean valid = key.reset();
+		    if (!valid) {
+		        break;
+		    }
+		}
+		return null;
 	}
 
 }

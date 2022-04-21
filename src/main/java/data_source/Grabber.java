@@ -1,5 +1,6 @@
 package data_source;
 import java.io.BufferedReader;
+import java.io.File;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.Reader;
@@ -9,6 +10,7 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Map;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -19,7 +21,8 @@ public class Grabber {
 	private String repoName;
 	private String path;
 	private String jsonString;
-
+	
+	ArrayList<File> fileList;
 	HashMap<String, String> jsonInformation;
 
 	private Parsable parsingMethod;
@@ -29,6 +32,7 @@ public class Grabber {
 	public Grabber(String url)
 	{
 		jsonInformation = new HashMap<>();
+		fileList = new ArrayList<>();
 		controlFlagJavaFile = false;
 		this.grabCreds(url);
 		try {
@@ -57,6 +61,11 @@ public class Grabber {
 	public HashMap<String,String> getJSONInfo()
 	{
 		return this.jsonInformation;
+	}
+	
+	public void setFileList(ArrayList<File> fileList)
+	{
+		this.fileList = fileList;
 	}
 
 	public void grabCreds(String URL)
@@ -148,6 +157,15 @@ public class Grabber {
 		this.jsonString = content.toString();
 		
 		connection.disconnect();
+	}
+
+	public void deleteFiles() {
+		// TODO Auto-generated method stub
+		for(File file : this.fileList)
+		{
+			file.delete();
+		}
+		
 	}
 	
 	

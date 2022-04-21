@@ -1,6 +1,8 @@
 package presentation;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Scanner;
 
 import data_source.Directory;
@@ -27,18 +29,30 @@ public class ConsoleManager {
 	static PopulateJavaFile populator;
 	static Directory directory;
 	
+<<<<<<< Updated upstream
 	public static void main(String[] args) {
 		
 		Scanner in = new Scanner(System.in);
 		System.out.println("What type of Import would you like to do: ");
 		userInterfaceLoop(in.nextLine());
+=======
+<<<<<<< Updated upstream
+	public ConsoleManager(Scanner in) {
+		this.in = in;
+=======
+	public static void main(String[] args) {
+		in = new Scanner(System.in);
+		System.out.println("What type of Import would you like to do: ");
+		userInterfaceLoop(in.nextLine());
+>>>>>>> Stashed changes
+>>>>>>> Stashed changes
 	}
 	
 	private static void userInterfaceLoop(String inputType) {
 		
 		CheckRunner runner = null;
 		Testable testingMethod = null;
-		
+		Grabber gitGrabber = null;
 		
 		switch(inputType)
 		{
@@ -51,6 +65,9 @@ public class ConsoleManager {
 		}
 		
 		runner = new CheckRunner(testingMethod.generateClasses());
+		gitGrabber = ((GithubImport) testingMethod).getGrabber();
+		
+		if(inputType.equals("Github")) gitGrabber.deleteFiles();
 		
 //		CheckRunner runner = new CheckRunner(args);
 		System.out.println("Classes inputted: \n" + runner.classNames());

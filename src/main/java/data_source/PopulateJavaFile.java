@@ -18,16 +18,18 @@ import java.util.Map;
 public class PopulateJavaFile {
 	
 	private File populatedFile;
+	private ArrayList<File> fileList;
 	
 	public PopulateJavaFile(HashMap<String,String> jsonInfo)
 	{
-		
+		fileList = new ArrayList<>();
 		try {
 
 			for(Map.Entry<String,String> entry : jsonInfo.entrySet()) {
 				String filename = entry.getKey();
 				String url = entry.getValue();
 				this.populate(url, filename);
+				fileList.add(this.populatedFile);
 			}
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
@@ -38,6 +40,11 @@ public class PopulateJavaFile {
 	public File getPopulatedFile()
 	{
 		return this.populatedFile;
+	}
+	
+	public ArrayList<File> getFileList()
+	{
+		return this.fileList;
 	}
 	
 	public void populate(String rawData, String fileName) throws IOException
@@ -53,25 +60,52 @@ public class PopulateJavaFile {
 				System.out.println("File already exists");
 			}
 			
-			this.populatedFile.createNewFile();
-			FileWriter myWriter = new FileWriter("src/main/java/data_source/" + fileName);
+//			this.populatedFile.createNewFile();
 			
-            URL url;
+			
+			Thread writeThread = new Thread()
+			{
+				public void run()
+				{
+					FileWriter myWriter = null;
+					try {
+						myWriter = new FileWriter("src/main/java/data_source/" + fileName);
+					} catch (IOException e1) {
+						// TODO Auto-generated catch block
+						e1.printStackTrace();
+					}
+		            URL url;
+					try {
+						url = new URL(rawData);
+			            // read text returned by server
+			            BufferedReader in = new BufferedReader(new InputStreamReader(url.openStream()));
+			             
+			            String line;
+			            while ((line = in.readLine()) != null) {
+			                myWriter.write(line + System.getProperty( "line.separator" ));
+			            }
+			            myWriter.close();
+			            in.close();
+					} catch (MalformedURLException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					} catch (IOException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
+				}
+			};
+			
+			writeThread.start();
 			try {
-				url = new URL(rawData);
-	            // read text returned by server
-	            BufferedReader in = new BufferedReader(new InputStreamReader(url.openStream()));
-	             
-	            String line;
-	            while ((line = in.readLine()) != null) {
-	                myWriter.write(line + System.getProperty( "line.separator" ));
-	            }
-	            myWriter.close();
-	            in.close();
-			} catch (MalformedURLException e) {
+				writeThread.join();
+			} catch (InterruptedException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
+			
+			
+
 	}
 	
 }
