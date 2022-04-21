@@ -25,6 +25,7 @@ import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 
 import data_source.Directory;
+import data_source.GithubImport;
 import data_source.Grabber;
 import data_source.PopulateJavaFile;
 import domain.AdapterPatternCheck;
@@ -74,8 +75,10 @@ public class GUIManager {
 	
 	private void githubImport() {
 		JFrame gitFrame = new JFrame("Github Import");
-		gitFrame.setPreferredSize(new Dimension(650,125));
+		gitFrame.setPreferredSize(new Dimension(700,125));
 		JPanel gitPanel = new JPanel();
+		
+		ArrayList<GithubImport> gitImports = new ArrayList<>();
 		
 		gitPanel.add(new JLabel("Input the link to the project file/package you want to add, then press add. "
 				+ "Once all entries are added, press submit."), BorderLayout.NORTH);
@@ -83,16 +86,26 @@ public class GUIManager {
 		gitPanel.add(gitTxt, BorderLayout.CENTER);
 		JButton addButton = new JButton("Add");
 		JLabel gitLabel = new JLabel("");
+		ArrayList<String> classNames = new ArrayList<>();
 		addButton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e){
+            	GithubImport gitImport = new GithubImport(null);
+            	try {
+                	classNames.addAll(gitImport.generateClassesHelper(gitTxt.getText()));
+                	gitImports.add(gitImport);
+                	gitLabel.setText("Files from the selected link have been imported");
+            	} catch (NullPointerException | StringIndexOutOfBoundsException e1) {
+            		gitLabel.setText("Invalid link to a github project");
+            	}
             }
         });
 		gitPanel.add(addButton, BorderLayout.CENTER);
 		
 		JButton submitButton = new JButton("Submit");
-		ArrayList<String> classNames = new ArrayList<>();
 		submitButton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e){
+            	 gitFrame.dispatchEvent(new WindowEvent(gitFrame, WindowEvent.WINDOW_CLOSING));
+                 classSelector(classNames, true, gitImports);
             }
         });
 		gitPanel.add(submitButton, BorderLayout.CENTER);
@@ -102,7 +115,6 @@ public class GUIManager {
 		gitFrame.add(gitPanel);
 		gitFrame.pack();
 		gitFrame.setVisible(true);
-		gitFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 	}
 	
 	private void packageImport() {
@@ -142,7 +154,7 @@ public class GUIManager {
                 	}
                 }
                 pkgFrame.dispatchEvent(new WindowEvent(pkgFrame, WindowEvent.WINDOW_CLOSING));
-                classSelector(classNames);
+                classSelector(classNames, false, null);
             }
         });
 		pkgPanel.add(submitButton, BorderLayout.CENTER);
@@ -154,7 +166,7 @@ public class GUIManager {
 		pkgFrame.setVisible(true);
 	}
 	
-	private void classSelector(ArrayList<String> classNames) {
+	private void classSelector(ArrayList<String> classNames, boolean isGithub, ArrayList<GithubImport> gitImports) {
 		ArrayList<String> added = classNames;
 		ArrayList<String> removed = new ArrayList<>();
 		
@@ -224,8 +236,15 @@ public class GUIManager {
 		JButton submitButton = new JButton("Submit");
 		submitButton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e){
+        		CheckRunner runner = new CheckRunner(added);
+        		if(isGithub) {
+        			for (GithubImport gitImport : gitImports) {
+        				gitImport.getGrabber().deleteFiles();
+        			}
+        			
+        		}
             	selectFrame.dispatchEvent(new WindowEvent(selectFrame, WindowEvent.WINDOW_CLOSING));
-            	checkSelector(added);
+            	checkSelector(runner);
             }
 		});
 		selectPanel.add(submitButton, BorderLayout.NORTH);
@@ -242,8 +261,8 @@ public class GUIManager {
 	}
 	
 
-	private void checkSelector(ArrayList<String> added) {
-		CheckRunner runner = new CheckRunner(added);
+	private void checkSelector(CheckRunner runner) {
+
 		String[] checks = {"Adapter Pattern Check", "Composition Check", "Facade Pattern Check", "Hollywood Check", "Method Length Check",
 								"Names Check", "Redundant Interface Check", "Strategy Pattern Check", "Unused Instantiation Check"};
 		

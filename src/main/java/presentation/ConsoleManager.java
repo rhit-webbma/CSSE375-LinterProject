@@ -28,13 +28,6 @@ public class ConsoleManager {
 	static Directory directory;
 	private Scanner in;
 	
-
-
-	public static void main(String[] args) {
-		in = new Scanner(System.in);
-		System.out.println("What type of Import would you like to do: ");
-		userInterfaceLoop(in.nextLine());
-  }
     
 	public ConsoleManager(Scanner in) {
 		this.in = in;
@@ -47,11 +40,13 @@ public class ConsoleManager {
 		CheckRunner runner = null;
 		Testable testingMethod = null;
 		Grabber gitGrabber = null;
+		boolean github = false;
 		
 		switch(in.nextLine())
 		{
 		case "Github":
 			testingMethod = new GithubImport(in);
+			github = true;
 			break;
 		case "Package":
 			testingMethod = new PackageImport(in);
@@ -59,9 +54,12 @@ public class ConsoleManager {
 		}
 		
 		runner = new CheckRunner(testingMethod.generateClasses());
-		gitGrabber = ((GithubImport) testingMethod).getGrabber();
 		
-		if(inputType.equals("Github")) gitGrabber.deleteFiles();
+		
+		if(github) {
+			gitGrabber = ((GithubImport) testingMethod).getGrabber();
+			gitGrabber.deleteFiles();
+		}
 		
 		System.out.println("Classes inputted: \n" + runner.classNames());
 		
