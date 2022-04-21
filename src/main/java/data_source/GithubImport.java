@@ -36,8 +36,11 @@ public class GithubImport implements Testable{
 		// TODO Auto-generated method stub
 		
 		System.out.println("Please Input a Github Link: ");
-		githubGrabber = new Grabber(in.nextLine());
-		
+		return generateClassesHelper(in.nextLine());
+	}
+	
+	public ArrayList<String> generateClassesHelper(String grabberLink) {
+		githubGrabber = new Grabber(grabberLink);
 		WatchService watcher = null;
 		try {
 			watcher = FileSystems.getDefault().newWatchService();
