@@ -22,7 +22,12 @@ public class Directory {
 	{
 		InputStream stream = ClassLoader.getSystemClassLoader()
 				.getResourceAsStream(packageName.replaceAll("[.]", "/"));
-		BufferedReader reader = new BufferedReader(new InputStreamReader(stream));
+		BufferedReader reader;
+		try {
+			reader = new BufferedReader(new InputStreamReader(stream));
+		} catch (NullPointerException e) {
+			return null;
+		}
 		
 		List<String> newString = reader.lines()
 				.filter(line -> line.endsWith(".class"))
