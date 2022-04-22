@@ -59,9 +59,11 @@ class SystemTests {
 				"				Field j has too short of a name (1 character) \n" + 
 				"			Method & Method Variable Name checks: \n" + 
 				"				Variable Ok has an uppercase first letter in method <init>\n" + 
+				"				Variable badclass$ has the same name as its type in method BadMethodName\n" +
 				"				Variable Integer has an uppercase first letter in method BadMethodName\n" + 
 				"				Variable i has the same name as its type in method BadMethodName\n" + 
 				"				Method BadMethodName has an uppercase first letter \n" + 
+				"				Variable myfirstLinter has the same name as its type in method m\n"+
 				"				Method m has too short of a name (1 character) \n" + 
 				"				Variable i has the same name as its type in method methodWithUnusedVariables\n" + 
 				"				Variable i has the same name as its type in method longMethod\n" + 
@@ -541,9 +543,11 @@ class SystemTests {
 				"				Field j has too short of a name (1 character) \n" + 
 				"			Method & Method Variable Name checks: \n" + 
 				"				Variable Ok has an uppercase first letter in method <init>\n" + 
+				"				Variable badclass$ has the same name as its type in method BadMethodName\n" +
 				"				Variable Integer has an uppercase first letter in method BadMethodName\n" + 
 				"				Variable i has the same name as its type in method BadMethodName\n" + 
 				"				Method BadMethodName has an uppercase first letter \n" + 
+				"				Variable myfirstLinter has the same name as its type in method m\n"+
 				"				Method m has too short of a name (1 character) \n" + 
 				"				Variable i has the same name as its type in method methodWithUnusedVariables\n" + 
 				"				Variable i has the same name as its type in method longMethod\n" + 
@@ -627,9 +631,11 @@ class SystemTests {
 				"				Field j has too short of a name (1 character) \n" + 
 				"			Method & Method Variable Name checks: \n" + 
 				"				Variable Ok has an uppercase first letter in method <init>\n" + 
+				"				Variable badclass$ has the same name as its type in method BadMethodName\n" +
 				"				Variable Integer has an uppercase first letter in method BadMethodName\n" + 
 				"				Variable i has the same name as its type in method BadMethodName\n" + 
 				"				Method BadMethodName has an uppercase first letter \n" + 
+				"				Variable myfirstLinter has the same name as its type in method m\n"+
 				"				Method m has too short of a name (1 character) \n" + 
 				"				Variable i has the same name as its type in method methodWithUnusedVariables\n" + 
 				"				Variable i has the same name as its type in method longMethod\n" + 
@@ -679,9 +685,11 @@ class SystemTests {
 				"				Field j has too short of a name (1 character) \n" + 
 				"			Method & Method Variable Name checks: \n" + 
 				"				Variable Ok has an uppercase first letter in method <init>\n" + 
+				"				Variable badclass$ has the same name as its type in method BadMethodName\n" +
 				"				Variable Integer has an uppercase first letter in method BadMethodName\n" + 
 				"				Variable i has the same name as its type in method BadMethodName\n" + 
 				"				Method BadMethodName has an uppercase first letter \n" + 
+				"				Variable myfirstLinter has the same name as its type in method m\n"+
 				"				Method m has too short of a name (1 character) \n" + 
 				"				Variable i has the same name as its type in method methodWithUnusedVariables\n" + 
 				"				Variable i has the same name as its type in method longMethod\n" + 
