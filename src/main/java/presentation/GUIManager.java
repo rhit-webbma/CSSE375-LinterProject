@@ -21,6 +21,9 @@ import javax.swing.JSeparator;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
 import javax.swing.ListSelectionModel;
+import javax.swing.ScrollPaneConstants;
+import javax.swing.border.EtchedBorder;
+import javax.swing.border.TitledBorder;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 
@@ -77,8 +80,10 @@ public class GUIManager {
 	
 	private void githubImport() {
 		JFrame gitFrame = new JFrame("Github Import");
-		gitFrame.setPreferredSize(new Dimension(650,125));
+		gitFrame.setPreferredSize(new Dimension(700,125));
 		JPanel gitPanel = new JPanel();
+		
+		ArrayList<GithubImport> gitImports = new ArrayList<>();
 		
 		gitPanel.add(new JLabel("Input the link to the project file/package you want to add, then press add. "
 				+ "Once all entries are added, press submit."), BorderLayout.NORTH);
@@ -86,21 +91,26 @@ public class GUIManager {
 		gitPanel.add(gitTxt, BorderLayout.CENTER);
 		JButton addButton = new JButton("Add");
 		JLabel gitLabel = new JLabel("");
+		ArrayList<String> classNames = new ArrayList<>();
 		addButton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e){
+            	GithubImport gitImport = new GithubImport(null);
+            	try {
+                	classNames.addAll(gitImport.generateClassesHelper(gitTxt.getText()));
+                	gitImports.add(gitImport);
+                	gitLabel.setText("Files from the selected link have been imported");
+            	} catch (NullPointerException | StringIndexOutOfBoundsException e1) {
+            		gitLabel.setText("Invalid link to a github project");
+            	}
             }
         });
 		gitPanel.add(addButton, BorderLayout.CENTER);
 		
 		JButton submitButton = new JButton("Submit");
-		ArrayList<String> classNames = new ArrayList<>();
 		submitButton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e){
-            	Scanner in = new Scanner(gitTxt.getText());
-            	githubImport = new GithubImport(in);
-            	ArrayList<String> githubGenClasses = githubImport.generateClasses();
-            	classNames.addAll(githubGenClasses);	
-                classSelector(classNames);
+            	 gitFrame.dispatchEvent(new WindowEvent(gitFrame, WindowEvent.WINDOW_CLOSING));
+                 classSelector(classNames, true, gitImports);
             }
         });
 		gitPanel.add(submitButton, BorderLayout.CENTER);
@@ -110,7 +120,6 @@ public class GUIManager {
 		gitFrame.add(gitPanel);
 		gitFrame.pack();
 		gitFrame.setVisible(true);
-		gitFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 	}
 	
 	private void packageImport() {
@@ -150,7 +159,7 @@ public class GUIManager {
                 	}
                 }
                 pkgFrame.dispatchEvent(new WindowEvent(pkgFrame, WindowEvent.WINDOW_CLOSING));
-                classSelector(classNames);
+                classSelector(classNames, false, null);
             }
         });
 		pkgPanel.add(submitButton, BorderLayout.CENTER);
@@ -162,7 +171,7 @@ public class GUIManager {
 		pkgFrame.setVisible(true);
 	}
 	
-	private void classSelector(ArrayList<String> classNames) {
+	private void classSelector(ArrayList<String> classNames, boolean isGithub, ArrayList<GithubImport> gitImports) {
 		ArrayList<String> added = classNames;
 		ArrayList<String> removed = new ArrayList<>();
 		
@@ -232,8 +241,15 @@ public class GUIManager {
 		JButton submitButton = new JButton("Submit");
 		submitButton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e){
+        		CheckRunner runner = new CheckRunner(added);
+        		if(isGithub) {
+        			for (GithubImport gitImport : gitImports) {
+        				gitImport.getGrabber().deleteFiles();
+        			}
+        			
+        		}
             	selectFrame.dispatchEvent(new WindowEvent(selectFrame, WindowEvent.WINDOW_CLOSING));
-            	checkSelector(added);
+            	checkSelector(runner);
             }
 		});
 		selectPanel.add(submitButton, BorderLayout.NORTH);
@@ -250,8 +266,8 @@ public class GUIManager {
 	}
 	
 
-	private void checkSelector(ArrayList<String> added) {
-		CheckRunner runner = new CheckRunner(added);
+	private void checkSelector(CheckRunner runner) {
+
 		String[] checks = {"Adapter Pattern Check", "Composition Check", "Facade Pattern Check", "Hollywood Check", "Method Length Check",
 								"Names Check", "Redundant Interface Check", "Strategy Pattern Check", "Unused Instantiation Check"};
 		
@@ -343,9 +359,14 @@ public class GUIManager {
 		JFrame runFrame = new JFrame("Check Outputs");
 		runFrame.setPreferredSize(new Dimension(1000,900));
 		JPanel runPanel = new JPanel();
+
+		JTextArea output = new JTextArea(50, 70);
+		output.setText(runner.runChecks());
+		output.setEditable(false);
+		JScrollPane scrollPane = new JScrollPane(output);
+		scrollPane.setVerticalScrollBarPolicy ( ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS );
+		runPanel.add(scrollPane, BorderLayout.WEST);
 		
-		JTextArea output = new JTextArea(runner.runChecks());
-		runPanel.add(output, BorderLayout.WEST);
 		
 		JButton restartButton = new JButton("Restart");
 		restartButton.addActionListener(new ActionListener() {

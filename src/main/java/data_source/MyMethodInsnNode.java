@@ -29,8 +29,7 @@ public class MyMethodInsnNode extends MyAbstractInsnNode{
 	}
 	
 	public String getCleanOwner() {
-		String[] nameSplit = owner.split("/");
-		return nameSplit[nameSplit.length-1];
+		return Sanitizer.sanitizeString(owner);
 	}
 
 }

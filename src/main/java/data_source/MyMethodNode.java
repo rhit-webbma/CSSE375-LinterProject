@@ -39,7 +39,7 @@ public class MyMethodNode {
 	}
 	
 	public String getCleanDesc() {
-    return sanitizeString(desc);
+    return Sanitizer.sanitizeString(desc);
 	}
 	
 	public String getFullArgTypes() {
@@ -82,16 +82,11 @@ public class MyMethodNode {
 		return output;
 	}
 	
-	private String sanitizeString(String s) {
-		String[] nameSplit = s.split("/");
-		return nameSplit[nameSplit.length-1];
-	}
-	
 	public ArrayList<String> getCleanArgTypes() {
 		this.argTypeNames = this.getArgTypeNames();
 		ArrayList<String> output = new ArrayList<>();
 		for (String type : argTypeNames) {
-			output.add(sanitizeString(type));
+			output.add(Sanitizer.sanitizeString(type));
 		}
 		return output;
 	}

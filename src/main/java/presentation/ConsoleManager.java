@@ -28,14 +28,6 @@ public class ConsoleManager {
 	static Directory directory;
 	private Scanner in;
 	
-
-
-//	public static void main(String[] args) {
-//		in = new Scanner(System.in);
-//		
-//		userInterfaceLoop();
-//  }
-    
 	public ConsoleManager(Scanner in) {
 		this.in = in;
 	}
@@ -44,29 +36,40 @@ public class ConsoleManager {
 		CheckRunner runner = null;
 		Testable testingMethod = null;
 		Grabber gitGrabber = null;
-		boolean deleteFiles = false;
+		boolean github = false;
+
 		
-		System.out.println("What type of Import would you like to do: ");
-		
-		switch(in.nextLine())
+		boolean successful = false;
+		while(!successful) {
+		switch(in.nextLine().toLowerCase())
 		{
-		case "Github":
-			testingMethod = new GithubImport(in);
-			deleteFiles = true;
-			break;
-		case "Package":
-			testingMethod = new PackageImport(in);
-			break;
+		
+		runner = new CheckRunner(testingMethod.generateClasses());
+        
+			case "github":
+				testingMethod = new GithubImport(in);
+				github = true;
+				successful = true;
+				break;
+			case "package":
+				testingMethod = new PackageImport(in);
+				successful = true;
+				break;
+			default:
+				break;
+			}
 		}
 		
 		runner = new CheckRunner(testingMethod.generateClasses());
 		
-		System.out.println("Classes inputted: \n" + runner.classNames());
 		
-		if(deleteFiles)
-		{
-			((GithubImport) testingMethod).getGrabber().deleteFiles();
+		if(github) {
+			gitGrabber = ((GithubImport) testingMethod).getGrabber();
+			gitGrabber.deleteFiles();
 		}
+		
+		System.out.println("Classes inputted: \n" + runner.classNames());
+	
 		
 		ArrayList<String> added = new ArrayList<>();
 		boolean complete = false;
