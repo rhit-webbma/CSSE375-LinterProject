@@ -25,8 +25,10 @@ import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 
 import data_source.Directory;
+import data_source.GithubImport;
 import data_source.Grabber;
 import data_source.PopulateJavaFile;
+import data_source.Testable;
 import domain.AdapterPatternCheck;
 import domain.CheckRunner;
 import domain.CompositionCheck;
@@ -42,6 +44,7 @@ public class GUIManager {
 	static Grabber githubGrabber;
 	static PopulateJavaFile populator;
 	static Directory directory;
+	Testable githubImport;
 	JFrame importFrame;
 
 	public void filesToCheck() {
@@ -93,6 +96,11 @@ public class GUIManager {
 		ArrayList<String> classNames = new ArrayList<>();
 		submitButton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e){
+            	Scanner in = new Scanner(gitTxt.getText());
+            	githubImport = new GithubImport(in);
+            	ArrayList<String> githubGenClasses = githubImport.generateClasses();
+            	classNames.addAll(githubGenClasses);	
+                classSelector(classNames);
             }
         });
 		gitPanel.add(submitButton, BorderLayout.CENTER);
@@ -346,6 +354,9 @@ public class GUIManager {
             	filesToCheck();
             }
 		});
+		
+		
+		
 		runPanel.add(restartButton, BorderLayout.SOUTH);
 		
 		JButton exitButton = new JButton("Exit");
@@ -359,5 +370,8 @@ public class GUIManager {
 		runFrame.add(runPanel);
 		runFrame.pack();
 		runFrame.setVisible(true);
+		
+		((GithubImport) githubImport).getGrabber().deleteFiles();
+		
 	}
 }
