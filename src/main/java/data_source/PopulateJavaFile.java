@@ -59,10 +59,6 @@ public class PopulateJavaFile {
 			{
 				System.out.println("File already exists");
 			}
-			
-//			this.populatedFile.createNewFile();
-			
-			
 			Thread writeThread = new Thread()
 			{
 				public void run()
