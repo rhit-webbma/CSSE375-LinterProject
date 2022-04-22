@@ -11,12 +11,26 @@ public class FacadePatternCheck implements ClassCheck {
 
 	@Override
 	public String runCheck(ArrayList<MyClassNode> classes) {
-		String printString = "";
+		String printString = findFacadePattern(classes);
+		
+		if (printString != "") {
+			printString = "\nFacade Pattern Check:\n" + printString;
+		}
+		return printString;
+	}
+	
+	private ArrayList<String> getClassNames(ArrayList<MyClassNode> classes) {
 		ArrayList<String> classNames = new ArrayList<>();
 		for (MyClassNode node : classes) {
 			classNames.add(node.getFullName());
 		}
-		ArrayList<MyClassNode> potentialFacades = new ArrayList<>();
+		return classNames;
+	}
+	
+	private String findFacadePattern(ArrayList<MyClassNode> classes) {
+		String printString = "";
+		ArrayList<String> classNames = getClassNames(classes);
+		
 		for (MyClassNode node : classes) {
 			int userClasses = 0;
 			ArrayList<String> fieldUserClassNames = new ArrayList<>();
@@ -35,14 +49,10 @@ public class FacadePatternCheck implements ClassCheck {
 			String shortClassName = node.getCleanName();
 			
 			if (userClasses > 0) {
-				potentialFacades.add(node);
 				printString += checkForFacade(node, fieldUserClassNames);
 			} else if (shortClassName.contains("Facade") || shortClassName.contains("facade")){
 				printString += "	" + node.getFullName() + " contains the word 'facade' but is not a facade pattern\n";
 			}
-		}
-		if (printString != "") {
-			printString = "\nFacade Pattern Check:\n" + printString;
 		}
 		return printString;
 	}
