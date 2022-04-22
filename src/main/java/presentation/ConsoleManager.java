@@ -33,6 +33,8 @@ public class ConsoleManager {
 	}
 	
 	public void userInterfaceLoop() {
+		System.out.println("What type of Import would you like to do: ");
+		
 		CheckRunner runner = null;
 		Testable testingMethod = null;
 		Grabber gitGrabber = null;
@@ -43,8 +45,6 @@ public class ConsoleManager {
 		while(!successful) {
 		switch(in.nextLine().toLowerCase())
 		{
-		
-		runner = new CheckRunner(testingMethod.generateClasses());
         
 			case "github":
 				testingMethod = new GithubImport(in);
