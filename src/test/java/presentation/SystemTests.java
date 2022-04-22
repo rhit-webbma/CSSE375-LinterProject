@@ -711,7 +711,6 @@ class SystemTests {
 		assertEquals("Would you like to input with GUI or Console? [GUI, Console]\r\n" + 
 				"What type of Import would you like to do: \r\n" + 
 				"Please Input a Github Link: \r\n" + 
-				"TheAlgorithms/Java/blob/master/src/main/java/com/thealgorithms/searches/BinarySearch.java\r\n" + 
 				"File: BinarySearch.java has been created!\r\n" + 
 				"Classes inputted: \n" + 
 				"	BinarySearch\n" + 
