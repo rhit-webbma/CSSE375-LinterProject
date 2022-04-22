@@ -42,15 +42,22 @@ public class ConsoleManager {
 		Grabber gitGrabber = null;
 		boolean github = false;
 		
-		switch(in.nextLine())
+		boolean successful = false;
+		while(!successful) {
+		switch(in.nextLine().toLowerCase())
 		{
-		case "Github":
-			testingMethod = new GithubImport(in);
-			github = true;
-			break;
-		case "Package":
-			testingMethod = new PackageImport(in);
-			break;
+			case "github":
+				testingMethod = new GithubImport(in);
+				github = true;
+				successful = true;
+				break;
+			case "package":
+				testingMethod = new PackageImport(in);
+				successful = true;
+				break;
+			default:
+				break;
+			}
 		}
 		
 		runner = new CheckRunner(testingMethod.generateClasses());
