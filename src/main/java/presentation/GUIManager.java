@@ -391,8 +391,5 @@ public class GUIManager {
 		runFrame.add(runPanel);
 		runFrame.pack();
 		runFrame.setVisible(true);
-		
-		((GithubImport) githubImport).getGrabber().deleteFiles();
-		
 	}
 }
