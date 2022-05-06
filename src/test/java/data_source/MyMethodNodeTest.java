@@ -142,5 +142,31 @@ class MyMethodNodeTest {
 		EasyMock.verify(node, insn);
 	}
 
-
+	@Test 
+	void testGetLengthRepeated() {
+		MyLineNumberNode insn1 = EasyMock.createMock(MyLineNumberNode.class);
+		MyLineNumberNode insn2 = EasyMock.createMock(MyLineNumberNode.class);
+		MyLineNumberNode insn3 = EasyMock.createMock(MyLineNumberNode.class);
+		ArrayList<MyLineNumberNode> insns = new ArrayList<>();
+		insns.add(insn1);
+		insns.add(insn2);
+		insns.add(insn3);
+		
+		insn1.line = 12;
+		insn2.line = 18;
+		insn3.line = 12;
+		
+		MyMethodNode node = EasyMock.partialMockBuilder(MyMethodNode.class)
+				.addMockedMethod("getLineNumberNodes")
+				.withConstructor("", "L;java/package/Class2", new LinkedList<MyAbstractInsnNode>()
+						,new ArrayList<MyLocalVariableNode>())
+				.createNiceMock();
+		
+		EasyMock.expect(node.getLineNumberNodes()).andReturn(insns);
+		
+		EasyMock.replay(node, insn1, insn2, insn3);
+		assertEquals(2, node.getLength());
+		EasyMock.verify(node, insn1, insn2, insn3);
+	}
+	
 }
