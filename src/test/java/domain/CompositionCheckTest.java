@@ -30,5 +30,12 @@ class CompositionCheckTest {
 		assertEquals("	Class ClassName inherits from user created class SuperName. Could composition be used instead? \n", check.checkClassComposition(node));
 		EasyMock.verify(node);
 	}
+	
+	@Test
+	void testGetName() {
+		CompositionCheck check = new CompositionCheck();
+		assertEquals("Composition Over Inheritance", check.getName());
+	}
+	
 
 }
