@@ -33,5 +33,11 @@ class MyFieldInsnNodeTest {
 		MyFieldInsnNode node = new MyFieldInsnNode(null, "L;main/java/package/Class1", 0);
 		assertEquals("Class1", node.getCleanOwner());
 	}
+	
+	@Test
+	void testGetFullOwner() {
+		MyFieldInsnNode node = new MyFieldInsnNode(null, "L;main/java/package/Class1", 0);
+		assertEquals("L;main/java/package/Class1", node.getFullOwner());
+	}
 
 }
