@@ -91,7 +91,7 @@ class FacadePatternIntegrationTest {
 		ArrayList<String> fieldUserClassNames = new ArrayList<>(Arrays.asList("Java/PopcornMaker", "Java/Projector", "Java/Lights", "Java/Computer"));
 		
 		assertEquals("	Java/Theater might be an attempt at facade pattern. It is missing calls to methods in these classes:\n" 
-				+ "		Java/Lights\n", check.checkForFacade(classNode, fieldUserClassNames));
+				+ "		Java/Lights\n		Java/Computer\n", check.checkForFacade(classNode, fieldUserClassNames));
 	}
 	
 	@Test

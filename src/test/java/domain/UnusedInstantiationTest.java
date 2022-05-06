@@ -242,13 +242,10 @@ public class UnusedInstantiationTest {
 		EasyMock.expect(lNode.getType()).andReturn(MyAbstractInsnNode.LINE);
 		EasyMock.expect(sNode1.getType()).andReturn(MyAbstractInsnNode.VAR_INSN);
 		EasyMock.expect(sNode1.isLoading()).andReturn(false);
-		EasyMock.expect(sNode1.isStoring()).andReturn(true);
 		EasyMock.expect(sNode2.getType()).andReturn(MyAbstractInsnNode.VAR_INSN);
 		EasyMock.expect(sNode2.isLoading()).andReturn(false);
-		EasyMock.expect(sNode2.isStoring()).andReturn(true);
 		EasyMock.expect(sNode3.getType()).andReturn(MyAbstractInsnNode.VAR_INSN);
 		EasyMock.expect(sNode3.isLoading()).andReturn(false);
-		EasyMock.expect(sNode3.isStoring()).andReturn(true);
 		
 		EasyMock.expect(sNode1.getType()).andReturn(MyAbstractInsnNode.VAR_INSN);
 		EasyMock.expect(lNode.getType()).andReturn(MyAbstractInsnNode.LINE);
@@ -391,19 +388,10 @@ public class UnusedInstantiationTest {
 		return method;
 	}
 	
-	private MyVarInsnNode createRunCheckLoadingMyVarInsnNodeMock(int var) {
+	private MyVarInsnNode createRunCheckMyVarInsnNodeMock(int var, boolean loading) {
 		MyVarInsnNode vInsn = EasyMock.createMock(MyVarInsnNode.class);
 		EasyMock.expect(vInsn.getType()).andReturn(MyAbstractInsnNode.VAR_INSN);
-		EasyMock.expect(vInsn.isLoading()).andReturn(true);
-		vInsn.var = var;
-		return vInsn;
-	}
-	
-	private MyVarInsnNode createRunCheckStoringMyVarInsnNodeMock(int var) {
-		MyVarInsnNode vInsn = EasyMock.createMock(MyVarInsnNode.class);
-		EasyMock.expect(vInsn.getType()).andReturn(MyAbstractInsnNode.VAR_INSN);
-		EasyMock.expect(vInsn.isLoading()).andReturn(false);
-		EasyMock.expect(vInsn.isStoring()).andReturn(true);
+		EasyMock.expect(vInsn.isLoading()).andReturn(loading);
 		vInsn.var = var;
 		return vInsn;
 	}
@@ -437,11 +425,11 @@ public class UnusedInstantiationTest {
 	public void testRunCheck() {
 		UnusedInstantiationCheck check = new UnusedInstantiationCheck();
 		
-		MyVarInsnNode lInsn1 = createRunCheckLoadingMyVarInsnNodeMock(2);
-		MyVarInsnNode lInsn2 = createRunCheckLoadingMyVarInsnNodeMock(3);
-		MyVarInsnNode sNode1 = createRunCheckStoringMyVarInsnNodeMock(0);
-		MyVarInsnNode sNode2 = createRunCheckStoringMyVarInsnNodeMock(2);
-		MyVarInsnNode sNode3 = createRunCheckStoringMyVarInsnNodeMock(3);
+		MyVarInsnNode lInsn1 = createRunCheckMyVarInsnNodeMock(2, true);
+		MyVarInsnNode lInsn2 = createRunCheckMyVarInsnNodeMock(3, true);
+		MyVarInsnNode sNode1 = createRunCheckMyVarInsnNodeMock(0, false);
+		MyVarInsnNode sNode2 = createRunCheckMyVarInsnNodeMock(2, false);
+		MyVarInsnNode sNode3 = createRunCheckMyVarInsnNodeMock(3, false);
 		MyLineNumberNode lNode1 = createRunCheckMyLineNumberNode(15);
 		MyLineNumberNode lNode2 = createRunCheckMyLineNumberNode(12);
 		MyFieldInsnNode fInsn1 = createRunCheckMyFieldInsnNode("counter", true);
