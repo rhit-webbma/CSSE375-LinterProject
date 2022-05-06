@@ -10,6 +10,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import data_source.MyAbstractInsnNode;
+import data_source.MyClassNode;
 import data_source.MyMethodInsnNode;
 import data_source.MyMethodNode;
 
@@ -135,6 +136,43 @@ class AdapterPatternCheckTest {
 		EasyMock.replay(method2);
 		assertFalse(check.checkMethod(method2, types2));
 		EasyMock.verify(method2);
+	}
+	
+	@Test
+	void checkAdapterEmptyFields() {
+		AdapterPatternCheck check = new AdapterPatternCheck();
+		MyClassNode curClass = EasyMock.createMock(MyClassNode.class);
+		ArrayList<String> interfaces = new ArrayList<>();
+		interfaces.add("Cat");
+		ArrayList<String> fields = new ArrayList<>();
+		EasyMock.expect(curClass.getCleanName()).andReturn("ThingToThingAdapter");
+		EasyMock.expect(curClass.getInterfaces()).andReturn(interfaces);
+		EasyMock.expect(curClass.getNonBuiltInFieldTypes()).andReturn(fields);
+		EasyMock.replay(curClass);
+		String expected = "	Class ThingToThingAdapter has \"adapter\" in name, but does not implement an interface and have a field of a user defined class to adapt. \n";
+		assertEquals(expected, check.checkAdapter(curClass));
+		EasyMock.verify(curClass);
+	}
+	
+	@Test
+	void checkAdapterEmptyInterfaces() {
+		AdapterPatternCheck check = new AdapterPatternCheck();
+		MyClassNode curClass = EasyMock.createMock(MyClassNode.class);
+		ArrayList<String> interfaces = new ArrayList<>();
+		ArrayList<String> fields = new ArrayList<>();
+		EasyMock.expect(curClass.getCleanName()).andReturn("Thing");
+		EasyMock.expect(curClass.getInterfaces()).andReturn(interfaces);
+		EasyMock.expect(curClass.getNonBuiltInFieldTypes()).andReturn(fields);
+		EasyMock.replay(curClass);
+		String expected = "";
+		assertEquals(expected, check.checkAdapter(curClass));
+		EasyMock.verify(curClass);
+	}
+	
+	@Test
+	void testGetName() {
+		AdapterPatternCheck check = new AdapterPatternCheck();
+		assertEquals("Adapter Pattern", check.getName());
 	}
 
 }

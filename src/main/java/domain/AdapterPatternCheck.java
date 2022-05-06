@@ -26,21 +26,20 @@ public class AdapterPatternCheck implements ClassCheck {
 		boolean claimsAdapter = name.toLowerCase().contains("adapter");
 		ArrayList<String> interfaceNames = classNode.getInterfaces();
 		ArrayList<String> fieldTypes = classNode.getNonBuiltInFieldTypes();
-		String className = classNode.getCleanName();
 
 		if (interfaceNames.isEmpty() || fieldTypes.isEmpty()) {
 			return (claimsAdapter) ? String.format(
 					"	Class %s has \"adapter\" in name, but does not implement an interface and have a field of a user defined class to adapt. \n",
-					className) : "";
+					name) : "";
 		}
 		boolean adaptsMethods = checkMethods(classNode, fieldTypes);
 		if (adaptsMethods) {
-			return String.format("	Class %s uses Adapter Pattern to adapt %s to %s \n", className, nameTypes(fieldTypes),
+			return String.format("	Class %s uses Adapter Pattern to adapt %s to %s \n", name, nameTypes(fieldTypes),
 					nameInterfaces(interfaceNames));
 		} else if (claimsAdapter) {
 			return String.format(
 					"	Class %s has \"adapter\" in name, but has methods that are not empty or calling methods of %s \n",
-					className, nameTypes(fieldTypes));
+					name, nameTypes(fieldTypes));
 		} else
 			return "";
 	}

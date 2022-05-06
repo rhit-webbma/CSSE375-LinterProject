@@ -69,50 +69,55 @@ class AdapterPatternCheckIntegrationTest {
 	@Test
 	void testClaimsAdapterIsAdapter() {
 		MyClassNode curClass = createTestableClass(true, true);
+		ArrayList<MyClassNode> classes = new ArrayList<>();
+		classes.add(curClass);
 
-
-		String expected = "	Class testAdapter uses Adapter Pattern to adapt Class testFieldClass to "
+		String expected = "\nAdapter Pattern Checker: \n" + "	Class testAdapter uses Adapter Pattern to adapt Class testFieldClass to "
 				+ "Interface testInterface \n";
 		
-		assertEquals(expected, checker.checkAdapter(curClass));
+		assertEquals(expected, checker.runCheck(classes));
 	}
 
 	@Test
 	void testClaimsAdapterNotAdapter() {
 		MyClassNode curClass = createTestableClass(true, false);
-
-		String expected = "	Class testAdapter has \"adapter\" in name, but has methods that are not empty or "
+		ArrayList<MyClassNode> classes = new ArrayList<>();
+		classes.add(curClass);
+		String expected = "\nAdapter Pattern Checker: \n" + "	Class testAdapter has \"adapter\" in name, but has methods that are not empty or "
 				+ "calling methods of Class testFieldClass \n";
 		
-		assertEquals(expected, checker.checkAdapter(curClass));
+		assertEquals(expected, checker.runCheck(classes));
 	}
 	
 	@Test
 	void testIsAdapter() {
 		MyClassNode curClass = createTestableClass(false, true);
-		
-		String expected = "	Class testClass uses Adapter Pattern to adapt Class testFieldClass to "
+		ArrayList<MyClassNode> classes = new ArrayList<>();
+		classes.add(curClass);
+		String expected = "\nAdapter Pattern Checker: \n" + "	Class testClass uses Adapter Pattern to adapt Class testFieldClass to "
 				+ "Interface testInterface \n";
 		
-		assertEquals(expected, checker.checkAdapter(curClass));
+		assertEquals(expected, checker.runCheck(classes));
 	}
 	
 	@Test
 	void testNotAdapter() {
 		MyClassNode curClass = createTestableClass(false, false);
-		
+		ArrayList<MyClassNode> classes = new ArrayList<>();
+		classes.add(curClass);
 		String expected = "";
 		
-		assertEquals(expected, checker.checkAdapter(curClass));
+		assertEquals(expected, checker.runCheck(classes));
 	}
 	
 	@Test
 	void testClaimsAdapterClassNotAdapter() {
 		MyClassNode curClass = new MyClassNode("BadClassAdapter", "", new ArrayList<String>(), new ArrayList<MyFieldNode>(), null, 0);
-		String expected = 	"	Class BadClassAdapter has \"adapter\" in name, but does not implement an interface and have a "
+		String expected = 	"\nAdapter Pattern Checker: \n" + "	Class BadClassAdapter has \"adapter\" in name, but does not implement an interface and have a "
 				+ "field of a user defined class to adapt. \n";
-		
-		assertEquals(expected, checker.checkAdapter(curClass));
+		ArrayList<MyClassNode> classes = new ArrayList<>();
+		classes.add(curClass);
+		assertEquals(expected, checker.runCheck(classes));
 	}
 
 }
