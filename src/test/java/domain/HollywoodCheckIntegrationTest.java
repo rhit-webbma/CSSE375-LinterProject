@@ -22,6 +22,7 @@ import data_source.MyAbstractInsnNode;
 import data_source.MyClassNode;
 import data_source.MyFieldInsnNode;
 import data_source.MyFieldNode;
+import data_source.MyLineNumberNode;
 import data_source.MyLocalVariableNode;
 import data_source.MyMethodInsnNode;
 import data_source.MyMethodNode;
@@ -109,5 +110,80 @@ public class HollywoodCheckIntegrationTest {
 		assertEquals("	Class SubClass calls method repeated from SuperClass in method badMethod\n",
 				checker.checkHollywoodViolations(curClass, superClass));
 		
+	}
+	
+	@Test
+	public void testRunCheckUsingMethod() {
+		this.initializeInsn(false);
+		this.initializeMethod("badMethod", true, false, true);
+		this.initializeMethod("repeated", false, false, false);
+		curClass = new MyClassNode("SubClass", "SuperClass", null, new ArrayList<MyFieldNode>(), methods, 0);
+		superClass = new MyClassNode("SuperClass", "", null, new ArrayList<MyFieldNode>(), methods2, 0);
+		ArrayList<MyClassNode> classes = new ArrayList<>();
+		classes.add(curClass);
+		classes.add(superClass);
+		
+		assertEquals("\n" + 
+				"Hollywood Principle Violations: \n" +
+				"	Class SubClass calls method repeated from SuperClass in method badMethod\n",
+				checker.runCheck(classes));
+	}
+	
+	@Test
+	public void testRunCheckNoOutput() {
+		this.initializeInsn(false);
+		this.initializeMethod("badMethod", true, false, true);
+		curClass = new MyClassNode("SubClass", "SuperClass", null, new ArrayList<MyFieldNode>(), methods, 0);
+		superClass = new MyClassNode("SuperClass", "", null, new ArrayList<MyFieldNode>(), new ArrayList<MyMethodNode>(), 0);
+		ArrayList<MyClassNode> classes = new ArrayList<>();
+		classes.add(curClass);
+		classes.add(superClass);
+		
+		assertEquals("", checker.runCheck(classes));
+	}
+	
+	@Test
+	public void testCheckMethodsWithNonRepeating() {
+		this.initializeInsn(false);
+		this.initializeMethod("badMethod", true, false, true);
+		curClass = new MyClassNode("SubClass", "", null, new ArrayList<MyFieldNode>(), methods, 0);
+		superClass = new MyClassNode("SuperClass", "", null, new ArrayList<MyFieldNode>(), new ArrayList<MyMethodNode>(), 0);
+		
+		assertEquals("",
+				checker.checkHollywoodViolations(curClass, superClass));
+	}
+	
+	@Test
+	public void testCheckMethodsWithLineInsn() {
+		this.initializeInsn(false);
+		insns.add(new MyLineNumberNode(12));
+		this.initializeMethod("badMethod", true, false, true);
+		this.initializeMethod("repeated", false, false, false);
+		curClass = new MyClassNode("SubClass", "", null, new ArrayList<MyFieldNode>(), methods, 0);
+		superClass = new MyClassNode("SuperClass", "", null, new ArrayList<MyFieldNode>(), methods2, 0);
+		
+		assertEquals("	Class SubClass calls method repeated from SuperClass in method badMethod\n",
+				checker.checkHollywoodViolations(curClass, superClass));
+	}
+	
+	@Test
+	public void testSuperFieldNamesRemoval() {
+		ArrayList<MyFieldNode> fields1 = new ArrayList<MyFieldNode>();
+		fields1.add(new MyFieldNode("removed", "", 0));
+		fields1.add(new MyFieldNode("notRemoved", "", 0));
+		fields1.add(new MyFieldNode("alsoNotRemoved", "", 0));
+		ArrayList<MyFieldNode> fields2 = new ArrayList<MyFieldNode>();
+		fields2.add(new MyFieldNode("removed", "", 0));
+		curClass = new MyClassNode("SubClass", "", null, fields2, null, 0);
+		superClass = new MyClassNode("SuperClass", "", null, fields1, null, 0);
+		
+		ArrayList<String> names = checker.getSuperFieldNames(curClass, superClass);
+		assertEquals(names.get(0), "notRemoved");
+		assertEquals(names.get(1), "alsoNotRemoved");
+	}
+	
+	@Test
+	public void testGetName() {
+		assertEquals("Hollywood Principle" ,checker.getName());
 	}
 }
