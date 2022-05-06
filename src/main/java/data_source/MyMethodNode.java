@@ -42,10 +42,6 @@ public class MyMethodNode {
     return Sanitizer.sanitizeString(desc);
 	}
 	
-	public String getFullArgTypes() {
-		return desc;
-	}
-	
 	public boolean isConstructor() {
 		return name.equals(CONSTRUCTOR_NAME);
 	}

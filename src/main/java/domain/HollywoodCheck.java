@@ -77,7 +77,7 @@ public class HollywoodCheck implements ClassCheck {
 		return superMethodNames;
 	}
 	
-	private ArrayList<String> getSuperFieldNames(MyClassNode curClass, MyClassNode superClass) {
+	ArrayList<String> getSuperFieldNames(MyClassNode curClass, MyClassNode superClass) {
 		ArrayList<String> curFieldNames = curClass.getFieldNames();
 		ArrayList<String> superFieldNames = superClass.getFieldNames();
 		for (String curName : curFieldNames) {

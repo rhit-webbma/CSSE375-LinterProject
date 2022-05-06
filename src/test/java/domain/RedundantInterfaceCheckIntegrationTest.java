@@ -62,4 +62,27 @@ public class RedundantInterfaceCheckIntegrationTest {
 		assertEquals("", checker.runCheck(classes));
 	}
 	
+	@Test
+	public void testSingleImplementationOfInterfaceExtraInterfaces() {
+		List<String> interfaces1 = new ArrayList<>();
+		List<String> interfaces2 = new ArrayList<>();
+		interfaces2.add("single");
+		interfaces2.add("double");
+		interfaces2.add("triple");
+		MyClassNode class1 = new MyClassNode("single", "", interfaces1, null, null, Opcodes.ACC_INTERFACE);
+		MyClassNode class2 = new MyClassNode("", "", interfaces1, null, null, 0);
+		MyClassNode class3 = new MyClassNode("", "", interfaces2, null, null, 0);
+		ArrayList<MyClassNode> classes = new ArrayList<>();
+		classes.add(class1);
+		classes.add(class2);
+		classes.add(class3);
+		
+		assertEquals("\nRedundant Interfaces: \n	1 class uses single\n", checker.runCheck(classes));
+	}
+	
+	@Test
+	public void testGetName() {
+		assertEquals("Redundant Interfaces", checker.getName());
+	}
+	
 }
