@@ -94,7 +94,7 @@ public class UnusedInstantiationCheck implements ClassCheck {
 				MyVarInsnNode vInsn = (MyVarInsnNode) insn;
 				if (vInsn.isLoading()) {
 					varStates.varLoading.add(vInsn);
-				} else if (vInsn.isStoring()) {
+				} else {
 					varStates.varStoring.add(vInsn);
 				}
 			} else if (insn.getType() == MyAbstractInsnNode.FIELD_INSN) {

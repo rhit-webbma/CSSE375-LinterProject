@@ -199,7 +199,8 @@ class UnusedInstantiationIntegrationTest {
 		MyLineNumberNode lNode = new MyLineNumberNode(12);
 		MyFieldInsnNode fInsn1 = new MyFieldInsnNode("counter", null, Opcodes.GETFIELD);
 		MyFieldInsnNode fInsn2 = new MyFieldInsnNode("download", null, Opcodes.PUTFIELD);
-		LinkedList<MyAbstractInsnNode> insns = new LinkedList<>(Arrays.asList(lNode, fInsn2, fInsn1));
+		MyFieldInsnNode fInsn3 = new MyFieldInsnNode("counter", null, Opcodes.PUTFIELD);
+		LinkedList<MyAbstractInsnNode> insns = new LinkedList<>(Arrays.asList(lNode, fInsn3, fInsn2, fInsn1));
 		
 		MyMethodNode method = new MyMethodNode("countThings", null, insns, null);
 		
@@ -208,7 +209,7 @@ class UnusedInstantiationIntegrationTest {
 		MyClassNode classNode = new MyClassNode(null, null, null, null, methods, 0);
 		
 		check.fieldStates.fieldLoading = new ArrayList<>(Arrays.asList(fInsn1));
-		check.fieldStates.fieldStoring = new ArrayList<>(Arrays.asList(fInsn2));
+		check.fieldStates.fieldStoring = new ArrayList<>(Arrays.asList(fInsn2, fInsn3));
 		
 		assertEquals("			Line 12: Unused field named download\n", check.findUnusedFields(classNode));
 	}
@@ -243,6 +244,41 @@ class UnusedInstantiationIntegrationTest {
 		
 		assertEquals("Unused Instantiation Check:\n	Class: Counting\n		Unused Variables: \n" + "			Line 12: Unused field named download\n" 
 				+ "			Line 15: Unused variable named counter in method countThings\n" , check.runCheck(classes));
+
+		assertTrue(check.fieldStates.fieldLoading.contains(fInsn1));
+		assertTrue(check.fieldStates.fieldStoring.contains(fInsn2));
+	}
+	
+	@Test
+	public void testRunCheckGood() {
+		UnusedInstantiationCheck check = new UnusedInstantiationCheck();
+		
+		MyVarInsnNode lInsn1 = new MyVarInsnNode(2, Opcodes.ALOAD);
+		MyVarInsnNode lInsn2 = new MyVarInsnNode(3, Opcodes.ALOAD);
+		MyVarInsnNode lInsn3 = new MyVarInsnNode(0, Opcodes.ALOAD);
+		
+		MyVarInsnNode sNode1 = new MyVarInsnNode(0, Opcodes.ASTORE);
+		MyVarInsnNode sNode2 = new MyVarInsnNode(2, Opcodes.ASTORE);
+		MyVarInsnNode sNode3 = new MyVarInsnNode(3, Opcodes.ASTORE);
+		
+		MyLineNumberNode lNode1 = new MyLineNumberNode(15);
+		MyLineNumberNode lNode2 = new MyLineNumberNode(12);
+		
+		MyFieldInsnNode fInsn1 = new MyFieldInsnNode("counter", null, Opcodes.GETFIELD);
+		MyFieldInsnNode fInsn2 = new MyFieldInsnNode("counter", null, Opcodes.PUTFIELD);
+		
+		LinkedList<MyAbstractInsnNode> insns = new LinkedList<>(Arrays.asList(lInsn1, lInsn2, lInsn3, lNode1, sNode1, sNode2, sNode3, lNode2, fInsn1, fInsn2));
+
+		MyLocalVariableNode vLNode = new MyLocalVariableNode("counter", null);
+		ArrayList<MyLocalVariableNode> vars = new ArrayList<>(Arrays.asList(vLNode));
+		
+		MyMethodNode method = new MyMethodNode("countThings", null, insns, vars);
+		ArrayList<MyMethodNode> methods = new ArrayList<>(Arrays.asList(method));
+		
+		MyClassNode classNode = new MyClassNode("Counting", null, null, null, methods, 0);
+		ArrayList<MyClassNode> classes = new ArrayList<>(Arrays.asList(classNode));
+		
+		assertEquals("" , check.runCheck(classes));
 
 		assertTrue(check.fieldStates.fieldLoading.contains(fInsn1));
 		assertTrue(check.fieldStates.fieldStoring.contains(fInsn2));
