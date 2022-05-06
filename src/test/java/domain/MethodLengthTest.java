@@ -63,6 +63,12 @@ class MethodLengthTest {
 	{
 		classes = new ArrayList<>();
 	}
+
+	@Test
+	public void testGetName()
+	{
+		assertEquals("Method Length", checker.getName());
+	}
 	
 	@Test
 	public void testMethodEmpty()
