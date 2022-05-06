@@ -587,7 +587,6 @@ class ASMParserTest {
 		m2Insns.add(n16);
 		
 		List<MyLocalVariableNode> m1LV = new ArrayList<>();
-		List<MyLocalVariableNode> m2LV = new ArrayList<>();
 
 		MyFieldNode f1 = new MyFieldNode("field1", "I", 0);
 		MyFieldNode f2 = new MyFieldNode("field2", "Ljava/lang/String;", 0);
@@ -596,7 +595,7 @@ class ASMParserTest {
 		fields.add(f2);
 		
 		MyMethodNode m1 = new MyMethodNode("<init>", "()V", m1Insns, m1LV);
-		MyMethodNode m2 = new MyMethodNode("method", "()I", m2Insns, m2LV);
+		MyMethodNode m2 = new MyMethodNode("method", "()I", m2Insns, null);
 		ArrayList<MyMethodNode> methods = new ArrayList<>();
 		methods.add(m1);
 		methods.add(m2);
