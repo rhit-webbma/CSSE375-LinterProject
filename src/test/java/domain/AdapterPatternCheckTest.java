@@ -121,6 +121,20 @@ class AdapterPatternCheckTest {
 	}
 	
 	@Test
+	void testCheckMethodGoodMultipleInstructions() {
+		MyMethodInsnNode insn = EasyMock.createMock(MyMethodInsnNode.class);
+		EasyMock.expect(insn.getCleanOwner()).andReturn("ArrayList");
+		instructions.add(insn);
+		MyMethodInsnNode insn2 = EasyMock.createMock(MyMethodInsnNode.class);
+		instructions.add(insn2);
+		EasyMock.expect(method.isConstructor()).andReturn(false);
+		EasyMock.expect(method.getMethodInstructions()).andReturn(instructions);
+		EasyMock.replay(insn, insn2, method);
+		assertTrue(check.checkMethod(method, types));
+		EasyMock.verify(insn, insn2, method);
+	}
+	
+	@Test
 	void testCheckMethodBad() {
 		ArrayList<String> types2 = new ArrayList<>();
 		types2.add("LinkedList");
