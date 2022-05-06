@@ -135,8 +135,7 @@ public class NamesCheckIntegrationTest {
 	
 	@Test
 	public void testMethodValidNoLocals() {
-		List<MyLocalVariableNode> list = new ArrayList<>();
-		MyMethodNode node = new MyMethodNode("goodMethod", "", null, list);
+		MyMethodNode node = new MyMethodNode("goodMethod", "", null, null);
 
 		assertEquals("", checker.checkMethod(node));
 	}

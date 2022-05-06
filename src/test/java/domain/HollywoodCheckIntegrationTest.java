@@ -133,7 +133,7 @@ public class HollywoodCheckIntegrationTest {
 	public void testRunCheckNoOutput() {
 		this.initializeInsn(false);
 		this.initializeMethod("badMethod", true, false, true);
-		curClass = new MyClassNode("SubClass", "SuperClass", null, new ArrayList<MyFieldNode>(), methods, 0);
+		curClass = new MyClassNode("SubClass", "", null, new ArrayList<MyFieldNode>(), methods, 0);
 		superClass = new MyClassNode("SuperClass", "", null, new ArrayList<MyFieldNode>(), new ArrayList<MyMethodNode>(), 0);
 		ArrayList<MyClassNode> classes = new ArrayList<>();
 		classes.add(curClass);
