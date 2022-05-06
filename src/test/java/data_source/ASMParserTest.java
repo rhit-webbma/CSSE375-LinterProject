@@ -285,111 +285,111 @@ class ASMParserTest {
 		EasyMock.verify(classNode, mf1, mf2, mn1, mn2, mn3, mn4, mn5, mn6, mn7, mn8, mn9, mn10, mn11, mn12, mn13, mn14, mn15, mn16, ml1, ml2, m1Mock, m2Mock);
 	}
 	
-	@Test
-	void testParseTestClassIntegration() {
-		ClassReader reader = null;
-		try {
-			reader = new ClassReader("data_source.TestClass");
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-		ClassNode classNode = new ClassNode();
-		reader.accept(classNode, ClassReader.EXPAND_FRAMES);
-		
-		ArrayList<ClassNode> nodes = new ArrayList<ClassNode>();
-		nodes.add(classNode);
-		
-		// For expectations
-		MyAbstractInsnNode n1 = new MyLineNumberNode(0);
-		MyAbstractInsnNode n2 = new MyVarInsnNode(0, 0);
-		MyAbstractInsnNode n3 = new MyMethodInsnNode(null, null, 0);
-		MyAbstractInsnNode n4 = new MyLineNumberNode(0);
-		MyAbstractInsnNode n5 = new MyVarInsnNode(0, 0);
-		MyAbstractInsnNode n6 = new MyFieldInsnNode(null, null, 0);
-		MyAbstractInsnNode n7 = new MyLineNumberNode(0);
-		MyAbstractInsnNode n8 = new MyVarInsnNode(0, 0);
-		MyAbstractInsnNode n9 = new MyFieldInsnNode(null, null, 0);
-		MyAbstractInsnNode n10 = new MyLineNumberNode(0);
-		LinkedList<MyAbstractInsnNode> m1Insns = new LinkedList<>();
-		m1Insns.add(n1);
-		m1Insns.add(n2);
-		m1Insns.add(n3);
-		m1Insns.add(n4);
-		m1Insns.add(n5);
-		m1Insns.add(n6);
-		m1Insns.add(n7);
-		m1Insns.add(n8);
-		m1Insns.add(n9);
-		m1Insns.add(n10);
-		
-		MyAbstractInsnNode n11 = new MyLineNumberNode(0);
-		MyAbstractInsnNode n12 = new MyVarInsnNode(0, 0);
-		MyAbstractInsnNode n13 = new MyLineNumberNode(0);
-		MyAbstractInsnNode n14 = new MyLineNumberNode(0);
-		MyAbstractInsnNode n15 = new MyLineNumberNode(0);
-		MyAbstractInsnNode n16 = new MyVarInsnNode(0, 0);
-		LinkedList<MyAbstractInsnNode> m2Insns = new LinkedList<>();
-		m2Insns.add(n11);
-		m2Insns.add(n12);
-		m2Insns.add(n13);
-		m2Insns.add(n14);
-		m2Insns.add(n15);
-		m2Insns.add(n16);
-		
-		MyLocalVariableNode l1 = new MyLocalVariableNode("this", "Ldata_source/TestClass;");
-		MyLocalVariableNode l2 = new MyLocalVariableNode("i", "I");
-		List<MyLocalVariableNode> m1LV = new ArrayList<>();
-		m1LV.add(l1);
-		List<MyLocalVariableNode> m2LV = new ArrayList<>();
-		m2LV.add(l1);
-		m2LV.add(l2);
-
-		MyFieldNode f1 = new MyFieldNode("field1", "I", 0);
-		MyFieldNode f2 = new MyFieldNode("field2", "Ljava/lang/String;", 0);
-		ArrayList<MyFieldNode> fields = new ArrayList<>();
-		fields.add(f1);
-		fields.add(f2);
-		
-		MyMethodNode m1 = new MyMethodNode("<init>", "()V", m1Insns, m1LV);
-		MyMethodNode m2 = new MyMethodNode("method", "()I", m2Insns, m2LV);
-		ArrayList<MyMethodNode> methods = new ArrayList<>();
-		methods.add(m1);
-		methods.add(m2);
-		
-		MyClassNode myClass = new MyClassNode("data_source/TestClass", "java/lang/Object", null, fields, methods, 0);
-		
-		// Actual
-		ArrayList<MyClassNode> myNodes = ASMParser.parseASM(nodes);
-		MyClassNode parsedClass = myNodes.get(0);
-		
-		assertEquals(myClass.getFullName(), parsedClass.getFullName());
-		assertEquals(myClass.getFullSuperName(), parsedClass.getFullSuperName());
-		
-		assertEquals(f1.name, myClass.fields.get(0).name);
-		assertEquals(f1.getFullDesc(), myClass.fields.get(0).getFullDesc());
-		assertEquals(f2.name, myClass.fields.get(1).name);
-		assertEquals(f2.getFullDesc(), myClass.fields.get(1).getFullDesc());
-		
-		MyMethodNode curMethod = parsedClass.methods.get(0);
-		assertEquals(m1.name, curMethod.name);
-		assertEquals(m1.getFullDesc(), curMethod.getFullDesc());
-		for (int i = 0; i < m1Insns.size(); i++) {
-			assertEquals(m1Insns.get(i).getType(), curMethod.instructions.get(i).getType());
-		}
-		assertEquals(l1.name, curMethod.localVariables.get(0).name);
-		assertEquals(l1.getFullDesc(), curMethod.localVariables.get(0).getFullDesc());
-		
-		curMethod = parsedClass.methods.get(1);
-		assertEquals(m2.name, parsedClass.methods.get(1).name);
-		assertEquals(m2.getFullDesc(), parsedClass.methods.get(1).getFullDesc());
-		for (int i = 0; i < m2Insns.size(); i++) {
-			assertEquals(m2Insns.get(i).getType(), curMethod.instructions.get(i).getType());
-		}
-		assertEquals(l1.name, curMethod.localVariables.get(0).name);
-		assertEquals(l1.getFullDesc(), curMethod.localVariables.get(0).getFullDesc());
-		assertEquals(l2.name, curMethod.localVariables.get(1).name);
-		assertEquals(l2.getFullDesc(), curMethod.localVariables.get(1).getFullDesc());
-		
-	}
+//	@Test
+//	void testParseTestClassIntegration() {
+//		ClassReader reader = null;
+//		try {
+//			reader = new ClassReader("data_source.TestClass");
+//		} catch (IOException e) {
+//			e.printStackTrace();
+//		}
+//		ClassNode classNode = new ClassNode();
+//		reader.accept(classNode, ClassReader.EXPAND_FRAMES);
+//		
+//		ArrayList<ClassNode> nodes = new ArrayList<ClassNode>();
+//		nodes.add(classNode);
+//		
+//		// For expectations
+//		MyAbstractInsnNode n1 = new MyLineNumberNode(0);
+//		MyAbstractInsnNode n2 = new MyVarInsnNode(0, 0);
+//		MyAbstractInsnNode n3 = new MyMethodInsnNode(null, null, 0);
+//		MyAbstractInsnNode n4 = new MyLineNumberNode(0);
+//		MyAbstractInsnNode n5 = new MyVarInsnNode(0, 0);
+//		MyAbstractInsnNode n6 = new MyFieldInsnNode(null, null, 0);
+//		MyAbstractInsnNode n7 = new MyLineNumberNode(0);
+//		MyAbstractInsnNode n8 = new MyVarInsnNode(0, 0);
+//		MyAbstractInsnNode n9 = new MyFieldInsnNode(null, null, 0);
+//		MyAbstractInsnNode n10 = new MyLineNumberNode(0);
+//		LinkedList<MyAbstractInsnNode> m1Insns = new LinkedList<>();
+//		m1Insns.add(n1);
+//		m1Insns.add(n2);
+//		m1Insns.add(n3);
+//		m1Insns.add(n4);
+//		m1Insns.add(n5);
+//		m1Insns.add(n6);
+//		m1Insns.add(n7);
+//		m1Insns.add(n8);
+//		m1Insns.add(n9);
+//		m1Insns.add(n10);
+//		
+//		MyAbstractInsnNode n11 = new MyLineNumberNode(0);
+//		MyAbstractInsnNode n12 = new MyVarInsnNode(0, 0);
+//		MyAbstractInsnNode n13 = new MyLineNumberNode(0);
+//		MyAbstractInsnNode n14 = new MyLineNumberNode(0);
+//		MyAbstractInsnNode n15 = new MyLineNumberNode(0);
+//		MyAbstractInsnNode n16 = new MyVarInsnNode(0, 0);
+//		LinkedList<MyAbstractInsnNode> m2Insns = new LinkedList<>();
+//		m2Insns.add(n11);
+//		m2Insns.add(n12);
+//		m2Insns.add(n13);
+//		m2Insns.add(n14);
+//		m2Insns.add(n15);
+//		m2Insns.add(n16);
+//		
+//		MyLocalVariableNode l1 = new MyLocalVariableNode("this", "Ldata_source/TestClass;");
+//		MyLocalVariableNode l2 = new MyLocalVariableNode("i", "I");
+//		List<MyLocalVariableNode> m1LV = new ArrayList<>();
+//		m1LV.add(l1);
+//		List<MyLocalVariableNode> m2LV = new ArrayList<>();
+//		m2LV.add(l1);
+//		m2LV.add(l2);
+//
+//		MyFieldNode f1 = new MyFieldNode("field1", "I", 0);
+//		MyFieldNode f2 = new MyFieldNode("field2", "Ljava/lang/String;", 0);
+//		ArrayList<MyFieldNode> fields = new ArrayList<>();
+//		fields.add(f1);
+//		fields.add(f2);
+//		
+//		MyMethodNode m1 = new MyMethodNode("<init>", "()V", m1Insns, m1LV);
+//		MyMethodNode m2 = new MyMethodNode("method", "()I", m2Insns, m2LV);
+//		ArrayList<MyMethodNode> methods = new ArrayList<>();
+//		methods.add(m1);
+//		methods.add(m2);
+//		
+//		MyClassNode myClass = new MyClassNode("data_source/TestClass", "java/lang/Object", null, fields, methods, 0);
+//		
+//		// Actual
+//		ArrayList<MyClassNode> myNodes = ASMParser.parseASM(nodes);
+//		MyClassNode parsedClass = myNodes.get(0);
+//		
+//		assertEquals(myClass.getFullName(), parsedClass.getFullName());
+//		assertEquals(myClass.getFullSuperName(), parsedClass.getFullSuperName());
+//		
+//		assertEquals(f1.name, myClass.fields.get(0).name);
+//		assertEquals(f1.getFullDesc(), myClass.fields.get(0).getFullDesc());
+//		assertEquals(f2.name, myClass.fields.get(1).name);
+//		assertEquals(f2.getFullDesc(), myClass.fields.get(1).getFullDesc());
+//		
+//		MyMethodNode curMethod = parsedClass.methods.get(0);
+//		assertEquals(m1.name, curMethod.name);
+//		assertEquals(m1.getFullDesc(), curMethod.getFullDesc());
+//		for (int i = 0; i < m1Insns.size(); i++) {
+//			assertEquals(m1Insns.get(i).getType(), curMethod.instructions.get(i).getType());
+//		}
+//		assertEquals(l1.name, curMethod.localVariables.get(0).name);
+//		assertEquals(l1.getFullDesc(), curMethod.localVariables.get(0).getFullDesc());
+//		
+//		curMethod = parsedClass.methods.get(1);
+//		assertEquals(m2.name, parsedClass.methods.get(1).name);
+//		assertEquals(m2.getFullDesc(), parsedClass.methods.get(1).getFullDesc());
+//		for (int i = 0; i < m2Insns.size(); i++) {
+//			assertEquals(m2Insns.get(i).getType(), curMethod.instructions.get(i).getType());
+//		}
+//		assertEquals(l1.name, curMethod.localVariables.get(0).name);
+//		assertEquals(l1.getFullDesc(), curMethod.localVariables.get(0).getFullDesc());
+//		assertEquals(l2.name, curMethod.localVariables.get(1).name);
+//		assertEquals(l2.getFullDesc(), curMethod.localVariables.get(1).getFullDesc());
+//		
+//	}
 
 }
