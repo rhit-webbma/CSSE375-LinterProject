@@ -104,7 +104,9 @@ public class ConsoleManager {
 						+ "'hollywood' : Checks for violations of the Hollywood Principle\n"
 						+ "'composition' : Checks for places where composition could be used instead of inheritance\n"
 						+ "'interface' : Checks for interfaces that might be redundant\n"
-						+ "'pattern' : Detects use of Strategy, Adapter, and Facade patterns\n"
+						+ "'strategy' : Detects use of Strategy pattern\n"
+						+ "'adapter' :  Detects use of Adapter pattern\n"
+						+ "'facade' : Detects use of Facade pattern\n"
 						+ "'run' : Runs the checks that have been added\n"
 						+ "'remove' : Select classes added to list of classes to be tested to be removed from list\n"
 						+ "'readd' : Select classes previously removed from list of classes to be tested to be added back to list\n"
@@ -179,12 +181,28 @@ public class ConsoleManager {
 				}
 				break;
 				
-			case "pattern":
-				if (!added.contains("pattern") && !added.contains("all")) {
+			case "strategy":
+				if (!added.contains("strategy") && !added.contains("all")) {
 					runner.addCheck(new StrategyPatternCheck());
+					added.add("strategy");
+				} else {
+					System.out.println("This check has already been added.");
+				}
+				break;
+				
+			case "facade":
+				if (!added.contains("facade") && !added.contains("all")) {
 					runner.addCheck(new FacadePatternCheck());
+					added.add("facade");
+				} else {
+					System.out.println("This check has already been added.");
+				}
+				break;
+				
+			case "adapter":
+				if (!added.contains("adapter") && !added.contains("all")) {
 					runner.addCheck(new AdapterPatternCheck());
-					added.add("pattern");
+					added.add("adapter");
 				} else {
 					System.out.println("This check has already been added.");
 				}
