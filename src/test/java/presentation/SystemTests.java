@@ -262,7 +262,7 @@ class SystemTests {
 	
 	@Test
 	void testGoodFacadePattern() {
-		ByteArrayInputStream in = new ByteArrayInputStream("Console\nPackage\nexample.goodFacade\nn\npattern\nrun\ndone".getBytes());
+		ByteArrayInputStream in = new ByteArrayInputStream("Console\nPackage\nexample.goodFacade\nn\nfacade\nrun\ndone".getBytes());
 		System.setIn(in);
 		InputManager.main(new String[0]);
 		
@@ -282,9 +282,7 @@ class SystemTests {
 				"	Speakers\n" + 
 				"\r\n" + 
 				"Input the name of the check you would like to run:Input the name of the check you would like to run:Running checks: \n" + 
-				"	Strategy Pattern\n" + 
 				"	Facade Pattern\n" + 
-				"	Adapter Pattern\n" + 
 				"\n" + 
 				"On classes: \n" + 
 				"	CdPlayer\n" + 
@@ -318,7 +316,7 @@ class SystemTests {
 	
 	@Test
 	void testBadFacadePattern() {
-		ByteArrayInputStream in = new ByteArrayInputStream("Console\nPackage\nexample.badFacade\nn\npattern\nrun\ndone".getBytes());
+		ByteArrayInputStream in = new ByteArrayInputStream("Console\nPackage\nexample.badFacade\nn\nfacade\nrun\ndone".getBytes());
 		System.setIn(in);
 		InputManager.main(new String[0]);
 		
@@ -330,9 +328,7 @@ class SystemTests {
 				"	CatFacade\n" + 
 				"\r\n" + 
 				"Input the name of the check you would like to run:Input the name of the check you would like to run:Running checks: \n" + 
-				"	Strategy Pattern\n" + 
 				"	Facade Pattern\n" + 
-				"	Adapter Pattern\n" + 
 				"\n" + 
 				"On classes: \n" + 
 				"	CatFacade\n" + 
@@ -346,7 +342,7 @@ class SystemTests {
 	
 	@Test
 	void testGoodStrategyPattern() {
-		ByteArrayInputStream in = new ByteArrayInputStream("Console\nPackage\nexample.goodStrategy\nn\npattern\nrun\ndone".getBytes());
+		ByteArrayInputStream in = new ByteArrayInputStream("Console\nPackage\nexample.goodStrategy\nn\nstrategy\nrun\ndone".getBytes());
 		System.setIn(in);
 		InputManager.main(new String[0]);
 		
@@ -368,8 +364,6 @@ class SystemTests {
 				"\r\n" + 
 				"Input the name of the check you would like to run:Input the name of the check you would like to run:Running checks: \n" + 
 				"	Strategy Pattern\n" + 
-				"	Facade Pattern\n" + 
-				"	Adapter Pattern\n" + 
 				"\n" + 
 				"On classes: \n" + 
 				"	BlueFish\n" + 
@@ -386,18 +380,13 @@ class SystemTests {
 				"Strategy Pattern Implementations: \n" + 
 				"	Implemented in Fish class using interface SwimBehavior, and invoked for the first time in method doSwim\n" +
 				"	Implemented in Fish class using interface OtherSwimBehavior, and invoked for the first time in method doSwim\n" +
-				"\n" + 
-				"Facade Pattern Check:\n" + 
-				"	example/goodStrategy/Fish looks to be a facade for the following classes:\n" + 
-				"		example/goodStrategy/SwimBehavior\n" + 
-				"		example/goodStrategy/OtherSwimBehavior\n" + 
 				"\r\n" + 
 				"Input the name of the check you would like to run:", outContent.toString().trim());
 	}
 	
 	@Test
 	void testGoodAdapterPattern() {
-		ByteArrayInputStream in = new ByteArrayInputStream("Console\nPackage\nexample.goodAdapter\nn\npattern\nrun\ndone".getBytes());
+		ByteArrayInputStream in = new ByteArrayInputStream("Console\nPackage\nexample.goodAdapter\nn\nadapter\nrun\ndone".getBytes());
 		System.setIn(in);
 		InputManager.main(new String[0]);
 		
@@ -411,8 +400,6 @@ class SystemTests {
 				"	Fish\n" + 
 				"\r\n" + 
 				"Input the name of the check you would like to run:Input the name of the check you would like to run:Running checks: \n" + 
-				"	Strategy Pattern\n" + 
-				"	Facade Pattern\n" + 
 				"	Adapter Pattern\n" + 
 				"\n" + 
 				"On classes: \n" + 
@@ -420,10 +407,6 @@ class SystemTests {
 				"	CatToFishAdapter\n" + 
 				"	Fish\n" + 
 				"\n" + 
-				"\n" + 
-				"Facade Pattern Check:\n" + 
-				"	example/goodAdapter/CatToFishAdapter looks to be a facade for the following classes:\n" + 
-				"		example/goodAdapter/Cat\n" + 
 				"\n" + 
 				"Adapter Pattern Checker: \n" + 
 				"	Class CatToFishAdapter uses Adapter Pattern to adapt Class Cat to Interface Fish \n" + 
@@ -433,7 +416,7 @@ class SystemTests {
 	
 	@Test
 	void testBadAdapterPattern() {
-		ByteArrayInputStream in = new ByteArrayInputStream("Console\nPackage\nexample.badAdapter\nn\npattern\nrun\ndone".getBytes());
+		ByteArrayInputStream in = new ByteArrayInputStream("Console\nPackage\nexample.badAdapter\nn\nadapter\nrun\ndone".getBytes());
 		System.setIn(in);
 		InputManager.main(new String[0]);
 		
@@ -452,8 +435,6 @@ class SystemTests {
 				"	ThirdBadAdapter\n" + 
 				"\r\n" + 
 				"Input the name of the check you would like to run:Input the name of the check you would like to run:Running checks: \n" + 
-				"	Strategy Pattern\n" + 
-				"	Facade Pattern\n" + 
 				"	Adapter Pattern\n" + 
 				"\n" + 
 				"On classes: \n" + 
@@ -466,13 +447,7 @@ class SystemTests {
 				"	SecondBadAdapter\n" + 
 				"	ThirdBadAdapter\n" + 
 				"\n" + 
-				"\n" + 
-				"Facade Pattern Check:\n" + 
-				"	example/badAdapter/FourthBadAdapter might be an attempt at facade pattern. It is missing calls to methods in these classes:\n" + 
-				"		example/badAdapter/Fish\n" + 
-				"	example/badAdapter/ThirdBadAdapter might be an attempt at facade pattern. It is missing calls to methods in these classes:\n" + 
-				"		example/badAdapter/Fish\n" + 
-				"\n" + 
+				"\n" +
 				"Adapter Pattern Checker: \n" + 
 				"	Class FifthBadAdapter has \"adapter\" in name, but does not implement an interface and have a field of a user defined class to adapt. \n" + 
 				"	Class FirstBadAdapter has \"adapter\" in name, but does not implement an interface and have a field of a user defined class to adapt. \n" + 
@@ -505,7 +480,9 @@ class SystemTests {
 				+ "'hollywood' : Checks for violations of the Hollywood Principle\n"
 				+ "'composition' : Checks for places where composition could be used instead of inheritance\n"
 				+ "'interface' : Checks for interfaces that might be redundant\n"
-				+ "'pattern' : Detects use of Strategy, Adapter, and Facade patterns\n"
+				+ "'strategy' : Detects use of Strategy pattern\n"
+				+ "'adapter' :  Detects use of Adapter pattern\n"
+				+ "'facade' : Detects use of Facade pattern\n"
 				+ "'run' : Runs the checks that have been added\n"
 				+ "'remove' : Select classes added to list of classes to be tested to be removed from list\n"
 				+ "'readd' : Select classes previously removed from list of classes to be tested to be added back to list\n"
