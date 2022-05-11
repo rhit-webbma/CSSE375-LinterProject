@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.LinkedList;
 
+import org.easymock.asm.Opcodes;
 import org.junit.jupiter.api.Test;
 
 import data_source.MyAbstractInsnNode;
@@ -79,8 +80,8 @@ class FacadePatternIntegrationTest {
 		MyMethodInsnNode mInsn2 = new MyMethodInsnNode("", "Java/ArrayList", MyAbstractInsnNode.METHOD_INSN);
 		MyMethodInsnNode mInsn3 = new MyMethodInsnNode("", "Java/Projector", MyAbstractInsnNode.METHOD_INSN);
 		MyMethodInsnNode mInsn4 = new MyMethodInsnNode("", "Java/Sound", MyAbstractInsnNode.METHOD_INSN);
-		MyMethodInsnNode mInsn5 = new MyMethodInsnNode("", "Java/Computer", MyAbstractInsnNode.INVOKE_VIRTUAL);
-		MyMethodInsnNode mInsn6 = new MyMethodInsnNode("", "Java/Recliner", MyAbstractInsnNode.INVOKE_VIRTUAL);
+		MyMethodInsnNode mInsn5 = new MyMethodInsnNode("", "Java/Computer", Opcodes.ACC_PUBLIC);
+		MyMethodInsnNode mInsn6 = new MyMethodInsnNode("", "Java/Recliner", Opcodes.ACC_PUBLIC);
 		LinkedList<MyAbstractInsnNode> instructions = new LinkedList<>(Arrays.asList(mInsn1, mInsn2, mInsn3, mInsn4));
 
 		MyMethodNode method1 = new MyMethodNode("", "", instructions, null);

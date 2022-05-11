@@ -50,7 +50,7 @@ public class FacadePatternCheck implements ClassCheck {
 			
 			if (userClasses > 0) {
 				printString += checkForFacade(node, fieldUserClassNames);
-			} else if (shortClassName.contains("Facade") || shortClassName.contains("facade")){
+			} else if (shortClassName.toLowerCase().contains("facade")){
 				printString += "	" + node.getFullName() + " contains the word 'facade' but is not a facade pattern\n";
 			}
 		}
