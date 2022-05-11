@@ -99,6 +99,7 @@ public class GUIManager {
                 	classNames.addAll(gitImport.generateClassesHelper(gitTxt.getText()));
                 	gitImports.add(gitImport);
                 	gitLabel.setText("Files from the selected link have been imported");
+                	gitTxt.setText("");
             	} catch (NullPointerException | StringIndexOutOfBoundsException e1) {
             		gitLabel.setText("Invalid link to a github project");
             	}
@@ -139,6 +140,7 @@ public class GUIManager {
             public void actionPerformed(ActionEvent e){
                 packages.add(pkgTxt.getText());
                 pkgLabel.setText("Added package "+ pkgTxt.getText());
+                pkgTxt.setText("");
             }
         });
 		pkgPanel.add(addButton, BorderLayout.CENTER);
@@ -217,6 +219,7 @@ public class GUIManager {
             	} else {
             		selectLabel.setText("Class name not found in the list of removed classes");
             	}
+            	classNameText.setText("");
             }
 		});
 		selectPanel.add(addButton, BorderLayout.NORTH);
@@ -234,6 +237,7 @@ public class GUIManager {
             	} else {
             		selectLabel.setText("Class name not found in the list of added classes");
             	}
+            	classNameText.setText("");
             }
 		});
 		selectPanel.add(removeButton, BorderLayout.NORTH);

@@ -90,7 +90,7 @@ public class ConsoleManager {
 						+ "'run' : Runs the checks that have been added\n"
 						+ "'remove' : Select classes added to list of classes to be tested to be removed from list\n"
 						+ "'readd' : Select classes previously removed from list of classes to be tested to be added back to list\n"
-						+ "'done' : Exits the program");
+						+ "'exit'/'done' : Exits the program");
 				break;
 				
 			case "all":
@@ -197,7 +197,8 @@ public class ConsoleManager {
 				runner.resetChecks();
 				added.removeAll(added);
 				break;
-				
+			
+			case "exit":
 			case "done":
 				complete = true;
 				break;
