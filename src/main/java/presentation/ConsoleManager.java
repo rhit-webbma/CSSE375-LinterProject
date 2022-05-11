@@ -33,13 +33,14 @@ public class ConsoleManager {
 	}
 	
 	public void userInterfaceLoop() {
-		System.out.println("What type of Import would you like to do: ");
+		System.out.println("What type of Import would you like to do [Package, Github]: ");
 		
 		CheckRunner runner = null;
 		Testable testingMethod = null;
 		Grabber gitGrabber = null;
 		boolean github = false;
 
+		ArrayList<Grabber> grabbers = new ArrayList<>();
 		
 		boolean successful = false;
 		while(!successful) {
@@ -60,12 +61,29 @@ public class ConsoleManager {
 			}
 		}
 		
-		runner = new CheckRunner(testingMethod.generateClasses());
+		
+		ArrayList<String> classes = testingMethod.generateClasses();
+		if (github) {
+			grabbers.add(((GithubImport)testingMethod).getGrabber());
+		}
+		while(true) {
+			System.out.println("Would you like to add another file/package? [y/n] ");
+			if (in.nextLine().equals("y")) {
+				classes.addAll(testingMethod.generateClasses());
+				if (github) {
+					grabbers.add(((GithubImport)testingMethod).getGrabber());
+				}
+			} else {
+				break;
+			}
+		}
+		runner = new CheckRunner(classes);
 		
 		
 		if(github) {
-			gitGrabber = ((GithubImport) testingMethod).getGrabber();
-			gitGrabber.deleteFiles();
+			for (Grabber grabber : grabbers) {
+				grabber.deleteFiles();
+			}
 		}
 		
 		System.out.println("Classes inputted: \n" + runner.classNames());

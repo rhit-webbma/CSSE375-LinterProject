@@ -10,7 +10,7 @@ private PrintStream stream;
 	
 	public FileWriter(String filename) {
 		try {
-			this.stream = new PrintStream(new FileOutputStream(filename, true));
+			this.stream = new PrintStream(new FileOutputStream(filename, false));
 		} catch (FileNotFoundException e) {
 			e.printStackTrace();
 		}
