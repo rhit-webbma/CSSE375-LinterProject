@@ -1,12 +1,10 @@
-The plan for testing our system is as follows:
-Unit Testing:
-  - Using Mocks to limit external dependency, write unit tests for all bytecode representations and linter checks
-  - Test edge case scenarios in all of these tests
-  
-Integration Testing:
-  - Utilizing the already written unit tests, write integration tests that mimic realistic system states
-  - Modify existing code to be more available to this level of testing
-  
-Acceptance Testing:
-  - Using the console form of interacting with the system, write tests that mimic actual system states
-  - Check correctness of the system by examining console output based on specific inputs
+Our intent with testing this system was to write as many automated tests as necessary to fully cover both main and edge cases of the system, with some manual testing
+to ensure the functionality of the GUI elements, and the file loading/storing. We ended up writing a total of 191 tests to ensure this was done to the best of our
+ability.
+
+We began by writing unit tests for each testable component in the domain, utilizing the EasyMock tool and dependency injection to be able to test each class
+independently. After those were complete, we wrote integration tests based on the previous unit tests, removing the mocks and replacing them with the other 
+objects themselves. We wrote more tests in these cases to cover more situations necessary to fully integrate related components. Finally, we wrote system/acceptance
+tests that run through the console UI, and test based on expected text outputs. This makes these tests quite finicky, and unstable. 
+
+More information about specific tests and groups of testing is specified in the Final Document.
