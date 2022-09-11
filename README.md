@@ -1,5 +1,29 @@
-# 202230-Project-TeamD
-To run our project on classes, add the classes you want to test to the run configuration
+# Java Linter
+## Description
+This is a java project that utilized ObjectWebs java bytecode manipulation library, ASM, to detect design patterns, “code smells”, and general code issues referenced from Google’s style guide. Throughout this project I learned
+- How to wrap an extrenal library in order to both make it work exactly how your program intends it to, but also to make it flexible
+- How to program correctly and clean for other programmers, or even for future modificaiton that you would do yourself.
+- Design patterns and how useful they can be when it comes to programming a flexible system
+
+One of my favorite things that I did in this project was program a class that could take packaages as input and import every class in said package instead of the previous functionality which only took one class.
+
+## How to Use
+This is a very simple project so all you have to do is
+1. Clone the project from the repo
+2. Import it into a Java-Friendly IDE
+3. Run as a Java Project
+
+When you run the program a GUI should come up and you
+1. Select GUI or Console
+2. Select the class or package you want to test
+3. Select what checks you would like 
+4. Run the program
+
+## Credits
+
+This project was worked on by Michael Webb, Isaac Friedman, Kati Jurgens, and Lucas Pickens
+
+## Extra Resources
 
 Link to the Trello: https://trello.com/b/JgFh2a9n/team-dee-board
 
